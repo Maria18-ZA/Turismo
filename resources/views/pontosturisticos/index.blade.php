@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Lista de Hotéis</h1>
+    <h1>Pontos Turísticos</h1>
 
-    <a href="{{ route('hoteis.create') }}">Criar Hotel</a>
+    <a href="{{ route('pontosturisticos.create') }}">Criar Ponto Turístico</a>
 
     @if(session('success'))
         <p>{{ session('success') }}</p>
@@ -14,20 +14,20 @@
             <tr>
                 <th>Nome</th>
                 <th>Localização</th>
-                <th>Contato</th>
+                <th>Categoria</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($hoteis as $hotel)
+            @forelse($pontos as $ponto)
                 <tr>
-                    <td>{{ $hotel->nome }}</td>
-                    <td>{{ $hotel->localizacao }}</td>
-                    <td>{{ $hotel->contato }}</td>
+                    <td>{{ $ponto->nome }}</td>
+                    <td>{{ $ponto->localizacao }}</td>
+                    <td>{{ $ponto->categoria }}</td>
                     <td>
-                        <a href="{{ route('hoteis.show', $hotel) }}">Ver mais</a>
-                        <a href="{{ route('hoteis.edit', $hotel) }}">Editar</a>
-                        <form action="{{ route('hoteis.destroy', $hotel) }}" method="POST">
+                        <a href="{{ route('pontosturisticos.show', $ponto) }}">Ver mais</a>
+                        <a href="{{ route('pontosturisticos.edit', $ponto) }}">Editar</a>
+                        <form action="{{ route('pontosturisticos.destroy', $ponto) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Tens a certeza?')">Eliminar</button>
@@ -36,7 +36,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4">Nenhum hotel encontrado.</td>
+                    <td colspan="4">Nenhum ponto turístico encontrado.</td>
                 </tr>
             @endforelse
         </tbody>

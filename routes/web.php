@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\PontoTuristicoController;
+use App\Http\Controllers\ServicoController;
+use App\Http\Controllers\AvaliacaoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,9 +22,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('hoteis', HotelController::class);
-Route::resource('pontos-turisticos', PontoTuristicoController::class);
-Route::resource('avaliacoes', AvaliacaoController::class);
-Route::resource('usuarios', UsuarioController::class);
+Route::resource('hoteis', HotelController::class)
+    ->parameters(['hoteis' => 'hotel']);
 
+Route::resource('pontosturisticos', PontoTuristicoController::class)
+    ->parameters(['pontosturisticos' => 'pontoTuristico']);
+
+    Route::resource('servicos', ServicoController::class)
+    ->parameters(['servicos' => 'servico']);
+Route::resource('avaliacoes', AvaliacaoController::class);
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    
+});
 require __DIR__.'/auth.php';

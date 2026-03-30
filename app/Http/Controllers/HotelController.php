@@ -31,8 +31,9 @@ class HotelController extends Controller
     {
         $request->validate([
             'nome' => 'required',
-            'endereco' => 'required',
-            'telefone' => 'required',
+            'localizacao' => 'required',
+            'descricao' => 'required',
+            'contato' => 'required',
         ]);
 
         Hotel::create($request->all());
@@ -47,7 +48,7 @@ class HotelController extends Controller
      */
     public function show(Hotel $hotel)
     {
-        //
+        return view('hoteis.show', compact('hotel'));
     }
 
     /**
@@ -55,7 +56,7 @@ class HotelController extends Controller
      */
     public function edit(Hotel $hotel)
     {
-        //
+        return view('hoteis.edit', compact('hotel'));
     }
 
     /**
@@ -63,7 +64,18 @@ class HotelController extends Controller
      */
     public function update(Request $request, Hotel $hotel)
     {
-        //
+        $request->validate([
+            'nome' => 'required',
+            'localizacao' => 'required',
+            'descricao' => 'required',
+            'contato' => 'required',
+        ]);
+
+        $hotel->update($request->all());
+
+        return redirect()
+            ->route('hoteis.index')
+            ->with('success', 'Hotel atualizado com sucesso.');
     }
 
     /**
@@ -71,6 +83,13 @@ class HotelController extends Controller
      */
     public function destroy(Hotel $hotel)
     {
-        //
+        $hotel->delete();
+
+        return redirect()
+            ->route('hoteis.index')
+            ->with('success', 'Hotel deletado com sucesso.');
     }
 }
+
+
+

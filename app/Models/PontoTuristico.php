@@ -12,8 +12,10 @@ class PontoTuristico extends Model
      protected $fillable = [
         'nome',
         'localizacao',
-        'tipo',
+        'categoria',
         'descricao',
+        'contato',
+        
     ];
 
     public function avaliacoes(): HasMany

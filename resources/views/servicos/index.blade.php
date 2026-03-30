@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Lista de Hotéis</h1>
+    <h1>Serviços</h1>
 
-    <a href="{{ route('hoteis.create') }}">Criar Hotel</a>
+    <a href="{{ route('servicos.create') }}">Criar Serviço</a>
 
     @if(session('success'))
         <p>{{ session('success') }}</p>
@@ -13,21 +13,19 @@
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Localização</th>
-                <th>Contato</th>
+                <th>Tipo</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($hoteis as $hotel)
+            @forelse($servicos as $servico)
                 <tr>
-                    <td>{{ $hotel->nome }}</td>
-                    <td>{{ $hotel->localizacao }}</td>
-                    <td>{{ $hotel->contato }}</td>
+                    <td>{{ $servico->nome }}</td>
+                    <td>{{ $servico->tipo }}</td>
                     <td>
-                        <a href="{{ route('hoteis.show', $hotel) }}">Ver mais</a>
-                        <a href="{{ route('hoteis.edit', $hotel) }}">Editar</a>
-                        <form action="{{ route('hoteis.destroy', $hotel) }}" method="POST">
+                        <a href="{{ route('servicos.show', $servico) }}">Ver mais</a>
+                        <a href="{{ route('servicos.edit', $servico) }}">Editar</a>
+                        <form action="{{ route('servicos.destroy', $servico) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Tens a certeza?')">Eliminar</button>
@@ -36,7 +34,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4">Nenhum hotel encontrado.</td>
+                    <td colspan="3">Nenhum serviço encontrado.</td>
                 </tr>
             @endforelse
         </tbody>

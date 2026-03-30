@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('localizacao');
-            $table->string('tipo');
-            $table->string('descricao');
+            $table->string('categoria')->nullable();
+            $table->string('descricao')->nullable();
+            $table->string('contato')->nullable();
             $table->timestamps();
         });
     }
