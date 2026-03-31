@@ -14,7 +14,6 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Usuário</th>
                 <th>Hotel</th>
                 <th>Ponto Turístico</th>
                 <th>Nota</th>
@@ -26,7 +25,7 @@
             @foreach($avaliacoes as $avaliacao)
             <tr>
                 <td>{{ $avaliacao->id }}</td>
-                <td>{{ $avaliacao->user->name }}</td>
+            
                 <td>{{ $avaliacao->hotel ? $avaliacao->hotel->nome : '-' }}</td>
                 <td>{{ $avaliacao->pontoTuristico ? $avaliacao->pontoTuristico->nome : '-' }}</td>
                 <td>{{ $avaliacao->nota }}</td>

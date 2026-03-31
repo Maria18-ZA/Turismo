@@ -7,14 +7,6 @@
     <form action="{{ route('avaliacoes.store') }}" method="POST">
         @csrf
 
-        <div class="mb-3">
-            <label for="user_id" class="form-label">Usuário</label>
-            <select name="user_id" id="user_id" class="form-control" required>
-                @foreach($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                @endforeach
-            </select>
-        </div>
 
         <div class="mb-3">
             <label for="hotel_id" class="form-label">Hotel</label>
