@@ -3,7 +3,10 @@
 @section('content')
     <h1>{{ $hotel->nome }}</h1>
 
-    <a href="{{ route('hoteis.index') }}">← Voltar à lista</a>
+    <a href="{{ route('hoteis.index') }}" class="bg-primaria text-white text-sm font-bold
+              px-5 py-2.5 rounded-lg
+              hover:bg-primaria-dark hover:-translate-y-0.5
+              transition-all duration-200">Voltar</a>
 
     <table border="1">
         <tr>
