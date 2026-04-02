@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use app\Models\Avaliacao;
+use app\Models\Reserva;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -37,4 +39,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Avaliacao::class, 'user_id');
     }
+
+    public function reservas(): HasMany
+    {
+        return $this->hasMany(Reserva::class, 'user_id');
+    }
+    
 }

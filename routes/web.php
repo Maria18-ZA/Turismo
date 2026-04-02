@@ -6,6 +6,9 @@ use App\Http\Controllers\PontoTuristicoController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\AvaliacaoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\QuartoController;
+use App\Http\Controllers\CulturaController;
+use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,7 +33,11 @@ Route::resource('pontosturisticos', PontoTuristicoController::class)
 
     Route::resource('servicos', ServicoController::class)
     ->parameters(['servicos' => 'servico']);
+
 Route::resource('avaliacoes', AvaliacaoController::class);
+Route::resource('quartos', QuartoController::class);
+Route::resource('culturas', CulturaController::class);
+Route::resource('reservas', ReservaController::class);
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     
 });
