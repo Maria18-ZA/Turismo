@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class QuartoController extends Controller {
     public function index() {
         $quartos = Quarto::all();
-        return view('quartos.index', compact('quarto'));
+        return view('quartos.index', compact('quartos'));
     }
 
     public function create() {
