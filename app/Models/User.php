@@ -13,7 +13,7 @@ use app\Models\Reserva;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'email', 'password','tipo_user'])]
+#[Fillable(['name', 'email', 'password','role'])]
 
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -29,9 +29,9 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            
             'password' => 'hashed',
-            'tipo_user' => 'string',
+            'role' => 'string',
         ];
     }
 

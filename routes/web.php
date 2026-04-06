@@ -38,7 +38,8 @@ Route::resource('avaliacoes', AvaliacaoController::class);
 Route::resource('quartos', QuartoController::class);
 Route::resource('culturas', CulturaController::class);
 Route::resource('reservas', ReservaController::class);
-Route::middleware(['auth'])->prefix('admin')->group(function () {
-    
+#Route::resource('users', UserController::class);
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 });
+Route::resource('users', UserController::class);
 require __DIR__.'/auth.php';

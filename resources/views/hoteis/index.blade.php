@@ -39,7 +39,7 @@
                         <div class="flex items-center gap-3">
 
                         <a href="{{ route('hoteis.show', $hotel) }}"  class="text-primaria text-xs font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
-                        <a href="{{ route('hoteis.edit', $hotel) }}  class="text-blue-600 text-xs font-bold hover:text-blue-800 transition-colors"">Editar</a>
+                        <a href="{{ route('hoteis.edit', $hotel) }} " class="text-blue-600 text-xs font-bold hover:text-blue-800 transition-colors">Editar</a>
                         <form action="{{ route('hoteis.destroy', $hotel) }}" method="POST">
                             @csrf
                             @method('DELETE')

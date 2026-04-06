@@ -31,6 +31,7 @@ class ReservaController extends Controller {
 public function store(Request $request)
 {
     $request->validate([
+        'nome_user' => 'required|string|max:255',
         'quarto_id' => 'required|exists:quartos,id',
         'checkin' => 'required|date',
         'checkout' => 'required|date|after:checkin',
@@ -38,6 +39,7 @@ public function store(Request $request)
 
     Reserva::create([
         'user_id' => auth()->id(),  // pega usuário logado
+        'nome_user' => $request->nome_user,
         'quarto_id' => $request->quarto_id,
         'checkin' => $request->checkin,
         'checkout' => $request->checkout,

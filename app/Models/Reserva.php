@@ -8,6 +8,7 @@ class Reserva extends Model {
 
     protected $fillable = [
         'user_id',
+        'nome_user',
         'quarto_id',
         'checkin',
         'checkout'

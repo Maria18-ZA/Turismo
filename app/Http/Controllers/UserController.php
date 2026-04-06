@@ -32,8 +32,8 @@ class UserController extends Controller
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
-            'role'     => 'required|in:admin,user',
+            'password' => 'required|min:8',
+            'role'     => 'required|in:admin,turista,gestor',
         ]);
 
         User::create([
@@ -52,9 +52,9 @@ class UserController extends Controller
      * Detalhe de um utilizador.
      */
     public function show(User $user)
-    {
-        return view('users.show', compact('user'));
-    }
+{
+    return view('users.show', compact('user'));
+}
 
     /**
      * Formulário para editar utilizador.
@@ -68,28 +68,27 @@ class UserController extends Controller
      * Atualizar utilizador.
      */
     public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'tipo_user' => 'required|in:admin,user',
-        ]);
+{
+    $request->validate([
+        'name'        => 'required|string|max:255',
+        'email'       => 'required|email|unique:users,email,' . $user->id,
+        'role'   => 'required|in:admin,turista,gestor',
+        'password'    => 'nullable|min:8|confirmed',
+    ]);
 
-        $user->update($request->only('name', 'email', 'tipo_user'));
+    $data = $request->only('name', 'email', 'role');
 
-        // Atualiza password apenas se preenchida
-        if ($request->filled('password')) {
-            $request->validate([
-                'password' => 'min:8|confirmed',
-            ]);
-            $user->update(['password' => bcrypt($request->password)]);
-        }
-
-        return redirect()
-            ->route('users.index')
-            ->with('success', 'Utilizador atualizado com sucesso.');
+    // Só adiciona password se foi preenchida
+    if ($request->filled('password')) {
+        $data['password'] = bcrypt($request->password);
     }
 
+    $user->update($data);
+
+    return redirect()
+        ->route('users.index')
+        ->with('success', 'Utilizador atualizado com sucesso.');
+}
     /**
      * Eliminar utilizador.
      */
