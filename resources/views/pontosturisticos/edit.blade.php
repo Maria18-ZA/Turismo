@@ -17,22 +17,16 @@
         @csrf
         @method('PUT')
 
-        <div>
+        
             <label for="nome">Nome</label>
             <input type="text" name="nome" id="nome" value="{{ old('nome', $pontoTuristico->nome) }}">
-        </div>
-
-        <div>
+       
             <label for="localizacao">Localização</label>
             <input type="text" name="localizacao" id="localizacao" value="{{ old('localizacao', $pontoTuristico->localizacao) }}">
-        </div>
-
-        <div>
+        
             <label for="descricao">Descrição</label>
             <textarea name="descricao" id="descricao">{{ old('descricao', $pontoTuristico->descricao) }}</textarea>
-        </div>
-
-        <div>
+       
             <label for="categoria">Categoria</label>
             <select name="categoria" id="categoria">
                 <option value="">-- Seleciona --</option>
@@ -42,12 +36,10 @@
                 <option value="Parque" {{ old('categoria', $pontoTuristico->categoria) == 'Parque' ? 'selected' : '' }}>Parque</option>
                 <option value="Outro" {{ old('categoria', $pontoTuristico->categoria) == 'Outro' ? 'selected' : '' }}>Outro</option>
             </select>
-        </div>
-
-        <div>
+        
             <label for="contato">Contato (opcional)</label>
             <input type="text" name="contato" id="contato" value="{{ old('contato', $pontoTuristico->contato) }}">
-        </div>
+
 
         <button type="submit">Atualizar</button>
     </form>

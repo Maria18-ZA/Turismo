@@ -1,34 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Serviços</h1>
 
-    <a href="{{ route('servicos.create') }}">Criar Serviço</a>
 
-    @if(session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
+    <h1 class="text-texto-escuro text-3xl font-black mb-7 pb-2 border-b-4 border-primaria-light w-fit">Serviços</h1>
 
-    <table border="1">
-        <thead>
+     <a href="{{ route('servicos.create') }}" class="bg-primaria mt-10 text-white text-sm font-bold
+               rounded-lg px-5 py-2.5 mb-7
+              hover:bg-primaria-dark hover:-translate-y-0.5
+              transition-all duration-200">Criar Serviço</a>
+
+<div class="bg-white mt-10 rounded-xl border border-borda-card overflow-hidden">
+
+    
+    <table class="w-full text-sm">
+        <thead class="bg-primaria text-white">
             <tr>
-                <th>Nome</th>
-                <th>Tipo</th>
-                <th>Ações</th>
+                <th text-left px-5 py-3 font-semibold>>Nome</th>
+                <th text-left px-5 py-3 font-semibold>>Tipo</th>
+                <th text-left px-5 py-3 font-semibold>>Ações</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-borda-card">
             @forelse($servicos as $servico)
-                <tr>
-                    <td>{{ $servico->nome }}</td>
-                    <td>{{ $servico->tipo }}</td>
-                    <td>
-                        <a href="{{ route('servicos.show', $servico) }}">Ver mais</a>
-                        <a href="{{ route('servicos.edit', $servico) }}">Editar</a>
+                <tr class="hover:bg-fundo-secao transition-colors duration-150">
+                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $servico->nome }}</td>
+                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $servico->tipo }}</td>
+                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">
+
+                        <div class="flex items-center gap-3">
+
+                        <a href="{{ route('servicos.show', $servico) }}" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
+                        <a href="{{ route('servicos.edit', $servico) }}" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Editar</a>
                         <form action="{{ route('servicos.destroy', $servico) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Tens a certeza?')">Eliminar</button>
+                            <button type="submit" class="text-primaria text-xs  font-bold hover:text-primaria-dark transition-colors" onclick="return confirm('Tens a certeza?')">Eliminar</button>
                         </form>
                     </td>
                 </tr>

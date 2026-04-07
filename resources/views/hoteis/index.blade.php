@@ -31,19 +31,18 @@
         <tbody class="divide-y divide-borda-card">
             @forelse($hoteis as $hotel)
                 <tr class="hover:bg-fundo-secao transition-colors duration-150">
-                    <td class="px-5 py-3 font-medium text-texto-escuro">{{ $hotel->nome }}</td>
-                    <td class="px-5 py-3 text-texto-medio">{{ $hotel->localizacao }}</td>
-                    <td class="px-5 py-3 text-texto-medio">{{ $hotel->contato }}</td>
-                    <td class="px-5 py-3">
+                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->nome }}</td>
+                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->localizacao }}</td>
+                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->contato }}</td>
+                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">
 
-                        <div class="flex items-center gap-3">
 
-                        <a href="{{ route('hoteis.show', $hotel) }}"  class="text-primaria text-xs font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
-                        <a href="{{ route('hoteis.edit', $hotel) }} " class="text-blue-600 text-xs font-bold hover:text-blue-800 transition-colors">Editar</a>
+                        <a href="{{ route('hoteis.show', $hotel) }}"  class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
+                        <a href="{{ route('hoteis.edit', $hotel) }} " class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Editar</a>
                         <form action="{{ route('hoteis.destroy', $hotel) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Tens a certeza?') class="text-red-500 text-xs font-bold hover:text-red-700 transition-colors"">Eliminar</button>
+                            <button type="submit" onclick="return confirm('Tens a certeza?')" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Eliminar</button>
                         </form>
                     </td>
                 </tr>

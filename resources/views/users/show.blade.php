@@ -4,21 +4,35 @@
 
 <h1>Detalhes do Usuário</h1>
 
+<div class="bg-white mt-10 rounded-xl border border-borda-card overflow-hidden">
+
+    <table class="w-full text-sm">
+        <thead class="bg-primaria text-white">
+            <tr>
+                <th>ID:</th>
+                <td>{{ $user->id }}</td>
+            </tr>
+            <tr>
+                <th>Nome:</th>
+                <td>{{ $user->name }}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{ $user->email }}</td>
+            </tr>
+            <tr>
+                <th>Tipo de Usuário:</th>
+                <td>{{ $user->role }}</td>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+
 {{-- Mensagem de sucesso --}}
 @if(session('success'))
     <p>{{ session('success') }}</p>
 @endif
-
-<p><strong>ID:</strong> {{ $user->id }}</p>
-
-<p><strong>Nome:</strong> {{ $user->name }}</p>
-
-<p><strong>Email:</strong> {{ $user->email }}</p>
-
-<p><strong>Tipo de Usuário:</strong> {{ $user->role }}</p>
-
-<hr>
-
 
 <a href="{{ route('users.edit', $user->id) }}">Editar</a>
 

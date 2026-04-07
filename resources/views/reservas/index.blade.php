@@ -29,16 +29,16 @@
         <td class="px-5 py-3 text-texto-medio">{{ $reserva->quarto->numero ?? '-' }}</td>
         <td class="px-5 py-3 text-texto-medio">{{ $reserva->checkin }}</td>
         <td class="px-5 py-3 text-texto-medio">{{ $reserva->checkout }}</td>
-        <td class="px-5 py-3">
+        <td class="px-5 py-3 text-center font-medium text-texto-escuro">
 
-           <div class="flex items-center gap-3">
+           
              
             <a href="{{ route('reservas.show', $reserva->id) }}" class= "text-primaria text-xs font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
             <a href="{{ route('reservas.edit', $reserva->id) }}"   class="text-blue-600 text-xs font-bold hover:text-blue-800 transition-colors">Editar</a>
             <form action="{{ route('reservas.destroy', $reserva->id) }}" method="POST" style="display:inline" class="text-primaria text-xs font-bold hover:text-primaria-dark transition-colors">
                 @csrf
                 @method('DELETE')
-                <button type="submit" onclick="return confirm('Deseja apagar?')">Apagar</button>
+               <center><button type="submit" onclick="return confirm('Deseja apagar?')" class="text-primaria text-xs  font-bold hover:text-primaria-dark transition-colors">Apagar</button></center>
             </form>
         </td>
     </tr>
