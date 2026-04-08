@@ -38,3 +38,4 @@
 </tr>
 @endforeach
 </table>
+@endsection

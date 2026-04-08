@@ -11,6 +11,7 @@ class Hotel extends Model
     protected $table = 'hoteis';
 
     protected $fillable = [
+        'hotel_id',
         'nome',
         'localizacao',
         'descricao',
@@ -30,5 +31,9 @@ class Hotel extends Model
     public function quartos(): HasMany
     {
         return $this->hasMany(Quarto::class, 'hotel_id');
+    }
+    public function pontosTuristicos(): HasMany
+    {
+        return $this->belongsToMany(PontoTuristico::class, 'hoteis_pontos_turisticos', 'hotel_id', 'pontoturistico_id');
     }
 }

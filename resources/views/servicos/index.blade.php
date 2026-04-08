@@ -16,21 +16,20 @@
     <table class="w-full text-sm">
         <thead class="bg-primaria text-white">
             <tr>
-                <th text-left px-5 py-3 font-semibold>>Nome</th>
-                <th text-left px-5 py-3 font-semibold>>Tipo</th>
-                <th text-left px-5 py-3 font-semibold>>Ações</th>
+                <th class="text-center px-5 py-3 font-semibold">Nome</th>
+                <th class="text-center px-5 py-3 font-semibold">Tipo</th>
+                <th class="text-center px-5 py-3 font-semibold">Ações</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-borda-card">
             @forelse($servicos as $servico)
                 <tr class="hover:bg-fundo-secao transition-colors duration-150">
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $servico->nome }}</td>
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $servico->tipo }}</td>
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">
+                    <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $servico->nome }}</td>
+                    <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $servico->tipo }}</td>
+                    <td class="text-center px-5 py-3 font-medium text-texto-escuro">
 
-                        <div class="flex items-center gap-3">
-
-                        <a href="{{ route('servicos.show', $servico) }}" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
+                        
+                        <a href="{{ route('servicos.show', $servico) }}" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Ver</a>
                         <a href="{{ route('servicos.edit', $servico) }}" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Editar</a>
                         <form action="{{ route('servicos.destroy', $servico) }}" method="POST">
                             @csrf

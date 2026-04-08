@@ -49,7 +49,6 @@ class ServicoController extends Controller
     public function update(Request $request, Servico $servico) // ← era $servicos
     {
         $request->validate([
-            'hotel_id'  => 'required|exists:hoteis,id',
             'nome'      => 'required|string|max:255',
             'descricao' => 'required|string',
             'tipo'      => 'required|string|max:255',

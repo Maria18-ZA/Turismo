@@ -11,7 +11,8 @@ class Reserva extends Model {
         'nome_user',
         'quarto_id',
         'checkin',
-        'checkout'
+        'checkout',
+        'status'
     ];
 
     public function user() {

@@ -14,28 +14,28 @@
         </ul>
     @endif
 
-    <form action="{{ route('servicos.update', $servicos) }}" method="POST">
+    <form action="{{ route('servicos.update', $servico) }}" method="POST">
         @csrf
         @method('PUT')
 
         
             <label for="nome" class="block text-sm   font-semibold text-texto-escuro mb-1">Nome</label>
-            <input type="text" name="nome" id="nome" value="{{ old('nome', $servicos->nome) }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
+            <input type="text" name="nome" id="nome" value="{{ old('nome', $servico->nome) }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
        
 
       
             <label for="descricao" class="block text-sm   font-semibold text-texto-escuro mb-1">Descrição</label>
-            <textarea name="descricao" id="descricao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao', $servicos->descricao) }}</textarea>
+            <textarea name="descricao" id="descricao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao', $servico->descricao) }}</textarea>
 
 
       
             <label for="tipo" class="block text-sm   font-semibold text-texto-escuro mb-1">Tipo</label>
             <select name="tipo" id="tipo" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
-                <option value="">-- Seleciona --</option>
-                <option value="Guia Turístico" {{ old('tipo', $servicos->tipo) == 'Guia Turístico' ? 'selected' : '' }}>Guia Turístico</option>
-                <option value="Transporte" {{ old('tipo', $servicos->tipo) == 'Transporte' ? 'selected' : '' }}>Transporte</option>
-                <option value="Excursão" {{ old('tipo', $servicos->tipo) == 'Excursão' ? 'selected' : '' }}>Excursão</option>
-                <option value="Outro" {{ old('tipo', $servicos->tipo) == 'Outro' ? 'selected' : '' }}>Outro</option>
+                <option value="">Seleciona</option>
+                <option value="Guia Turístico" {{ old('tipo', $servico->tipo) == 'Guia Turístico' ? 'selected' : '' }}>Guia Turístico</option>
+                <option value="Transporte" {{ old('tipo', $servico->tipo) == 'Transporte' ? 'selected' : '' }}>Transporte</option>
+                <option value="Excursão" {{ old('tipo', $servico->tipo) == 'Excursão' ? 'selected' : '' }}>Excursão</option>
+                <option value="Outro" {{ old('tipo', $servico->tipo) == 'Outro' ? 'selected' : '' }}>Outro</option>
             </select>
         </div>
 

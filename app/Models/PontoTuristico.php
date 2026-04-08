@@ -22,4 +22,8 @@ class PontoTuristico extends Model
     {
         return $this->hasMany(Avaliacao::class, 'pontoturistico_id');
     }
+    public function hoteis(): HasMany
+    {
+        return $this->belongsToMany(Hotel::class, 'hoteis_pontos_turisticos', 'pontoturistico_id', 'hotel_id');
+    }
 }

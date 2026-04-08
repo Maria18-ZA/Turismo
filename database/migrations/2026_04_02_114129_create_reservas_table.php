@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('quarto_id')->references('id')->on('quartos');
             $table->date('checkin');
             $table->date('checkout');
+            $table->enum('status', ['pendente', 'confirmada', 'cancelada'])->default('pendente');
             $table->timestamps();
         });
     }
