@@ -14,7 +14,7 @@
         @endforeach
     </ul>
 @endif
-
+ 
 <form action="{{ route('users.update', $user->id) }}" method="POST">
 @csrf
 @method('PUT')

@@ -80,7 +80,18 @@
         </svg>
         Serviços
     </a>
+    <a href="{{ route('avaliacoes.index') }}"
+       class="flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors duration-150
+              {{ request()->routeIs('avaliacoes.*') 
+                  ? 'bg-primaria text-white' 
+                  : 'text-primaria-light hover:bg-primaria-dark hover:text-white' }}">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        Avaliações
+    </a>
 
+    
     <p class="px-2 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-widest text-primaria opacity-60">
         Reservas
     </p>
@@ -93,6 +104,17 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
         </svg>
         Reservas
+    </a>
+
+    <a href="{{ route('quartos.index') }}"
+       class="flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors duration-150
+              {{ request()->routeIs('quartos.*') 
+                  ? 'bg-primaria text-white' 
+                  : 'text-primaria-light hover:bg-primaria-dark hover:text-white' }}">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        Quartos
     </a>
 
     @if(auth()->user()?->is_admin)
