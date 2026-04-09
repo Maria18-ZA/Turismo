@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('culturas', function (Blueprint $table) {
-            //
+        Schema::create('imagens_quartos', function (Blueprint $table) {
+            $table->id();
+            $table->string('imagem')->nullable();
+            $table->unsignedBigInteger('quarto_id');
+            $table->foreign('quarto_id')->references('id')->on('quartos');
+            $table->timestamps();
         });
     }
 
@@ -21,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('culturas', function (Blueprint $table) {
+        Schema::table('imagens_quartos', function (Blueprint $table) {
             //
         });
     }

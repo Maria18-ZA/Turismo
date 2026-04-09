@@ -24,7 +24,13 @@ class QuartoController extends Controller {
             'tipo'=>'required',
             'preco'=>'required|numeric'
         ]);
-        Quarto::create($request->all());
+        $quarto = Quarto::create($request->all());
+
+        ImagemQuarto::create([
+            'quarto_id' => $quarto->id,
+            'imagem' => $request->imagem
+        ]);
+        
         return redirect()->route('quartos.index')->with('success','Quarto criado!');
     }
 

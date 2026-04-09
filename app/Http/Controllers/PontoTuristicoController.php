@@ -27,6 +27,12 @@ class PontoTuristicoController extends Controller
             'categoria'   => 'required|string|max:255',
             'contato'     => 'nullable|string|max:255',
         ]);
+            $pontoTuristico = PontoTuristico::create($request->all());
+            
+         Imagem_Pontosturistico::create([
+            'pontoturistico_id' => $pontoTuristico->id,
+            'imagem' => $request->imagem
+        ]);
 
         PontoTuristico::create($request->all());
 

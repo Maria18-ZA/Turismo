@@ -36,4 +36,9 @@ class Hotel extends Model
     {
         return $this->belongsToMany(PontoTuristico::class, 'hoteis_pontos_turisticos', 'hotel_id', 'pontoturistico_id');
     }
+    public function imagens(): HasMany
+    {
+        return $this->hasMany(Imagem_Hotel::class, 'hotel_id');
+    }
+
 }

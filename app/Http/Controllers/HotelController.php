@@ -35,6 +35,12 @@ class HotelController extends Controller
             'descricao' => 'required',
             'contato' => 'required',
         ]);
+        $hotel = Hotel::create($request->all());
+
+         ImagemHotel::create([
+            'hotel_id' => $hotel->id,
+            'imagem' => $request->imagem
+        ]);
 
         Hotel::create($request->all());
 

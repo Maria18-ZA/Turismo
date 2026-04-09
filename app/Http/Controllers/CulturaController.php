@@ -26,6 +26,12 @@ class CulturaController extends Controller {
             'foto_capa'=>'required|url',
             'origem_etnica'=>'required'
         ]);
+            $cultura = Cultura::create($request->all());
+    
+            Imagem_Cultura::create([
+                'cultura_id' => $cultura->id,
+                'imagem' => $request->imagem
+            ]);
         Cultura::create($request->all());
         return redirect()->route('culturas.index')->with('success','Cultura criada!');
     }

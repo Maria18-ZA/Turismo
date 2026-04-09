@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pontosturisticos', function (Blueprint $table) {
-            //
+        Schema::create('imagens_hoteis', function (Blueprint $table) {
+            $table->id();
+            $table->string('imagem')->nullable();
+            $table->unsignedBigInteger('hotel_id');
+            $table->foreign('hotel_id')->references('id')->on('hoteis');
+            $table->timestamps();
         });
     }
 
@@ -21,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pontosturisticos', function (Blueprint $table) {
+        Schema::table('imagens_hoteis', function (Blueprint $table) {
             //
         });
     }

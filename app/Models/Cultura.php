@@ -15,6 +15,12 @@ class Cultura extends Model
         'foto_capa',
         'origem_etnica'
         ];
+
+    public function imagens(): HasMany
+    {
+        return $this->hasMany(Imagem_Cultura::class, 'cultura_id');
+
+    }
 }
 
             

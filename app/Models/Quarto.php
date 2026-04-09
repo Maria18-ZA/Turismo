@@ -13,6 +13,7 @@ class Quarto extends Model {
         'numero',
         'tipo',
         'preco'
+
     ];
 
     public function hotel() {
@@ -22,4 +23,9 @@ class Quarto extends Model {
     public function reservas() {
         return $this->hasMany(Reserva::class);
     }
+
+    public function imagens() {
+        return $this->hasMany(ImagemQuarto::class);
+    }
+
 }
