@@ -4,45 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\Hotel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $hoteis = Hotel::all();
         return view('hoteis.index', compact('hoteis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('hoteis.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'nome' => 'required',
-            'localizacao' => 'required',
-            'descricao' => 'required',
-            'contato' => 'required',
-        ]);
-        $hotel = Hotel::create($request->all());
-
-         ImagemHotel::create([
-            'hotel_id' => $hotel->id,
-            'imagem' => $request->imagem
+            'nome' => 'required|string|max:255',
+            'localizacao' => 'required|string|max:255',
+            'descricao' => 'required|string',
+            'categoria' => 'required|string|max:255',
+            'contato' => 'nullable|string|max:255',
+            'imagem' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        Hotel::create($request->all());
+        $hoteis = Hotel::create($request->all());
+
+        if ($request->hasFile('imagem')) {
+            $path = $request->file('imagem')->store('hoteis', 'public');
+
+            $hoteis->imagens()->create([
+                'imagem' => $path
+            ]);
+        }
 
         return redirect()
             ->route('hoteis.index')
@@ -68,6 +66,7 @@ class HotelController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, Hotel $hotel)
     {
         $request->validate([
@@ -75,9 +74,36 @@ class HotelController extends Controller
             'localizacao' => 'required',
             'descricao' => 'required',
             'contato' => 'required',
+            'imagem' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
+        // Atualizar dados do hotel
         $hotel->update($request->all());
+
+        // Verificar se foi enviada uma nova imagem
+        if ($request->hasFile('imagem')) {
+
+            // Guardar nova imagem
+            $path = $request->file('imagem')->store('hoteis', 'public');
+
+            // Buscar imagem existente
+            $imagem = $hotel->imagens()->first();
+
+            if ($imagem) {
+                // Apagar imagem antiga
+                Storage::disk('public')->delete($imagem->imagem);
+
+                // Atualizar no banco
+                $imagem->update([
+                    'imagem' => $path
+                ]);
+            } else {
+                // Criar nova imagem
+                $hotel->imagens()->create([
+                    'imagem' => $path
+                ]);
+            }
+        }
 
         return redirect()
             ->route('hoteis.index')

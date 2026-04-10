@@ -19,6 +19,7 @@
                 <th class="text-center px-5 py-3 font-semibold">Nome</th>
                 <th class="text-center px-5 py-3 font-semibold">Localização</th>
                 <th class="text-center px-5 py-3 font-semibold">Categoria</th>
+                <th class="text-center px-5 py-3 font-semibold">Imagem</th>
                 <th class="text-center px-5 py-3 font-semibold">Ações</th>
             </tr>
         </thead>
@@ -29,6 +30,13 @@
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $ponto->nome }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $ponto->localizacao }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $ponto->categoria }}</td>
+                    <td class="text-center px-5 py-3">
+                        @if($ponto->imagens->isNotEmpty())
+                            <img src="{{ Storage::url($ponto->imagens->first()->imagem) }}" alt="Imagem do Ponto Turístico" class="w-16 h-16 object-cover rounded-lg">
+                        @else
+                            <p class="text-texto-escuro">Nenhuma imagem disponível</p>
+                        @endif
+                    </td>
                     <td class="text-center px-5 py-3">
 
                         <a  href="{{ route('pontosturisticos.show', $ponto) }}" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Ver</a>

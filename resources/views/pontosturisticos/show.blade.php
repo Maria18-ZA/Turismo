@@ -23,6 +23,16 @@
             <td>{{ $pontoTuristico->categoria }}</td>
         </tr>
         <tr>
+            <th>Imagem</th>
+            <td>
+                @if($pontoTuristico->imagens->isNotEmpty())
+                    <img src="{{ Storage::url($pontoTuristico->imagens->first()->imagem) }}" alt="Imagem do Ponto Turístico" class="w-16 h-16 object-cover rounded-lg">
+                @else
+                    <p class="text-texto-escuro">Nenhuma imagem disponível</p>
+                @endif
+            </td>
+        </tr>
+        <tr>
             <th>Contato</th>
             <td>{{ $pontoTuristico->contato ?? 'Não disponível' }}</td>
         </tr>

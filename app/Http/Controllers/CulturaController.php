@@ -6,55 +6,85 @@ use App\Models\Cultura;
 use Illuminate\Http\Request;
 
 class CulturaController extends Controller {
+
     public function index() {
         $culturas = Cultura::all();
         return view('culturas.index', compact('culturas'));
     }
 
     public function create() {
-        $hoteis = Cultura::all();
+        $culturas = Cultura::all();
         return view('culturas.create', compact('culturas'));
     }
 
+    use Illuminate\Support\Facades\Storage;
+
     public function store(Request $request) {
-        $request->validate([
-            'nome'=>'required|exists:culturas,nome',
-            'tipo'=>'required',
-            'descricao'=>'required',
-            'localizacao'=>'required',
-            'data_celebracao'=>'required|date',
-            'foto_capa'=>'required|url',
-            'origem_etnica'=>'required'
+    $request->validate([
+        'nome'=>'required|string|max:255',
+        'tipo'=>'required',
+        'descricao'=>'required',
+        'localizacao'=>'required',
+        'data_celebracao'=>'required|date',
+        'foto_capa'=>'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'origem_etnica'=>'required',
+        'imagem'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
+    ]);
+
+    // Criar cultura
+    $cultura = Cultura::create($request->all());
+
+    // Upload da imagem
+    if ($request->hasFile('imagem')) {
+        $path = $request->file('imagem')->store('culturas', 'public');
+
+        $cultura->imagens()->create([
+            'imagem' => $path
         ]);
-            $cultura = Cultura::create($request->all());
-    
-            Imagem_Cultura::create([
-                'cultura_id' => $cultura->id,
-                'imagem' => $request->imagem
-            ]);
-        Cultura::create($request->all());
-        return redirect()->route('culturas.index')->with('success','Cultura criada!');
     }
 
-    
+    return redirect()->route('culturas.index')->with('success','Cultura criada!');
+}
+
     public function edit(Cultura $cultura) {
-        $hoteis = Cultura::all();
-        return view('culturas.edit', compact('cultura','hoteis'));
+        return view('culturas.edit', compact('cultura'));
     }
 
     public function update(Request $request, Cultura $cultura) {
-        $request->validate([
-            'nome'=>'required|exists:culturas,nome',
-            'tipo'=>'required',
-            'descricao'=>'required',
-            'localizacao'=>'required',
-            'data_celebracao'=>'required|date',
-            'foto_capa'=>'required|url',
-            'origem_etnica'=>'required'
-        ]);
-        $cultura->update($request->all());
-        return redirect()->route('culturas.index')->with('success','Cultura atualizada!');
+    $request->validate([
+        'nome'=>'required|string|max:255',
+        'tipo'=>'required',
+        'descricao'=>'required',
+        'localizacao'=>'required',
+        'data_celebracao'=>'required|date',
+        'foto_capa'=>'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'origem_etnica'=>'required',
+        'imagem'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
+    ]);
+
+    $cultura->update($request->all());
+
+    if ($request->hasFile('imagem')) {
+
+        $path = $request->file('imagem')->store('culturas', 'public');
+
+        $imagem = $cultura->imagens()->first();
+
+        if ($imagem) {
+            Storage::disk('public')->delete($imagem->imagem);
+
+            $imagem->update([
+                'imagem' => $path
+            ]);
+        } else {
+            $cultura->imagens()->create([
+                'imagem' => $path
+            ]);
+        }
     }
+
+    return redirect()->route('culturas.index')->with('success','Cultura atualizada!');
+}
 
     public function destroy(Cultura $cultura) {
         $cultura->delete();

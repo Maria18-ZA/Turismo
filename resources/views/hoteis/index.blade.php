@@ -25,6 +25,7 @@
                 <th text-left px-5 py-3 font-semibold>Nome</th>
                 <th text-left px-5 py-3 font-semibold>Localização</th>
                 <th text-left px-5 py-3 font-semibold>Contato</th>
+                <th text-left px-5 py-3 font-semibold>Imagem</th>
                 <th text-left px-5 py-3 font-semibold>Ações</th>
             </tr>
         </thead>
@@ -34,6 +35,11 @@
                     <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->nome }}</td>
                     <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->localizacao }}</td>
                     <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->contato }}</td>
+                     @if($hotel->imagens->isNotEmpty())
+                            <img src="{{ Storage::url($hotel->imagens->first()->imagem) }}" alt="Imagem do Hotel" class="w-16 h-16 object-cover rounded-lg">
+                        @else
+                            <p class="text-texto-escuro">Nenhuma imagem disponível</p>
+                        @endif
                     <td class="px-5 py-3 text-center font-medium text-texto-escuro">
 
 

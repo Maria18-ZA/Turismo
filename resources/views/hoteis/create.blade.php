@@ -17,7 +17,7 @@
     
     @endif
     <div class="max-w-2xl mx-auto mt-10">
-    <form action="{{ route('hoteis.store') }}" method="POST">
+    <form action="{{ route('hoteis.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     

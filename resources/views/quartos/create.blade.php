@@ -8,7 +8,7 @@
         @endforeach
     </ul>
 @endif
-<form action="{{ route('quartos.store') }}" method="POST">
+<form action="{{ route('quartos.store') }}" method="POST" enctype="multipart/form-data>
     @csrf
     <label>Hotel:</label>
     <select name="hotel_id">

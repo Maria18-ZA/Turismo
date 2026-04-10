@@ -26,6 +26,9 @@
             <label for="descricao" class="block text-sm   font-semibold text-texto-escuro mb-1">Descrição</label>
             <textarea name="descricao" id="descricao" class="border border-borda-card rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao', $hotel->descricao) }}</textarea>
         
+            <label for=""imagens" class="block text-sm   font-semibold text-texto-escuro mb-1">Imagens (opcional)</label>
+            <input type="file" name="imagens[]" id="imagens" multiple class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
+
             <label for="contato" class="block text-sm   font-semibold text-texto-escuro mb-1">Contato</label>
             <input type="text" name="contato" id="contato" value="{{ old('contato', $hotel->contato) }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"           >
         
