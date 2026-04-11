@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Imagem_Cultura extends Model
 {
+    protected $table = 'imagens_culturas';
+
     protected $fillable = [
         'cultura_id',
         'imagem'

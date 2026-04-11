@@ -36,10 +36,16 @@ class QuartoController extends Controller {
         $quarto->imagens()->create([
             'imagem' => $path
         ]);
+        
     }
 
     return redirect()->route('quartos.index')->with('success','Quarto criado!');
 }
+
+ public function show(Quarto $quarto)
+    {
+        return view('quartos.show', compact('quarto'));
+    }
 
     public function edit(Quarto $quarto) {
         $hoteis = Hotel::all();

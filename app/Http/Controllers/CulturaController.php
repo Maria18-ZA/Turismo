@@ -17,15 +17,14 @@ class CulturaController extends Controller {
         return view('culturas.create', compact('culturas'));
     }
 
-    use Illuminate\Support\Facades\Storage;
-
+   
     public function store(Request $request) {
     $request->validate([
         'nome'=>'required|string|max:255',
         'tipo'=>'required',
         'descricao'=>'required',
         'localizacao'=>'required',
-        'data_celebracao'=>'required|date',
+        'data_celebracao'=>'nullable|date',
         'foto_capa'=>'nullable|image|mimes:jpg,jpeg,png|max:2048',
         'origem_etnica'=>'required',
         'imagem'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
@@ -46,6 +45,10 @@ class CulturaController extends Controller {
     return redirect()->route('culturas.index')->with('success','Cultura criada!');
 }
 
+ public function show(Cultura $cultura)
+    {
+        return view('culturas.show', compact('cultura'));
+    }
     public function edit(Cultura $cultura) {
         return view('culturas.edit', compact('cultura'));
     }
@@ -56,7 +59,7 @@ class CulturaController extends Controller {
         'tipo'=>'required',
         'descricao'=>'required',
         'localizacao'=>'required',
-        'data_celebracao'=>'required|date',
+        'data_celebracao'=>'nullable|date',
         'foto_capa'=>'nullable|image|mimes:jpg,jpeg,png|max:2048',
         'origem_etnica'=>'required',
         'imagem'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'

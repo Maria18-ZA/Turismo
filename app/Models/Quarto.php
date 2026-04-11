@@ -8,6 +8,7 @@ use App\Models\Reserva;
 
 class Quarto extends Model {
 
+
     protected $fillable = [
         'hotel_id',
         'numero',
@@ -25,7 +26,7 @@ class Quarto extends Model {
     }
 
     public function imagens() {
-        return $this->hasMany(ImagemQuarto::class);
+        return $this->hasMany(Imagem_Quarto::class);
     }
 
 }

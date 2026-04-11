@@ -16,6 +16,7 @@
 <table class="w-full text-sm">
         <thead class="bg-primaria text-white">
             <tr>
+                <th class="text-center px-5 py-3 font-semibold">ID</th>
                 <th class="text-center px-5 py-3 font-semibold">Nome</th>
                 <th class="text-center px-5 py-3 font-semibold">Localização</th>
                 <th class="text-center px-5 py-3 font-semibold">Categoria</th>
@@ -27,6 +28,7 @@
             @forelse($pontos as $ponto)
                 <tr class="hover:bg-fundo-secao transition-colors duration-150">
 
+                    <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $ponto->id }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $ponto->nome }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $ponto->localizacao }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $ponto->categoria }}</td>

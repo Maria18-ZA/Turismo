@@ -3,9 +3,14 @@
 @section('content')
     <h1>{{ $pontoTuristico->nome }}</h1>
 
-    <a href="{{ route('pontosturisticos.index') }}">← Voltar à lista</a>
+    <a href="{{ route('pontosturisticos.index') }}"> Voltar à lista</a>
 
     <table border="1">
+
+         <tr>
+            <th>ID</th>
+            <td>{{ $pontoTuristico->id }}</td>
+        </tr>
         <tr>
             <th>Nome</th>
             <td>{{ $pontoTuristico->nome }}</td>
@@ -27,7 +32,7 @@
             <td>
                 @if($pontoTuristico->imagens->isNotEmpty())
                     <img src="{{ Storage::url($pontoTuristico->imagens->first()->imagem) }}" alt="Imagem do Ponto Turístico" class="w-16 h-16 object-cover rounded-lg">
-                @else
+                @else 
                     <p class="text-texto-escuro">Nenhuma imagem disponível</p>
                 @endif
             </td>

@@ -15,6 +15,7 @@
         <th class="text-center px-5 py-3 font-semibold">ID</th>
         <th class="text-center px-5 py-3 font-semibold">Número</th>
         <th class="text-center px-5 py-3 font-semibold">Tipo</th>
+          <th class="text-center px-5 py-3 font-semibold">Imagem</th>
         <th class="text-center px-5 py-3 font-semibold">Preço</th>
         <th class="text-center px-5 py-3 font-semibold">Ações</th>
     </tr>
@@ -25,8 +26,17 @@
         <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $quarto->id }}</td>
         <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $quarto->numero }}</td>
         <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $quarto->tipo }}</td>
+        <td class="text-center px-5 py-3">
+            @if($quarto->imagens->isNotEmpty())
+                <img src="{{ Storage::url($quarto->imagens->first()->imagem) }}" alt="Imagem do Quarto" class="w-16 h-16 object-cover rounded-lg">
+            @else
+                <p class="text-texto-escuro">Nenhuma imagem disponível</p>
+            @endif
+        </td>
         <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $quarto->preco }}</td>
         <td class="px-5 py-3 text-center">
+
+            <a  href="{{ route('quartos.show', $quarto->id) }}" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Ver</a>
             <a href="{{ route('quartos.edit', $quarto->id) }}" class="text-primaria text-xs font-bold hover:text-primaria-dark transition-colors">Editar</a>
             <form action="{{ route('quartos.destroy', $quarto->id) }}" method="POST" style="display:inline" class="text-primaria text-xs font-bold hover:text-primaria-dark transition-colors">
                 @csrf @method('DELETE')

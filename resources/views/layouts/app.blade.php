@@ -58,6 +58,18 @@
         Hotéis
     </a>
 
+     <a href="{{ route('servicos.index') }}"
+       class="flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors duration-150
+              {{ request()->routeIs('servicos.*') 
+                  ? 'bg-primaria text-white' 
+                  : 'text-primaria-light hover:bg-primaria-dark hover:text-white' }}">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        Serviços
+    </a>
+
+
     <a href="{{ route('pontosturisticos.index') }}"
        class="flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors duration-150
               {{ request()->routeIs('pontosturisticos.*') 
@@ -70,15 +82,19 @@
         Pontos Turísticos
     </a>
 
-    <a href="{{ route('servicos.index') }}"
+   <a href="{{ route('culturas.index') }}"
        class="flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors duration-150
-              {{ request()->routeIs('servicos.*') 
+              {{ request()->routeIs('culturas.*') 
                   ? 'bg-primaria text-white' 
                   : 'text-primaria-light hover:bg-primaria-dark hover:text-white' }}">
         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
-        Serviços
+        Culturas
+    </a>
+
+
     </a>
     <a href="{{ route('avaliacoes.index') }}"
        class="flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors duration-150
