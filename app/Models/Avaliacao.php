@@ -13,7 +13,7 @@ class Avaliacao extends Model
         'user_id',
         'hotel_id',
         'pontoturistico_id',
-        'nota',
+        'estrela',
         'comentario',
     ];
 
