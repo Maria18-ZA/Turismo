@@ -42,11 +42,19 @@ class QuartoController extends Controller {
     return redirect()->route('quartos.index')->with('success','Quarto criado!');
 }
 
+           //Admin
  public function show(Quarto $quarto)
     {
         return view('quartos.show', compact('quarto'));
     }
 
+           //User
+     public function showUser($id)
+{
+    $quarto = Quarto::findOrFail($id);
+
+    return view('user.quartos.show', compact('quarto'));
+}
     public function edit(Quarto $quarto) {
         $hoteis = Hotel::all();
         return view('quartos.edit', compact('quarto','hoteis'));

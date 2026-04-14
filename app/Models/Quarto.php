@@ -8,7 +8,8 @@ use App\Models\Reserva;
 
 class Quarto extends Model {
 
-
+      protected $table = 'quartos';
+      
     protected $fillable = [
         'hotel_id',
         'numero',

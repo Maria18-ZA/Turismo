@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use app\Models\Quarto;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use app\Models\Quarto;
 
 class Hotel extends Model
 {

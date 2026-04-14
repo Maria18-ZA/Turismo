@@ -7,9 +7,12 @@ use App\Models\Hotel;
 use App\Models\PontoTuristico;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AvaliacaoController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $avaliacoes = Avaliacao::with(['user', 'hotel', 'pontoTuristico'])->get();
@@ -26,6 +29,7 @@ class AvaliacaoController extends Controller
 
     public function store(Request $request)
 {
+    
     $this->authorize('create', Avaliacao::class);
 
     $request->validate([

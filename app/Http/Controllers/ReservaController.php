@@ -30,6 +30,8 @@ class ReservaController extends Controller {
 
 public function store(Request $request)
 {
+    $this->authorize('create', Reserva::class);
+
     $request->validate([
         'nome_user' => 'required|string|max:255',
         'quarto_id' => 'required|exists:quartos,id',

@@ -3,18 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Quarto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 
 class HotelController extends Controller
 {
-    
+    // ADMIN
     public function index()
     {
         $hoteis = Hotel::all();
         return view('hoteis.index', compact('hoteis'));
     }
+
+    // USER
+   public function indexUser()
+{
+    $hoteis = Hotel::all();
+    return view('user.hoteis.index', compact('hoteis'));
+}
 
     public function create()
     {
@@ -47,17 +55,20 @@ class HotelController extends Controller
             ->with('success', 'Hotel criado com sucesso.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    //Admin 
     public function show(Hotel $hotel)
     {
         return view('hoteis.show', compact('hotel'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //User
+    public function showUser($id)
+{
+    $hotel = Hotel::with(['quartos', 'servicos'])->findOrFail($id);
+
+    return view('user.hoteis.show', compact('hotel'));
+}
+
     public function edit(Hotel $hotel)
     {
         return view('hoteis.edit', compact('hotel'));
