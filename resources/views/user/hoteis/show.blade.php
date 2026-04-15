@@ -1,3 +1,4 @@
+@extends('layouts.user')
 <h1>{{ $hotel->nome }}</h1>
 
 <p>{{ $hotel->descricao }}</p>

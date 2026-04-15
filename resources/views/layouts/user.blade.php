@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotéis</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+</head>
+
+<body class="bg-fundo-secao text-texto-escuro min-h-screen font-sans">
+
+    <!-- NAVBAR -->
+    <header class="bg-gradient-to-br from-primaria-dark via-primaria to-primaria-light h-16 px-8 flex items-center justify-between sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+            <!-- LOGO -->
+            <h1 class="text-white text-xl font-bold">
+                
+            </h1>
+
+            <!-- MENU -->
+            <nav class="flex items-center gap-6">
+
+                
+                </a>
+
+               
+
+                @auth
+                    <a href="/dashboard"
+                       class="bg-primaria text-white px-4 py-2 rounded-lg hover:bg-primaria-dark transition">
+                        Dashboard
+                    </a>
+                @else
+                    <a href="/login"
+                       class="border border-primaria text-white px-4 py-2 rounded-lg hover:bg-primaria hover:text-white transition">
+                        Entrar
+                    </a>
+                @endauth
+
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SIMPLES (no teu estilo) -->
+    <section class="bg-primaria-dark py-20 px-8 text-center relative overflow-hidden text-white">
+        <div class="max-w-2xl mx-auto relative z-10">
+
+            <h2 class="text-2xl font-bold mb-4">
+                Encontra os melhores hotéis
+            </h2>
+
+            <p class="text-white/90 mt-2 text-sm">
+                Conforto, qualidade e preços acessíveis para a tua estadia
+            </p>
+
+        </div>
+    </section>
+
+    <!-- CONTEÚDO -->
+    <main class="max-w-7xl mx-auto px-6 py-10">
+
+        @yield('content')
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t mt-10">
+        <div class="max-w-7xl mx-auto px-6 py-5 text-center text-sm text-gray-500">
+            © {{ date('Y') }} HotelFinder - Todos os direitos reservados
+        </div>
+    </footer>
+
+</body>
+</html>
