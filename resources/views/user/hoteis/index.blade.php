@@ -36,7 +36,7 @@
                 <p class="text-sm mt-2">
                     {{ Str::limit($hotel->descricao, 80) }}
                 </p>
-                 <a href="{{ route('hoteis.show', $hotel->id ) }}"   class="inline-block mt-4 bg-primaria text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primaria-dark transition">
+                 <a href="{{ route('user.hoteis.show', $hotel->id ) }}"   class="inline-block mt-4 bg-primaria text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-primaria-dark transition">
                    Ver Hotel
                 </a>
                 
