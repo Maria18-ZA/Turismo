@@ -48,9 +48,9 @@
         </tr>
     </table>
 
-    <a href="{{ route('hoteis.edit', $hotel->id) }}">Editar</a>
+    <a href="{{ route('hoteis.edit', $hotel) }}">Editar</a>
 
-    <form action="{{ route('hoteis.destroy', $hotel->id ) }}" method="POST">
+    <form action="{{ route('hoteis.destroy', $hotel ) }}" method="POST">
         @csrf
         @method('DELETE')
         <button type="submit" onclick="return confirm('Tens a certeza?')">Eliminar</button>
