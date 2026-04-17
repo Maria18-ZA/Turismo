@@ -8,27 +8,36 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuartoController;
 use App\Http\Controllers\CulturaController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 //
 // 🔹 ROTAS PÚBLICAS (USER)
 //
-Route::prefix('user')->group(function () {
+Route::prefix('usuario')->group(function () {
 
     // Lista de hotéis
-    Route::get('/hoteis', [HotelController::class, 'indexUser'])
+    Route::get('/hoteis', [UsuarioController::class, 'indexUser'])
         ->name('user.hoteis.index');
 
     // Ver hotel
-    Route::get('/hoteis/{hotel}', [HotelController::class, 'showUser'])
+    Route::get('/hoteis/{hotel}', [UsuarioController::class, 'showUser'])
         ->name('user.hoteis.show');
+
+    // Ver quarto
+    Route::get('/quartos/{quarto}', [UsuarioController::class, 'showQuarto'])
+        ->name('user.quartos.show');
+
+    // Criar reserva
+    Route::get('/reservas/create', [UsuarioController::class, 'create'])
+        ->name('user.reservas.create');
 });
 
 //
 // 🔹 HOME (podes redirecionar para user)
 //
 Route::get('/', function () {
-    return redirect()->route('user.hoteis.index');
+    return view('welcome');
 });
 
 //

@@ -10,19 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
-    // ADMIN
     public function index()
     {
         $hoteis = Hotel::all();
         return view('hoteis.index', compact('hoteis'));
     }
-
-    // USER
-   public function indexUser()
-{
-    $hoteis = Hotel::all();
-    return view('user.hoteis.index', compact('hoteis'));
-}
 
     public function create()
     {

@@ -18,7 +18,7 @@
 <!-- MENU -->
 <nav class="flex items-center gap-6">
     
-<a href="{{ route('hoteis.index') }}" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">Hotéis</a>
+<a href="{{ route('user.hoteis.index') }}" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">Hotéis</a>
 
 
     <a href="{{ route('pontosturisticos.index') }}" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">Pontos Turísticos</a>
