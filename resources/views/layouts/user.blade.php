@@ -10,8 +10,7 @@
 <body class="bg-fundo-secao text-texto-escuro min-h-screen font-sans">
 
     <!-- NAVBAR -->
-    <header class="bg-gradient-to-br from-primaria-dark via-primaria to-primaria-light h-16 px-8 flex items-center justify-between sticky top-0 z-50 shadow-lg">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <header class="bg-gradient-to-br from-primaria-dark via-primaria to-primaria-light h-16 px-8 flex items-center justify-between sticky top-0 z-50 shadow-lg text-white">
 
             <!-- LOGO -->
             <h1 class="text-white text-xl font-bold">
@@ -21,9 +20,28 @@
             <!-- MENU -->
             <nav class="flex items-center gap-6">
 
-                
-                </a>
+               
+                <a href="/" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">
 
+                    Início
+                </a>
+        
+                
+                <a href="/hoteis" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">
+
+                    Hotéis
+                </a>
+           
+           
+                <a href="{{ route('user.pontosturisticos.index') }}" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">
+
+                    Pontos Turísticos
+                </a>
+           
+                <a href="{{ route('user.culturas.index') }}" class="block hover:text-primaria">
+                    Culturas
+                </a>
+         
                
 
                 @auth

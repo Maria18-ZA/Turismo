@@ -35,7 +35,6 @@ Route::prefix('usuario')->group(function () {
 
 //
 // 🔹 HOME (podes redirecionar para user)
-//
 Route::get('/', function () {
     return view('welcome');
 });

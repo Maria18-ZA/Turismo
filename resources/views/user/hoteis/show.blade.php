@@ -19,6 +19,7 @@
                  class="w-full h-96 object-cover rounded-2xl shadow">
         </div>
     @endif
+    
 
     {{-- INFORMAÇÕES --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -37,7 +38,7 @@
             <h3 class="font-bold text-lg mb-2">Contacto</h3>
             <p>{{ $hotel->contacto ?? '---' }}</p>
         </div>
-
+ 
     </div>
 
     {{-- QUARTOS --}}
