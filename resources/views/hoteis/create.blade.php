@@ -27,7 +27,8 @@
         <input type="text" name="localizacao" id="localizacao" value="{{ old('localizacao') }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
     
          <label for="categoria" class="block text-sm font-semibold text-texto-escuro mb-1">Categoria</label>
-            <select name="categoria" id="categoria" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
+           
+         <select name="categoria" id="categoria" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
                 <option value=""> Seleciona </option>
                 <option value="Praia" {{ old('categoria') == 'Praia' ? 'selected' : '' }}>Moderna</option>
                 <option value="Museu" {{ old('categoria') == 'Museu' ? 'selected' : '' }}>3 Estrelas</option>
@@ -39,8 +40,8 @@
         <label for="descricao" class="block text-sm font-semibold text-texto-escuro mb-1">Descrição</label>
         <textarea name="descricao" id="descricao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao') }}</textarea>
    
-        <label for="imagem"">Imagem</label>
-        <input type="file" multiple name="imagem" id="imagem" >
+        <label for="imagens">Imagem</label>
+        <input type="file" multiple name="imagens[]" id="imagens" >
 
         <label for="contato" class="block text-sm font-semibold text-texto-escuro mb-1">Contato</label>
         <input type="text" name="contato" id="contato" value="{{ old('contato') }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">

@@ -62,16 +62,29 @@
 
     <!-- HERO SIMPLES (no teu estilo) -->
     <section class="bg-primaria-dark py-20 px-8 text-center relative overflow-hidden text-white">
-        <div class="max-w-2xl mx-auto relative z-10">
+        <div class="w-2xl mx-auto relative z-10 h-20">
 
-            <h2 class="text-2xl font-bold mb-4">
+            <h2 class="text-2xl font-bold mb-2">
                 Encontra os melhores hotéis
             </h2>
 
             <p class="text-white/90 mt-2 text-sm">
                 Conforto, qualidade e preços acessíveis para a tua estadia
             </p>
+            <br> 
 
+            <form method="GET" action="#" class="mb-4">
+    <input 
+        type="text" 
+        name="search" 
+        placeholder="Pesquisar hotéis..." 
+        value="{{ request('search') }}"              {{-- tamanho da barra de pesquisa --}}
+        class=" border border-primaria text-black px-4 py-2 rounded-lg w-1/2">
+
+    <button type="submit" class="bg-primaria text-white px-4 py-2 rounded">
+        Pesquisar
+    </button>
+</form>
         </div>
     </section>
 

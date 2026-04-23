@@ -2,6 +2,12 @@
 @section('content')
 <div class="max-w-6xl mx-auto">
 
+    {{-- Imagem --}}
+    @if($hotel->imagens->isNotEmpty())
+                <img src="{{ Storage::url($hotel->imagens->first()->imagem) }}"
+                     class="w-1/2 h-65 object-cover">
+            @endif
+
     {{-- TÍTULO --}}
     <div class="mb-8">
         <h1 class="text-4xl font-black text-texto-escuro border-b-4 border-primaria-light w-fit pb-2">
@@ -12,14 +18,30 @@
         </p>
     </div>
 
-    {{-- IMAGEM (se tiveres) --}}
-    @if($hotel->imagem)
-        <div class="mb-8">
-            <img src="{{ asset('storage/' . $hotel->imagem) }}" 
-                 class="w-full h-96 object-cover rounded-2xl shadow">
-        </div>
-    @endif
-    
+
+     <div>
+        <h2 class="text-2xl font-bold mb-6 border-b-2 border-gray-200 pb-2">
+            Galeria de imagens
+        </h2>
+
+        @if($hotel->imagens)
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                @foreach($hotel->imagens as $imagem)
+                    <div class="rounded-2xl ">
+
+                        {{-- imagem do quarto --}}
+                        @if($imagem->imagem)
+                            <img src="{{ asset('storage/' . $imagem->imagem) }}"
+                                 class="w-full h-40 object-cover rounded-xl mb-4">
+                        @endif
+                @endforeach
+
+            </div>
+        @else
+            <p class="text-gray-500">Nenhum quarto disponível.</p>
+        @endif
+    </div>
 
     {{-- INFORMAÇÕES --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">

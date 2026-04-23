@@ -29,19 +29,23 @@ class HotelController extends Controller
             'descricao' => 'required|string',
             'categoria' => 'required|string|max:255',
             'contato' => 'nullable|string|max:255',
-            'imagem' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'imagens' => 'nullable|array',
+            'imagens.*' => 'image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $hoteis = Hotel::create($request->all());
 
-        if ($request->hasFile('imagem')) {
-            $path = $request->file('imagem')->store('hoteis', 'public');
+        if ($request->hasFile('imagens')) {
+
+            foreach ($request->file('imagens') as $imagem) {
+
+            $path = $imagem->store('hoteis', 'public');
 
             $hoteis->imagens()->create([
                 'imagem' => $path
             ]);
         }
-
+}
         return redirect()
             ->route('hoteis.index')
             ->with('success', 'Hotel criado com sucesso.');
@@ -77,31 +81,27 @@ class HotelController extends Controller
             'localizacao' => 'required',
             'descricao' => 'required',
             'contato' => 'required',
-            'imagem' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+
+            // MULTIPLAS 👇
+            'imagens' => 'nullable|array',
+            'imagens.*' => 'image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         // Atualizar dados do hotel
-        $hotel->update($request->all());
+        $hotel->update($request->only([
+            'nome',
+            'localizacao',
+            'descricao',
+            'contato'
+        ]));
 
-        // Verificar se foi enviada uma nova imagem
-        if ($request->hasFile('imagem')) {
+        // 👉 SE FORAM ENVIADAS NOVAS IMAGENS
+        if ($request->hasFile('imagens')) {
 
-            // Guardar nova imagem
-            $path = $request->file('imagem')->store('hoteis', 'public');
+            foreach ($request->file('imagens') as $imagem) {
 
-            // Buscar imagem existente
-            $imagem = $hotel->imagens()->first();
+                $path = $imagem->store('hoteis', 'public');
 
-            if ($imagem) {
-                // Apagar imagem antiga
-                Storage::disk('public')->delete($imagem->imagem);
-
-                // Atualizar no banco
-                $imagem->update([
-                    'imagem' => $path
-                ]);
-            } else {
-                // Criar nova imagem
                 $hotel->imagens()->create([
                     'imagem' => $path
                 ]);
@@ -112,7 +112,6 @@ class HotelController extends Controller
             ->route('hoteis.index')
             ->with('success', 'Hotel atualizado com sucesso.');
     }
-
     /**
      * Remove the specified resource from storage.
      */

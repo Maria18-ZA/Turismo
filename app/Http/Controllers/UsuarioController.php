@@ -14,8 +14,17 @@ class UsuarioController extends Controller
      
    public function indexUser()
 {
-    $hoteis = Hotel::all();
+     $search = $request->input('search');
+
+    $hoteis = Hotel::when($search, function ($query, $search) {
+        return $query->where('nome', 'like', "%{$search}%")
+                     ->orWhere('localizacao', 'like', "%{$search}%")
+                     ->orWhere('categoria', 'like', "%{$search}%");
+    })->get();
+
     return view('user.hoteis.index', compact('hoteis'));
+
+    
 }
 
    public function showUser($id)
