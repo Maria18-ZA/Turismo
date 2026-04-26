@@ -59,7 +59,7 @@
 
         <div class="bg-white p-6 rounded-2xl shadow">
             <h3 class="font-bold text-lg mb-2">Localização</h3>
-            <p>{{ $hotel->localizacao   }}</p>
+            <p>{{ $hotel->localizacao  'Não informado' }}</p>
         </div>
 
         <div class="bg-white p-6 rounded-2xl shadow">
