@@ -18,8 +18,8 @@ class UsuarioController extends Controller
 
     $hoteis = Hotel::when($search, function ($query, $search) {
         return $query->where('nome', 'like', "%{$search}%")
-                     ->orWhere('localizacao', 'like', "%{$search}%")
-                     ->orWhere('categoria', 'like', "%{$search}%");
+                     ->orWhere('localizacao', 'like', "%{$search}%");
+                    
     })->get();
 
     return view('user.hoteis.index', compact('hoteis'));

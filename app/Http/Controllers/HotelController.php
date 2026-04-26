@@ -30,14 +30,19 @@ class HotelController extends Controller
             'categoria' => 'required|string|max:255',
             'contato' => 'nullable|string|max:255',
             'imagens' => 'nullable|array',
-            'imagens.*' => 'image|mimes:jpg,jpeg,png|max:2048'
+            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $hoteis = Hotel::create($request->all());
+        $hoteis = Hotel::create($request->except('imagens'));
 
         if ($request->hasFile('imagens')) {
 
             foreach ($request->file('imagens') as $imagem) {
+
+             // 👇 IGNORA campos vazios
+        if (!$imagem || !$imagem->isValid()) {
+            continue;
+        }
 
             $path = $imagem->store('hoteis', 'public');
 
@@ -84,7 +89,7 @@ class HotelController extends Controller
 
             // MULTIPLAS 👇
             'imagens' => 'nullable|array',
-            'imagens.*' => 'image|mimes:jpg,jpeg,png|max:2048'
+            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         // Atualizar dados do hotel
@@ -99,6 +104,10 @@ class HotelController extends Controller
         if ($request->hasFile('imagens')) {
 
             foreach ($request->file('imagens') as $imagem) {
+
+                  if (!$imagem || !$imagem->isValid()) {
+        continue;
+    }
 
                 $path = $imagem->store('hoteis', 'public');
 

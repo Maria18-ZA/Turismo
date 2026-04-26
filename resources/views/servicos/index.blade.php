@@ -16,7 +16,9 @@
     <table class="w-full text-sm">
         <thead class="bg-primaria text-white">
             <tr>
-                <th class="text-center px-5 py-3 font-semibold">Nome</th>
+                <th class="text-center px-5 py-3 font-semibold">Hotel</th>
+                 <th class="text-center px-5 py-3 font-semibold">Serviço</th>
+                <th class="text-center px-5 py-3 font-semibold">Descrição</th>
                 <th class="text-center px-5 py-3 font-semibold">Tipo</th>
                 <th class="text-center px-5 py-3 font-semibold">Ações</th>
             </tr>
@@ -24,7 +26,9 @@
         <tbody class="divide-y divide-borda-card">
             @forelse($servicos as $servico)
                 <tr class="hover:bg-fundo-secao transition-colors duration-150">
+                    <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $servico->hotel->nome ?? 'Sem hotel' }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $servico->nome }}</td>
+                    <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $servico->descricao }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">{{ $servico->tipo }}</td>
                     <td class="text-center px-5 py-3 font-medium text-texto-escuro">
 

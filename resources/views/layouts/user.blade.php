@@ -73,7 +73,7 @@
             </p>
             <br> 
 
-            <form method="GET" action="#" class="mb-4">
+            <form method="GET" action="{{ route('user.hoteis.index') }}" class="mb-4">
     <input 
         type="text" 
         name="search" 
