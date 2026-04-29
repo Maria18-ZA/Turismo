@@ -16,7 +16,7 @@
     </div>
     
     @endif
-    <div class="max-w-2xl mx-auto mt-10">
+    <div >
     <form action="{{ route('hoteis.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     
@@ -26,6 +26,13 @@
         <label for="localizacao" class="block text-sm font-semibold text-texto-escuro mb-1">Localização</label>
         <input type="text" name="localizacao" id="localizacao" value="{{ old('localizacao') }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
     
+        
+        <label class="block text-sm font-semibold text-texto-escuro mb-1"> Latitude</label>
+        <input type="text" name="latitude" id="latitude" value="{{ old('latitude') }}" class="w-full border border-borda-card rounded-lg px-4 py-2">
+   
+         <label class="block text-sm font-semibold text-texto-escuro mb-1">Longitude </label>
+         <input type="text" name="longitude" id="longitude" value="{{ old('longitude') }}" class="w-full border border-borda-card rounded-lg px-4 py-2">
+         
          <label for="categoria" class="block text-sm font-semibold text-texto-escuro mb-1">Categoria</label>
            
          <select name="categoria" id="categoria" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
@@ -38,7 +45,7 @@
             </select>
 
         <label for="descricao" class="block text-sm font-semibold text-texto-escuro mb-1">Descrição</label>
-        <textarea name="descricao" id="descricao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao') }}</textarea>
+        <textarea name="descricao" id="descricao" class="w-1/2 border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao') }}</textarea>
    
         <label for="imagens">Imagem</label>
         <input type="file" multiple name="imagens[]" id="imagens" >

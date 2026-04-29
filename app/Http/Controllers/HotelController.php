@@ -27,10 +27,12 @@ class HotelController extends Controller
             'nome' => 'required|string|max:255',
             'localizacao' => 'required|string|max:255',
             'descricao' => 'required|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'categoria' => 'required|string|max:255',
             'contato' => 'nullable|string|max:255',
             'imagens' => 'nullable|array',
-            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
         ]);
 
         $hoteis = Hotel::create($request->except('imagens'));
@@ -85,11 +87,13 @@ class HotelController extends Controller
             'nome' => 'required',
             'localizacao' => 'required',
             'descricao' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
             'contato' => 'required',
 
             // MULTIPLAS 👇
             'imagens' => 'nullable|array',
-            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Atualizar dados do hotel
@@ -97,7 +101,9 @@ class HotelController extends Controller
             'nome',
             'localizacao',
             'descricao',
-            'contato'
+            'latitude',
+            'longitude',
+            'contato',
         ]));
 
         // 👉 SE FORAM ENVIADAS NOVAS IMAGENS

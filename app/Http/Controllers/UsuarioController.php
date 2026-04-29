@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\Avaliacao;
 use App\Models\Quarto;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class UsuarioController extends Controller
 
    public function showUser($id)
 {
-    $hotel = Hotel::with(['quartos', 'servicos'])->findOrFail($id);
+    $hotel = Hotel::with(['quartos', 'servicos', 'avaliacoes'])->findOrFail($id);
 
     return view('user.hoteis.show', compact('hotel'));
 }

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('localizacao');
             $table->string('descricao');
             $table->string('contato');
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps();
         });
     }

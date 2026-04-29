@@ -26,6 +26,14 @@
             <label for="descricao" class="block text-sm   font-semibold text-texto-escuro mb-1">Descrição</label>
             <textarea name="descricao" id="descricao" class="border border-borda-card rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao', $hotel->descricao) }}</textarea>
         
+    
+        <label class="block text-sm font-semibold mb-1 mt-3">Latitude</label>
+        <input type="text" name="latitude" value="{{ old('latitude', $hotel->latitude) }}"  class="w-full border rounded-lg px-4 py-2">
+
+          <label class="block text-sm font-semibold mb-1 mt-3">Longitude</label>
+        <input type="text" name="longitude" value="{{ old('longitude', $hotel->longitude) }}" class="w-full border rounded-lg px-4 py-2">
+
+
             <label for="imagens" class="block text-sm   font-semibold text-texto-escuro mb-1">Imagens (opcional)</label>
             <input type="file" name="imagens[]" id="imagens" multiple class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
 

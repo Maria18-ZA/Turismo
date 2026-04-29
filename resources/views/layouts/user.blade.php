@@ -58,6 +58,7 @@
 
             </nav>
         </div>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     </header>
 
     <!-- HERO SIMPLES (no teu estilo) -->
@@ -101,6 +102,7 @@
             © {{ date('Y') }} HotelFinder - Todos os direitos reservados
         </div>
     </footer>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </body>
 </html>
