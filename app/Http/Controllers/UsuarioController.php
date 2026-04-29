@@ -6,6 +6,9 @@ use App\Models\Hotel;
 use App\Models\Avaliacao;
 use App\Models\Quarto;
 use App\Models\Reserva;
+use App\Models\PontoTuristico;
+use App\Models\Cultura;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 class UsuarioController extends Controller
 {
      
-   public function indexUser()
+   public function indexUser(Request $request)
 {
      $search = $request->input('search');
 
@@ -49,4 +52,21 @@ class UsuarioController extends Controller
         return view('user.reservas.create', compact('users', 'quartos'));
     }
 
+     public function indexPontos()
+    {
+        $pontos = PontoTuristico::all();
+        return view('user.pontosturisticos.index', compact('pontos'));
+    }
+
+    public function showPontos(PontoTuristico $pontoTuristico)
+    {
+        return view('user.pontosturisticos.show', compact('pontoTuristico'));
+    }
+
+    public function indexCultura() {
+        $culturas = Cultura::all();
+        return view('user.culturas.index', compact('culturas'));
+    }
+
+   
 }

@@ -31,6 +31,23 @@ Route::prefix('usuario')->group(function () {
     // Criar reserva
     Route::get('/reservas/create', [UsuarioController::class, 'create'])
         ->name('user.reservas.create');
+
+        //Route::post('/user/avaliacoes', [UsuarioController::class, 'storeAvaliacao'])
+    //->name('user.avaliacoes.store');
+
+         // Criar reserva
+    Route::get('/pontosturisticos/pontoTuristico', [UsuarioController::class, 'indexPontos'])
+        ->name('user.pontosturisticos.index');
+
+        Route::get('/pontosturisticos/{pontoTuristico}', [UsuarioController::class, 'showPontos'])
+        ->name('user.pontosturisticos.show');
+
+        Route::get('/culturas/Culturas', [UsuarioController::class, 'indexCultura'])
+        ->name('user.culturas.index');
+
+        Route::get('/culturas/{Culturas}', [UsuarioController::class, 'showCulturas'])
+        ->name('user.culturas.show');
+
 });
 
 //
