@@ -9,6 +9,7 @@ use App\Http\Controllers\QuartoController;
 use App\Http\Controllers\CulturaController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 //
@@ -61,14 +62,7 @@ Route::get('/', function () {
 //
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 
-    // CRUD ADMIN
-    Route::resource('hoteis', HotelController::class)->parameters([
-    'hoteis' => 'hotel'
-]);
     Route::resource('quartos', QuartoController::class);
     Route::resource('reservas', ReservaController::class);
     Route::resource('culturas', CulturaController::class);
@@ -76,6 +70,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('servicos', ServicoController::class);
     Route::resource('pontosturisticos', PontoTuristicoController::class);
 
+
+   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // CRUD ADMIN
+    Route::resource('hoteis', HotelController::class)->parameters([
+    'hoteis' => 'hotel'
+]);
     // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
