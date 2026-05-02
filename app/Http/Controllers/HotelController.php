@@ -32,7 +32,7 @@ class HotelController extends Controller
             'categoria' => 'required|string|max:255',
             'contato' => 'nullable|string|max:255',
             'imagens' => 'nullable|array',
-            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:10240'
+            'imagens.*' => 'nullable|max:10000'
         ]);
 
         $hoteis = Hotel::create($request->except('imagens'));
@@ -93,7 +93,7 @@ class HotelController extends Controller
 
             // MULTIPLAS 👇
             'imagens' => 'nullable|array',
-            'imagens.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'imagens.*' => 'nullable|max:10000',
         ]);
 
         // Atualizar dados do hotel

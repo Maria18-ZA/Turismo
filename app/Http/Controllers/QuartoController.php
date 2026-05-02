@@ -23,7 +23,7 @@ class QuartoController extends Controller {
         'numero'=>'required',
         'tipo'=>'required',
         'preco'=>'required|numeric',
-        'imagem'=>'required|image|mimes:jpg,jpeg,png|max:2048'
+        'imagem'=>'required|max:10000'
     ]);
 
     // Criar quarto
@@ -66,7 +66,7 @@ class QuartoController extends Controller {
         'numero'=>'required',
         'tipo'=>'required',
         'preco'=>'required|numeric',
-        'imagem'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        'imagem'=>'nullable|max:10000'
     ]);
 
     // Atualizar dados

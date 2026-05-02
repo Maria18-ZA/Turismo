@@ -26,7 +26,7 @@ class PontoTuristicoController extends Controller
             'descricao' => 'required|string',
             'categoria' => 'required|string|max:255',
             'contato' => 'nullable|string|max:255',
-            'imagem' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'imagem' => 'nullable|max:10000'
         ]);
 
         $pontoTuristico = PontoTuristico::create($request->all());
@@ -61,7 +61,7 @@ class PontoTuristicoController extends Controller
         'descricao'   => 'required|string',
         'categoria'   => 'required|string|max:255',
         'contato'     => 'nullable|string|max:255',
-        'imagem'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        'imagem'      => 'nullable|max:10000'
     ]);
 
     // Atualizar dados

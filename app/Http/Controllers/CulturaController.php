@@ -25,9 +25,9 @@ class CulturaController extends Controller {
         'descricao'=>'required',
         'localizacao'=>'required',
         'data_celebracao'=>'nullable|date',
-        'foto_capa'=>'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'foto_capa'=>'nullable|max:10000',
         'origem_etnica'=>'required',
-        'imagem'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        'imagem'=>'nullable|max:10000'
     ]);
 
     // Criar cultura
@@ -60,9 +60,9 @@ class CulturaController extends Controller {
         'descricao'=>'required',
         'localizacao'=>'required',
         'data_celebracao'=>'nullable|date',
-        'foto_capa'=>'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'foto_capa'=>'nullable|max:10000',
         'origem_etnica'=>'required',
-        'imagem'=>'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        'imagem'=>'nullable|max:10000'
     ]);
 
     $cultura->update($request->all());

@@ -16,9 +16,8 @@ return new class extends Migration
         $table->string('imagem')->nullable();
 
        $table->foreignId('quarto_id')
-          ->constrained('quartos')
-          ->onDelete('cascade');
-
+      ->constrained('quartos')
+      ->onDelete('cascade');
     $table->timestamps();
         });
     }

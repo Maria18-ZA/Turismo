@@ -156,10 +156,10 @@
                     <div class="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden">
 
                         {{-- imagem --}}
-                        @if($quarto->imagem)
-                            <img src="{{ asset('storage/' . $quarto->imagem) }}"
-                                 class="w-full h-40 object-cover">
-                        @endif
+                       @if($quarto->imagens->isNotEmpty())
+    <img src="{{ asset('storage/' . $quarto->imagens->first()->imagem) }}"
+         class="w-full h-40 object-cover">
+@endif
 
                         <div class="p-4">
 
