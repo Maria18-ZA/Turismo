@@ -16,7 +16,8 @@ return new class extends Migration
         $table->string('imagem')->nullable();
 
        $table->foreignId('quarto_id')
-      ->constrained('quartos')
+        ->references('id')
+      ->on('quartos')
       ->onDelete('cascade');
     $table->timestamps();
         });
@@ -27,8 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('imagens_quartos', function (Blueprint $table) {
-            //
-        });
+    Schema::dropIfExists('imagens_quartos');
+    Schema::dropIfExists('quartos');
     }
 };

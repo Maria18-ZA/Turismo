@@ -29,10 +29,6 @@ Route::prefix('usuario')->group(function () {
     Route::get('/quartos/{quarto}', [UsuarioController::class, 'showQuarto'])
         ->name('user.quartos.show');
 
-    // Criar reserva
-    Route::get('/reservas/create', [UsuarioController::class, 'create'])
-        ->name('user.reservas.create');
-
         //Route::post('/user/avaliacoes', [UsuarioController::class, 'storeAvaliacao'])
     //->name('user.avaliacoes.store');
 
@@ -65,6 +61,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('quartos', QuartoController::class);
     Route::resource('reservas', ReservaController::class);
+
+   Route::post('reservas/{reserva}/confirm', [ReservaController::class, 'confirm'])->name('reservas.confirm');
+   Route::post('reservas/{reserva}/cancel', [ReservaController::class, 'cancel'])->name('reservas.cancel');
+
     Route::resource('culturas', CulturaController::class);
     Route::resource('avaliacoes', AvaliacaoController::class);
     Route::resource('servicos', ServicoController::class);

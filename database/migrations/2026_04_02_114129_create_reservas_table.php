@@ -17,10 +17,8 @@ return new class extends Migration
     $table->string('nome_user');
 
     $table->unsignedBigInteger('user_id')->nullable();
-    $table->unsignedBigInteger('quarto_id')->nullable();
 
     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-    $table->foreign('quarto_id')->references('id')->on('quartos')->onDelete('cascade');
 
     $table->enum('tipo_reserva', ['simples', 'multipla'])->default('simples');
     $table->decimal('preco_total', 12, 2)->default(0);

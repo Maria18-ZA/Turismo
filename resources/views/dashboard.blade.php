@@ -53,7 +53,7 @@
                 @forelse($reservasRecentes ?? [] as $reserva)
                 <tr class="py-2">
                     <td class="py-2 text-stone-700">{{ $reserva->user->name ?? '—' }}</td>
-                    <td class="py-2 text-stone-700">{{ $reserva->hotel->nome ?? '—' }}</td>
+                    <td class="py-2 text-stone-700">{{ $reserva->quartos->first()->hotel->nome ?? '—' }}</td>
                     <td class="py-2 text-stone-500">{{ \Carbon\Carbon::parse($reserva->checkin)->format('d/m/Y') }}</td>
                     <td class="py-2">
                         <span class="px-2 py-0.5 rounded-full text-[10px] font-medium

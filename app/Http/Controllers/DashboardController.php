@@ -24,7 +24,7 @@ class DashboardController extends Controller
             'totalQuartos'       => Quarto::count(),
             'totalCulturas'      => Cultura::count(),
             'totalAvaliacoes'    => Avaliacao::count(),
-            'reservasRecentes'   => Reserva::with('user', 'hotel')->latest()->take(5)->get(),
+            'reservasRecentes'   => Reserva::with('user', 'quartos.hotel')->latest()->take(5)->get(),
             'avaliacoesRecentes' => Avaliacao::with('user')->latest()->take(4)->get(),
         ]);
     }

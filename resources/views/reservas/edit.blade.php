@@ -31,10 +31,10 @@
     </select><br><br>
 
     <label class="block text-sm   font-semibold text-texto-escuro mb-1">Check-in:</label>
-    <input type="date" name="check_in" value="{{ $reserva->check_in }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+    <input type="date" name="checkin" value="{{ $reserva->checkin }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
 
     <label class="block text-sm   font-semibold text-texto-escuro mb-1">Check-out:</label>
-    <input type="date" name="check_out" value="{{ $reserva->check_out }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+    <input type="date" name="checkout" value="{{ $reserva->checkout }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
 
     <center><button type="submit" class="bg-primaria text-white text-sm font-bold px-5 py-2.5 mt-4 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200">Atualizar</button></center>
 </form>

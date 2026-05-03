@@ -26,4 +26,9 @@ class ReservaPolicy
     {
         return $user->id === $reserva->user_id || $user->role === 'admin' || $user->role === 'gestor';
     }
+
+    public function update(User $user, Reserva $reserva)
+{
+    return $user->id === $reserva->user_id || in_array($user->role, ['admin', 'gestor']);
+}
 }

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class ReservaController extends Controller {
 
-    public function index() {
+       public function index() {
         $reservas = Reserva::with(['user','quartos'])->get();
         return view('reservas.index', compact('reservas'));
     }
@@ -23,85 +23,67 @@ class ReservaController extends Controller {
         return view('reservas.create', compact('users', 'quartos'));
     }
 
-   
-public function store(Request $request)
+   public function store(Request $request)
 {
-    $this->authorize('create', Reserva::class);
-
-    // 🔍 1. VALIDAÇÃO
+     if (!auth()->check()) {
+        abort(403, 'Precisa de estar autenticado para criar uma reserva.');
+    }
     $request->validate([
         'nome_user' => 'required|string|max:255',
-        'checkin' => 'required|date',
-        'checkout' => 'required|date|after:checkin',
-
-        'quarto_id' => 'nullable|exists:quartos,id',
-        'quartos' => 'nullable|array',
-        'quartos.*.quarto_id' => 'required_with:quartos|exists:quartos,id',
-        'quartos.*.quantidade' => 'nullable|integer|min:1',
+        'checkin'   => 'required|date',
+        'checkout'  => 'required|date|after:checkin',
+        'quartos'   => 'required|array',
     ]);
 
-    // 🔍 2. DEFINIR TIPO DE RESERVA
-    $isMultipla = $request->has('quartos');
+    // Verifica se pelo menos um quarto foi selecionado
+    $quartosSelecionados = collect($request->quartos)
+        ->filter(fn($q) => isset($q['ativo']))
+        ->filter(fn($q) => ($q['quantidade'] ?? 1) > 0);
 
-    // 🧱 3. CRIAR RESERVA
-    $reserva = Reserva::create([
-        'user_id' => auth()->id(),
-        'nome_user' => $request->nome_user,
-        'tipo_reserva' => $isMultipla ? 'multipla' : 'simples',
-        'preco_total' => 0,
-        'checkin' => $request->checkin,
-        'checkout' => $request->checkout,
-        'status' => 'pendente'
-    ]);
+    if ($quartosSelecionados->isEmpty()) {
+        return back()->withErrors(['quartos' => 'Selecione pelo menos um quarto.'])->withInput();
+    }
 
-    // 🧮 4. CALCULAR DIAS
-    $dias = Carbon::parse($request->checkin)
-        ->diffInDays(Carbon::parse($request->checkout));
+    $dias = Carbon::parse($request->checkin)->diffInDays(Carbon::parse($request->checkout));
+    if ($dias == 0) $dias = 1; // pelo menos 1 diária
 
     $total = 0;
 
-    // 🟢 5. RESERVA SIMPLES
-    if (!$isMultipla && $request->filled('quarto_id')) {
+    $reserva = Reserva::create([
+        'user_id'      => auth()->id(),
+        'nome_user'    => $request->nome_user,
+        'tipo_reserva' => $quartosSelecionados->count() > 1 ? 'multipla' : 'simples',
+        'preco_total'  => 0,
+        'checkin'      => $request->checkin,
+        'checkout'     => $request->checkout,
+        'status'       => 'pendente',
+    ]);
 
-        $quarto = Quarto::findOrFail($request->quarto_id);
-
-        $subtotal = $dias * $quarto->preco;
+    foreach ($quartosSelecionados as $quartoId => $dados) {
+        $quarto = Quarto::findOrFail($quartoId);
+        $quantidade = (int) ($dados['quantidade'] ?? 1);
+        $subtotal = $dias * $quarto->preco * $quantidade;
 
         $reserva->quartos()->attach($quarto->id, [
-            'quantidade' => 1,
-            'preco' => $quarto->preco
+            'quantidade' => $quantidade,
+            'preco'      => $quarto->preco,
         ]);
 
         $total += $subtotal;
     }
 
-    // 🔵 6. RESERVA MÚLTIPLA
-    if ($isMultipla) {
-
-        foreach ($request->quartos as $q) {
-
-            $quarto = Quarto::findOrFail($q['quarto_id']);
-            $quantidade = $q['quantidade'] ?? 1;
-
-            $subtotal = $dias * $quarto->preco * $quantidade;
-
-            $reserva->quartos()->attach($quarto->id, [
-                'quantidade' => $quantidade,
-                'preco' => $quarto->preco
-            ]);
-
-            $total += $subtotal;
-        }
-    }
-
-    // 💰 7. GUARDAR PREÇO TOTAL
-    $reserva->update([
-        'preco_total' => $total
-    ]);
+    $reserva->update(['preco_total' => $total]);
 
     return redirect()->route('reservas.index')
         ->with('success', 'Reserva criada com sucesso!');
 }
+   
+public function show(Reserva $reserva)
+{
+    $reserva->load('quartos');
+    return view('reservas.show', compact('reserva'));
+}
+
     public function edit(Reserva $reserva) {
         $users = User::all();
         $quartos = Quarto::all();
@@ -110,38 +92,45 @@ public function store(Request $request)
     }
 
     public function update(Request $request, Reserva $reserva) {
-    $request->validate([
-        'nome_user' => 'required|string|max:255',
-        'quarto_id' => 'required|exists:quartos,id',
-        'checkin' => 'required|date',
-        'checkout' => 'required|date|after:checkin',
-    ]);
+        $request->validate([
+            'user_id'=>'required|exists:users,id',
+            'quarto_id'=>'required|exists:quartos,id',
+            'checkin'=>'required|date',
+            'checkout'=>'required|date|after:checkin',
+        ]);
 
-    // 1. Calcular novo preço
-    $quarto = Quarto::findOrFail($request->quarto_id);
-    $dias = Carbon::parse($request->checkin)->diffInDays(Carbon::parse($request->checkout));
-    $total = $dias * $quarto->preco;
+        $reserva->update($request->all());
 
-    // 2. Atualizar a reserva
-    $reserva->update([
-        'nome_user' => $request->nome_user,
-        'checkin' => $request->checkin,
-        'checkout' => $request->checkout,
-        'preco_total' => $total,
-        'quarto_id' => $request->quarto_id // Mantendo sincronia com a coluna da tabela reservas
-    ]);
+        return redirect()->route('reservas.index')
+            ->with('success','Reserva atualizada!');
+    }
 
-    // 3. Sincronizar na tabela pivô (reserva_quartos)
-    $reserva->quartos()->sync([
-        $request->quarto_id => ['quantidade' => 1, 'preco' => $quarto->preco]
-    ]);
-
-    return redirect()->route('reservas.index')->with('success','Reserva atualizada!');
-}
     public function destroy(Reserva $reserva) {
         $reserva->delete();
 
         return redirect()->route('reservas.index')
             ->with('success','Reserva removida!');
     }
+
+
+    public function confirm(Reserva $reserva)
+{
+    if (!auth()->user()?->is_admin) {
+    abort(403, 'Acesso não autorizado.');
 }
+    #$this->authorize('update', $reserva);
+    $reserva->update(['status' => 'confirmada']);
+    return redirect()->route('reservas.index')->with('success', 'Reserva confirmada.');
+}
+
+public function cancel(Reserva $reserva)
+{
+    if (!auth()->user()?->is_admin) {
+    abort(403, 'Acesso não autorizado.');
+}
+    #$this->authorize('update', $reserva);
+    $reserva->update(['status' => 'cancelada']);
+    return redirect()->route('reservas.index')->with('success', 'Reserva cancelada.');
+}
+    
+ }

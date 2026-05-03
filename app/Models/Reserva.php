@@ -9,7 +9,7 @@ class Reserva extends Model {
     protected $fillable = [
         'user_id',
         'nome_user',
-        'quarto_id',
+        //'quarto_id',
         'tipo_reserva',
         'checkin',
         'checkout',
@@ -21,9 +21,9 @@ class Reserva extends Model {
         return $this->belongsTo(User::class);
     }
 
-    public function quarto() {
-        return $this->belongsTo(Quarto::class);
-    }
+    //public function quarto() {
+      //  return $this->belongsTo(Quarto::class);
+    //}
 
     public function quartos()
 {
