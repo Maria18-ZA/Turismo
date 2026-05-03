@@ -12,11 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('imagens_culturas', function (Blueprint $table) {
-            $table->id();
-            $table->string('imagem')->nullable();
-            $table->unsignedBigInteger('cultura_id');
-            $table->foreign('cultura_id')->references('id')->on('culturas');
-            $table->timestamps();
+    $table->id();
+    $table->string('imagem')->nullable();
+    $table->unsignedBigInteger('cultura_id');
+
+    $table->foreign('cultura_id')
+          ->references('id')
+          ->on('culturas')
+          ->onDelete('cascade');
+
+    $table->timestamps();
         });
     }
 
@@ -25,8 +30,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('imagens_culturas', function (Blueprint $table) {
-            //
-        });
+       
+   
+    Schema::dropIfExists('imagens_culturas');
+    Schema::dropIfExists('culturas');
     }
 };

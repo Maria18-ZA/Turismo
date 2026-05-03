@@ -5,19 +5,14 @@ use App\Models\Reserva;
 use App\Models\User;
 use App\Models\Quarto;
 use App\Models\Hotel;
+ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-namespace App\Http\Controllers;
-
-use App\Models\Reserva;
-use App\Models\User;
-use App\Models\Quarto;
-use Illuminate\Http\Request;
 
 class ReservaController extends Controller {
 
     public function index() {
-        $reservas = Reserva::with(['user','quarto'])->get();
+        $reservas = Reserva::with(['user','quartos'])->get();
         return view('reservas.index', compact('reservas'));
     }
 
@@ -28,28 +23,85 @@ class ReservaController extends Controller {
         return view('reservas.create', compact('users', 'quartos'));
     }
 
+   
 public function store(Request $request)
 {
     $this->authorize('create', Reserva::class);
 
+    // 🔍 1. VALIDAÇÃO
     $request->validate([
         'nome_user' => 'required|string|max:255',
-        'quarto_id' => 'required|exists:quartos,id',
         'checkin' => 'required|date',
         'checkout' => 'required|date|after:checkin',
+
+        'quarto_id' => 'nullable|exists:quartos,id',
+        'quartos' => 'nullable|array',
+        'quartos.*.quarto_id' => 'required_with:quartos|exists:quartos,id',
+        'quartos.*.quantidade' => 'nullable|integer|min:1',
     ]);
 
-    Reserva::create([
-        'user_id' => auth()->id(),  // pega usuário logado
+    // 🔍 2. DEFINIR TIPO DE RESERVA
+    $isMultipla = $request->has('quartos');
+
+    // 🧱 3. CRIAR RESERVA
+    $reserva = Reserva::create([
+        'user_id' => auth()->id(),
         'nome_user' => $request->nome_user,
-        'quarto_id' => $request->quarto_id,
+        'tipo_reserva' => $isMultipla ? 'multipla' : 'simples',
+        'preco_total' => 0,
         'checkin' => $request->checkin,
         'checkout' => $request->checkout,
+        'status' => 'pendente'
     ]);
 
-    return redirect()->route('reservas.index')->with('success', 'Reserva criada com sucesso!');
-}
+    // 🧮 4. CALCULAR DIAS
+    $dias = Carbon::parse($request->checkin)
+        ->diffInDays(Carbon::parse($request->checkout));
 
+    $total = 0;
+
+    // 🟢 5. RESERVA SIMPLES
+    if (!$isMultipla && $request->filled('quarto_id')) {
+
+        $quarto = Quarto::findOrFail($request->quarto_id);
+
+        $subtotal = $dias * $quarto->preco;
+
+        $reserva->quartos()->attach($quarto->id, [
+            'quantidade' => 1,
+            'preco' => $quarto->preco
+        ]);
+
+        $total += $subtotal;
+    }
+
+    // 🔵 6. RESERVA MÚLTIPLA
+    if ($isMultipla) {
+
+        foreach ($request->quartos as $q) {
+
+            $quarto = Quarto::findOrFail($q['quarto_id']);
+            $quantidade = $q['quantidade'] ?? 1;
+
+            $subtotal = $dias * $quarto->preco * $quantidade;
+
+            $reserva->quartos()->attach($quarto->id, [
+                'quantidade' => $quantidade,
+                'preco' => $quarto->preco
+            ]);
+
+            $total += $subtotal;
+        }
+    }
+
+    // 💰 7. GUARDAR PREÇO TOTAL
+    $reserva->update([
+        'preco_total' => $total
+    ]);
+
+    return redirect()->route('reservas.index')
+        ->with('success', 'Reserva criada com sucesso!');
+}
     public function edit(Reserva $reserva) {
         $users = User::all();
         $quartos = Quarto::all();
@@ -58,19 +110,34 @@ public function store(Request $request)
     }
 
     public function update(Request $request, Reserva $reserva) {
-        $request->validate([
-            'user_id'=>'required|exists:users,id',
-            'quarto_id'=>'required|exists:quartos,id',
-            'checkin'=>'required|date',
-            'checkout'=>'required|date|after:checkin',
-        ]);
+    $request->validate([
+        'nome_user' => 'required|string|max:255',
+        'quarto_id' => 'required|exists:quartos,id',
+        'checkin' => 'required|date',
+        'checkout' => 'required|date|after:checkin',
+    ]);
 
-        $reserva->update($request->all());
+    // 1. Calcular novo preço
+    $quarto = Quarto::findOrFail($request->quarto_id);
+    $dias = Carbon::parse($request->checkin)->diffInDays(Carbon::parse($request->checkout));
+    $total = $dias * $quarto->preco;
 
-        return redirect()->route('reservas.index')
-            ->with('success','Reserva atualizada!');
-    }
+    // 2. Atualizar a reserva
+    $reserva->update([
+        'nome_user' => $request->nome_user,
+        'checkin' => $request->checkin,
+        'checkout' => $request->checkout,
+        'preco_total' => $total,
+        'quarto_id' => $request->quarto_id // Mantendo sincronia com a coluna da tabela reservas
+    ]);
 
+    // 3. Sincronizar na tabela pivô (reserva_quartos)
+    $reserva->quartos()->sync([
+        $request->quarto_id => ['quantidade' => 1, 'preco' => $quarto->preco]
+    ]);
+
+    return redirect()->route('reservas.index')->with('success','Reserva atualizada!');
+}
     public function destroy(Reserva $reserva) {
         $reserva->delete();
 

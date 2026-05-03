@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('culturas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nome');
-            $table->enum('tipo', ['tradicional', 'moderna'])->nullable();
-            $table->text('descicao')->nullable();
-            $table->string('localizacao')->nullable();
-            $table->date('data_celebracao')->nullable();
-            $table->string('foto_capa')->nullable();
-            $table->string('origem_etnica')->nullable();
-            $table->timestamps();
+       Schema::create('culturas', function (Blueprint $table) {
+    $table->id();
+    $table->string('nome');
+    $table->enum('tipo', ['tradicional', 'moderna'])->nullable();
+    $table->text('descicao')->nullable();
+    $table->string('localizacao')->nullable();
+    $table->date('data_celebracao')->nullable();
+    $table->string('foto_capa')->nullable();
+    $table->string('origem_etnica')->nullable();
+    $table->timestamps();
+
         });
     }
 

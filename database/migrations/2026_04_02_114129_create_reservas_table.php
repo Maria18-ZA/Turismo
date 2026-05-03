@@ -12,16 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nome_user');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('quarto_id');
-            $table->foreign('quarto_id')->references('id')->on('quartos');
-            $table->date('checkin');
-            $table->date('checkout');
-            $table->enum('status', ['pendente', 'confirmada', 'cancelada'])->default('pendente');
-            $table->timestamps();
+             $table->id();
+
+    $table->string('nome_user');
+
+    $table->unsignedBigInteger('user_id')->nullable();
+    $table->unsignedBigInteger('quarto_id')->nullable();
+
+    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+    $table->foreign('quarto_id')->references('id')->on('quartos')->onDelete('cascade');
+
+    $table->enum('tipo_reserva', ['simples', 'multipla'])->default('simples');
+    $table->decimal('preco_total', 12, 2)->default(0);
+
+    $table->date('checkin');
+    $table->date('checkout');
+
+    $table->enum('status', ['pendente', 'confirmada', 'cancelada'])->default('pendente');
+
+    $table->timestamps();
+
         });
     }
 
