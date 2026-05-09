@@ -6,7 +6,8 @@ use App\Models\Reserva;
 use App\Models\User;
 use App\Models\Quarto;
 use App\Models\Hotel;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Mail\ReservaCriadaMail;
 
 use Illuminate\Support\Facades\Mail;
@@ -32,105 +33,83 @@ class ReservaController extends Controller
         return view('reservas.create', compact('users', 'quartos'));
     }
 
-    public function store(Request $request)
-    {
 
-        if (!auth()->check()) {
-            abort(403, 'Precisa de estar autenticado para criar uma reserva.');
-        }
 
-        $request->validate([
-            'nome_user' => 'required|string|max:255',
-            'checkin'   => 'required|date',
-            'checkout'  => 'required|date|after:checkin',
-            'quartos'   => 'required|array',
-        ]);
+public function store(Request $request)
+{
+    // 1. Validação
+    $request->validate([
+        'nome_user' => 'required|string|max:255',
+        'email'     => 'required|email|max:255|unique:users,email', // força unicidade
+        'checkin'   => 'required|date',
+        'checkout'  => 'required|date|after:checkin',
+        'quartos'   => 'required|array',
+    ]);
 
-        // quartos selecionados
-        $quartosSelecionados = collect($request->quartos)
-            ->filter(fn($q) => isset($q['ativo']))
-            ->filter(fn($q) => ($q['quantidade'] ?? 1) > 0);
+    // 2. Filtrar quartos selecionados (igual ao seu código)
+    $quartosSelecionados = collect($request->quartos)
+        ->filter(fn($q) => isset($q['ativo']))
+        ->filter(fn($q) => ($q['quantidade'] ?? 1) > 0);
 
-        if ($quartosSelecionados->isEmpty()) {
-            return back()
-                ->withErrors([
-                    'quartos' => 'Selecione pelo menos um quarto.'
-                ])
-                ->withInput();
-        }
-
-        $dias = Carbon::parse($request->checkin)
-            ->diffInDays(Carbon::parse($request->checkout));
-
-        if ($dias == 0) {
-            $dias = 1;
-        }
-
-        $total = 0;
-
-        // criar reserva
-        $reserva = Reserva::create([
-            'user_id'      => auth()->id(),
-            'nome_user'    => $request->nome_user,
-            'tipo_reserva' => $quartosSelecionados->count() > 1
-                                ? 'multipla'
-                                : 'simples',
-            'preco_total'  => 0,
-            'checkin'      => $request->checkin,
-            'checkout'     => $request->checkout,
-            'status'       => 'pendente',
-        ]);
-
-        // adicionar quartos
-        foreach ($quartosSelecionados as $quartoId => $dados) {
-
-            $quarto = Quarto::findOrFail($quartoId);
-
-            $quantidade = (int) ($dados['quantidade'] ?? 1);
-
-            $subtotal = $dias * $quarto->preco * $quantidade;
-
-            $reserva->quartos()->attach($quarto->id, [
-                'quantidade' => $quantidade,
-                'preco'      => $quarto->preco,
-            ]);
-
-            $total += $subtotal;
-        }
-
-        // atualizar total
-        $reserva->update([
-            'preco_total' => $total
-        ]);
-
-        // carregar relação quartos
-        $reserva->load('quartos');
-
-        /*
-        |--------------------------------------------------------------------------
-        | ENVIAR EMAIL PARA ADMIN
-        |--------------------------------------------------------------------------
-        */
-
-        Mail::to('teuemail@gmail.com')
-            ->send(new ReservaCriadaMail($reserva));
-
-        /*
-        |--------------------------------------------------------------------------
-        | ENVIAR EMAIL PARA CLIENTE
-        |--------------------------------------------------------------------------
-        */
-
-        if (auth()->user()->email) {
-
-            Mail::to(auth()->user()->email)
-                ->send(new ReservaCriadaMail($reserva));
-        }
-
-        return redirect()
-            ->route('reservas.index')
-            ->with('success', 'Reserva criada com sucesso!');
+    if ($quartosSelecionados->isEmpty()) {
+        return back()->withErrors(['quartos' => 'Selecione pelo menos um quarto.'])->withInput();
     }
+
+    // 3. Criar ou obter utilizador (neste caso, como validamos unique, será sempre criado se não existir)
+    // Mas para garantir, usamos firstOrCreate (evita duplicados caso validação não seja suficiente)
+    $user = User::firstOrCreate(
+        ['email' => $request->email],
+        [
+            'name'     => $request->nome_user,
+            'password' => Hash::make(Str::random(16)), // senha aleatória
+            'role'     => 'turista', // explícito
+        ]
+    );
+
+    // Se o user já existia mas o nome veio diferente, pode atualizar? Fica a seu critério.
+    // Exemplo:
+    if ($user->wasRecentlyCreated === false && $user->name !== $request->nome_user) {
+        $user->update(['name' => $request->nome_user]);
+    }
+
+    // 4. Calcular dias
+    $dias = Carbon::parse($request->checkin)->diffInDays(Carbon::parse($request->checkout));
+    if ($dias == 0) $dias = 1; // (opcional, mas validação after já impede zero)
+
+    $total = 0;
+
+    // 5. Criar reserva associada ao user
+    $reserva = Reserva::create([
+        'user_id'      => $user->id,
+        'nome_user'    => $request->nome_user, // redundante, mas pode manter
+        'tipo_reserva' => $quartosSelecionados->count() > 1 ? 'multipla' : 'simples',
+        'preco_total'  => 0,
+        'checkin'      => $request->checkin,
+        'checkout'     => $request->checkout,
+        'status'       => 'pendente',
+    ]);
+
+    // 6. Anexar quartos e calcular total
+    foreach ($quartosSelecionados as $quartoId => $dados) {
+        $quarto = Quarto::findOrFail($quartoId);
+        $quantidade = (int) ($dados['quantidade'] ?? 1);
+        $subtotal = $dias * $quarto->preco * $quantidade;
+        $reserva->quartos()->attach($quarto->id, [
+            'quantidade' => $quantidade,
+            'preco'      => $quarto->preco,
+        ]);
+        $total += $subtotal;
+    }
+
+    $reserva->update(['preco_total' => $total]);
+    $reserva->load('quartos');
+
+    // 7. Envio de emails
+    
+    Mail::to($user->email)->send(new ReservaCriadaMail($reserva));
+
+    return redirect()->route('reservas.index')->with('success', 'Reserva criada com sucesso!');
+}
 
     public function show(Reserva $reserva)
     {

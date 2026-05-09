@@ -1,5 +1,5 @@
-<h1>{{ $quartos->nome }}</h1>
+<h1>{{ $quarto->nome }}</h1>
 
-<p>{{ $quartos->descricao }}</p>
+<p>{{ $quarto->descricao }}</p>
 
-<p>Preço: {{ $quartos->preco }}</p>
+<p>Preço: {{ $quarto->preco }}</p>

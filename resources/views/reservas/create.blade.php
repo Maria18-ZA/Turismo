@@ -19,6 +19,11 @@
         <input type="text" name="nome_user" id="nome_user" required
                class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
 
+        {{-- Campo de e-mail (obrigatório) --}}
+        <label for="email" class="block text-sm font-semibold text-texto-escuro mb-1">E-mail:</label>
+        <input type="email" name="email" id="email" required
+               class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+
         <label for="checkin" class="block text-sm font-semibold text-texto-escuro mb-1">Check-in:</label>
         <input type="date" name="checkin" id="checkin" required
                class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
