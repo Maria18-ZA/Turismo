@@ -17,12 +17,12 @@ export default {
             colors: {
                 'primaria':       '#1e5799',
                 'primaria-dark':  '#2980b9',
-                'primaria-light': '#0f2744',
+                'primaria-light': '#173e6d',
                 'acento':         '#7ec8e3',
                 'fundo-secao':    '#f4f6f8',
                 'fundo-hero':     '#1a2a3a',
                 'texto-escuro':   '#5c2800',
-                'texto-medio':    '#997755',
+                'texto-medio':    '#000000',
                 'borda-card':     '#edd8b8',
                 'primaria-like': '#C9A84C',
         

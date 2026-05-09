@@ -39,24 +39,18 @@
             <td class="px-5 py-3 text-texto-medio capitalize">{{ $reserva->status }}</td>
             <td class="px-5 py-3 text-center font-medium text-texto-escuro">
                 <a href="{{ route('reservas.show', $reserva->id) }}" class="text-primaria text-xs font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
-                @can('update', $reserva)
-                    @if($reserva->status === 'pendente')
-                        <form action="{{ route('reservas.confirm', $reserva->id) }}" method="POST" style="display:inline">
-                            @csrf
-                            <button class="text-green-600 text-xs font-bold hover:text-green-800 transition-colors ml-2">Confirmar</button>
-                        </form>
-                        <form action="{{ route('reservas.cancel', $reserva->id) }}" method="POST" style="display:inline">
-                            @csrf
-                            <button class="text-red-600 text-xs font-bold hover:text-red-800 transition-colors ml-2">Cancelar</button>
-                        </form>
-                    @endif
-                    <a href="{{ route('reservas.edit', $reserva->id) }}" class="text-blue-600 text-xs font-bold hover:text-blue-800 transition-colors ml-2">Editar</a>
-                    <form action="{{ route('reservas.destroy', $reserva->id) }}" method="POST" style="display:inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Deseja apagar?')" class="text-primaria text-xs font-bold hover:text-primaria-dark transition-colors ml-2">Apagar</button>
-                    </form>
-                @endcan
+               @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'gestor']))
+    @if($reserva->status === 'pendente')
+        <form action="{{ route('reservas.confirm', $reserva->id) }}" method="POST" style="display:inline">
+            @csrf
+            <button class="text-green-600 text-xs font-bold ml-2">Confirmar</button>
+        </form>
+        <form action="{{ route('reservas.cancel', $reserva->id) }}" method="POST" style="display:inline">
+            @csrf
+            <button class="text-red-600 text-xs font-bold ml-2">Cancelar</button>
+        </form>
+    @endif
+@endif
             </td>
         </tr>
         @endforeach

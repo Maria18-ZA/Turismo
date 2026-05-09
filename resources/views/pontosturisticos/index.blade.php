@@ -22,6 +22,7 @@
                 <th class="text-center px-5 py-3 font-semibold">Categoria</th>
                 <th class="text-center px-5 py-3 font-semibold">Imagem</th>
                 <th class="text-center px-5 py-3 font-semibold">Ações</th>
+                
             </tr>
         </thead>
         <tbody class="divide-y divide-borda-card">

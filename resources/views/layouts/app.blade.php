@@ -11,7 +11,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-red-50 text-stone-800">
+<body class="font-sans antialiased bg-red-40 text-stone-800">
 
 <div class="flex h-screen overflow-hidden">
 
@@ -23,7 +23,7 @@
             <p class="text-amber-400 font-semibold text-sm tracking-wide">
                 {{ config('app.name', 'Luanda Tourism') }}
             </p>
-            <p class="text-amber-800 text-xs mt-0.5">Plataforma de Turismo</p>
+            <p class="bg- text-xs mt-0.5">Plataforma de Turismo</p>
         </div>
 
 
@@ -179,9 +179,9 @@
     <div class="flex-1 flex flex-col overflow-hidden">
 
         {{-- Header / Topbar --}}
-        <header class="bg-amber-50 border-b border-amber-200 px-6 h-14 flex items-center justify-between flex-shrink-0">
+        <header class="bg-primaria-light border-b border-amber-200 px-6 h-14 flex items-center justify-between flex-shrink-0">
             <div>
-                <h1 class="text-sm font-semibold text-amber-900">@yield('title', 'Dashboard')</h1>
+                <h1 class="text-sm font-semibold text-white">@yield('title', 'Dashboard')</h1>
                 <p class="text-[11px] text-amber-600">@yield('breadcrumb', 'Início')</p>
             </div>
             <div class="flex items-center gap-2">

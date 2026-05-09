@@ -99,7 +99,7 @@
     <!-- FOOTER -->
     <footer class="bg-white border-t mt-10">
         <div class="max-w-7xl mx-auto px-6 py-5 text-center text-sm text-gray-500">
-            © {{ date('Y') }} HotelFinder - Todos os direitos reservados
+            © {{ date('Y') }} Luanda Tour - Todos os direitos reservados
         </div>
     </footer>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>

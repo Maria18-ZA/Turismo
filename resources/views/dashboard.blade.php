@@ -46,21 +46,25 @@
                     <th class="pb-2 font-medium">Cliente</th>
                     <th class="pb-2 font-medium">Hotel</th>
                     <th class="pb-2 font-medium">Check-in</th>
+                     <th class="pb-2 font-medium">Check-out</th>
                     <th class="pb-2 font-medium">Estado</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-stone-50">
                 @forelse($reservasRecentes ?? [] as $reserva)
                 <tr class="py-2">
-                    <td class="py-2 text-stone-700">{{ $reserva->user->name ?? '—' }}</td>
-                    <td class="py-2 text-stone-700">{{ $reserva->quartos->first()->hotel->nome ?? '—' }}</td>
-                    <td class="py-2 text-stone-500">{{ \Carbon\Carbon::parse($reserva->checkin)->format('d/m/Y') }}</td>
-                    <td class="py-2">
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-medium
-                            {{ $reserva->estado === 'confirmada' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700' }}">
-                            {{ ucfirst($reserva->estado) }}
-                        </span>
-                    </td>
+                  <td class="py-2 text-stone-700">{{ $reserva->user->name ?? '—' }}</td>
+             <td class="py-2 text-stone-700">{{ $reserva->quartos->first()->hotel->nome ?? '—' }}</td>
+
+              <td class="py-2 text-stone-500">{{ \Carbon\Carbon::parse($reserva->checkin)->format('d/m/Y') }}</td>
+             <td class="py-2 text-stone-500">{{ \Carbon\Carbon::parse($reserva->checkout)->format('d/m/Y') }}</td>
+
+             <td class="py-2">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium
+                 {{ $reserva->estado === 'confirmada' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700' }}">
+                 {{ ucfirst($reserva->estado) }}
+              </span>
+            </td>
                 </tr>
                 @empty
                 <tr>
