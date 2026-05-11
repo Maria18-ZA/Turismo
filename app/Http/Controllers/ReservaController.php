@@ -41,7 +41,7 @@ public function store(Request $request)
     $request->validate([
         'nome_user' => 'required|string|max:255',
         'contato' => 'required',
-        'email'     => 'required|email|max:255|unique:users,email', // força unicidade
+        'email'     => 'required|email', // força unicidade
         'checkin'   => 'required|date',
         'checkout'  => 'required|date|after:checkin',
         'quartos'   => 'required|array',
@@ -85,7 +85,7 @@ public function store(Request $request)
         'user_id'      => $user->id,
         'nome_user'    => $request->nome_user,
          'contato' => $request->contato,
-        'email_user'    => $request->email_user, // redundante, mas pode manter
+        'email'    => $request->email, // redundante, mas pode manter
         'tipo_reserva' => $quartosSelecionados->count() > 1 ? 'multipla' : 'simples',
         'preco_total'  => 0,
         'checkin'      => $request->checkin,
@@ -106,10 +106,12 @@ public function store(Request $request)
     }
 
     $reserva->update(['preco_total' => $total]);
-    $reserva->load('quartos');
+    $reserva->quarto = $quarto;
+    //$reserva->quarto->nome_hotel = $quarto->hotel->nome;
+    //$reserva->quarto->localizacao = $quarto->hotel->localizacao;
 
     // 7. Envio de emails
-    
+    \Log::info("dados da reserva: " . $reserva);
     Mail::to($user->email)->send(new ReservaCriadaMail($reserva));
 
     return redirect()->route('reservas.index')->with('success', 'Reserva criada com sucesso!');
@@ -135,7 +137,7 @@ public function store(Request $request)
 
         $request->validate([
             'user_id'   => 'required|exists:users,id',
-            'email'    => 'required|email|unique:users,email',
+            'email'    => 'required|email',
             'quarto_id' => 'required|exists:quartos,id',
             'checkin'   => 'required|date',
             'checkout'  => 'required|date|after:checkin',

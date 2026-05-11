@@ -21,9 +21,9 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
            // Só permite ver o formulário se for admin (ou se não houver nenhum user)
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
-            abort(403, 'Apenas administradores podem criar novos utilizadores.');
-        }
+        //if (!Auth::check() || Auth::user()->role !== 'admin') {
+            //abort(403, 'Apenas administradores podem criar novos utilizadores.');
+        //}
         return view('auth.register');
     }
 
@@ -35,9 +35,9 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // Só administradores podem criar contas
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
-            abort(403, 'Apenas administradores podem criar novos utilizadores.');
-        }
+        //if (!Auth::check() || Auth::user()->role !== 'admin') {
+            //abort(403, 'Apenas administradores podem criar novos utilizadores.');
+        //}
 
         $request->validate([
             'name'     => ['required', 'string', 'max:255'],

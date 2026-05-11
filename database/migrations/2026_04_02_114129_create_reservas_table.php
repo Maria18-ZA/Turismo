@@ -18,7 +18,7 @@ return new class extends Migration
 
      $table->string('contato');
 
-    $table->string('email_user');
+    $table->string('email');
 
     $table->unsignedBigInteger('user_id')->nullable();
 

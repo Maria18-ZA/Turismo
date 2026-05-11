@@ -13,7 +13,8 @@
         <tr>
             <th class="text-left px-5 py-3 font-semibold">ID</th>
             <th class="text-left px-5 py-3 font-semibold">Usuário</th>
-            <th class="text-left px-5 py-3 font-semibold">Quarto(s)</th>
+            <th class="text-left px-5 py-3 font-semibold">Email</th>
+            <th class="text-left px-5 py-3 font-semibold">Quartos</th>
             <th class="text-left px-5 py-3 font-semibold">Check-in</th>
             <th class="text-left px-5 py-3 font-semibold">Check-out</th>
             <th class="text-left px-5 py-3 font-semibold">Status</th>
@@ -25,6 +26,7 @@
         <tr class="hover:bg-fundo-secao transition-colors duration-150">
             <td class="px-5 py-3 font-medium text-texto-escuro">{{ $reserva->id }}</td>
             <td class="px-5 py-3 text-texto-medio">{{ $reserva->nome_user }}</td>
+            <td class="px-5 py-3 text-texto-medio">{{ $reserva->nome }}</td>
             <td class="px-5 py-3 text-texto-medio">
                 @if($reserva->quartos->isNotEmpty())
                     @foreach($reserva->quartos as $q)

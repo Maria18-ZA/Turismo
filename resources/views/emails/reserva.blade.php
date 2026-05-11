@@ -32,7 +32,7 @@
 
             <p>
                 <strong>Cliente:</strong>
-                {{ $reserva->nome }}
+                {{ $reserva->nome_user }}
             </p>
 
             <p>
@@ -42,22 +42,37 @@
 
             <p>
                 <strong>Telefone:</strong>
-                {{ $reserva->telefone }}
+                {{ $reserva->contato }}
             </p>
 
             <p>
                 <strong>Check-in:</strong>
-                {{ $reserva->check_in }}
+                {{ $reserva->checkin }}
             </p>
 
             <p>
                 <strong>Check-out:</strong>
-                {{ $reserva->check_out }}
+                {{ $reserva->checkout }}
             </p>
 
             <p>
-                <strong>Quarto:</strong>
-                {{ $reserva->quarto->nome ?? 'Não definido' }}
+                <strong>Hotel:</strong>
+                {{ $reserva->quarto->hotel->nome ?? 'Não definido' }}
+            </p>
+
+            <p>
+                <strong>Localização do Hotel:</strong>
+                {{ $reserva->quarto->hotel->localizacao ?? 'Não definido' }}
+            </p>
+
+             <p>
+                <strong>Numero do quarto:</strong>
+                {{ $reserva->quarto->numero ?? 'Não definido' }}
+            </p>
+
+            <p>
+                <strong>Tipo do Quarto:</strong>
+                {{ $reserva->quarto->tipo ?? 'Não definido' }}
             </p>
 
             <hr>

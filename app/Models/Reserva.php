@@ -10,7 +10,7 @@ class Reserva extends Model {
         'user_id',
         'nome_user',
         'contato',
-        'email_user',
+        'email',
         //'quarto_id',
         'tipo_reserva',
         'checkin',
