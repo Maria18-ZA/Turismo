@@ -40,6 +40,7 @@ public function store(Request $request)
     // 1. Validação
     $request->validate([
         'nome_user' => 'required|string|max:255',
+        'contato' => 'required',
         'email'     => 'required|email|max:255|unique:users,email', // força unicidade
         'checkin'   => 'required|date',
         'checkout'  => 'required|date|after:checkin',
@@ -61,6 +62,7 @@ public function store(Request $request)
         ['email' => $request->email],
         [
             'name'     => $request->nome_user,
+            'contato' => $request->contato,
             'password' => Hash::make(Str::random(16)), // senha aleatória
             'role'     => 'turista', // explícito
         ]
@@ -81,7 +83,9 @@ public function store(Request $request)
     // 5. Criar reserva associada ao user
     $reserva = Reserva::create([
         'user_id'      => $user->id,
-        'nome_user'    => $request->nome_user, // redundante, mas pode manter
+        'nome_user'    => $request->nome_user,
+         'contato' => $request->contato,
+        'email_user'    => $request->email_user, // redundante, mas pode manter
         'tipo_reserva' => $quartosSelecionados->count() > 1 ? 'multipla' : 'simples',
         'preco_total'  => 0,
         'checkin'      => $request->checkin,
@@ -131,6 +135,7 @@ public function store(Request $request)
 
         $request->validate([
             'user_id'   => 'required|exists:users,id',
+            'email'    => 'required|email|unique:users,email',
             'quarto_id' => 'required|exists:quartos,id',
             'checkin'   => 'required|date',
             'checkout'  => 'required|date|after:checkin',

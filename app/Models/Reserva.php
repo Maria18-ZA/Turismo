@@ -9,6 +9,8 @@ class Reserva extends Model {
     protected $fillable = [
         'user_id',
         'nome_user',
+        'contato',
+        'email_user',
         //'quarto_id',
         'tipo_reserva',
         'checkin',

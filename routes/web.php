@@ -36,6 +36,8 @@ Route::prefix('usuario')->name('user.')->group(function () {
     Route::get('/hoteis', [UsuarioController::class, 'indexUser'])->name('hoteis.index');
     Route::get('/hoteis/{hotel}', [UsuarioController::class, 'showUser'])->name('hoteis.show');
     Route::get('/quartos/{quarto}', [UsuarioController::class, 'showQuarto'])->name('quartos.show');
+    Route::get('/quartos/{quarto}/reservar', [UsuarioController::class, 'createReserva'])->name('reservas.create');
+    Route::post('/reservas', [UsuarioController::class, 'storeReserva'])->name('reservas.store');
     Route::get('/pontosturisticos', [UsuarioController::class, 'indexPontos'])->name('pontosturisticos.index');
     Route::get('/pontosturisticos/{pontoTuristico}', [UsuarioController::class, 'showPontos'])->name('pontosturisticos.show');
     Route::get('/culturas', [UsuarioController::class, 'indexCultura'])->name('culturas.index');

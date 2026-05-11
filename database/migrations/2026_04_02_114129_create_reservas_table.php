@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('reservas', function (Blueprint $table) {
              $table->id();
 
-    $table->string('nome_user');
+    $table->string('nome_user');        
+
+     $table->string('contato');
+
+    $table->string('email_user');
 
     $table->unsignedBigInteger('user_id')->nullable();
 

@@ -20,11 +20,10 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        // Só permite ver o formulário se for admin (ou se não houver nenhum user)
+           // Só permite ver o formulário se for admin (ou se não houver nenhum user)
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             abort(403, 'Apenas administradores podem criar novos utilizadores.');
         }
-
         return view('auth.register');
     }
 
@@ -42,6 +41,7 @@ class RegisteredUserController extends Controller
 
         $request->validate([
             'name'     => ['required', 'string', 'max:255'],
+            'contato'  =>['required', 'max:255'],
             'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role'     => ['required', 'in:turista,gestor,admin'], // admin escolhe a role
@@ -49,6 +49,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name'     => $request->name,
+            'contato'     => $request->contato,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
             'role'     => $request->role,
