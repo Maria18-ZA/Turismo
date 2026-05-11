@@ -16,10 +16,15 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Display the registration view – apenas para administradores.
      */
     public function create(): View
     {
+        // Só permite ver o formulário se for admin (ou se não houver nenhum user)
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            abort(403, 'Apenas administradores podem criar novos utilizadores.');
+        }
+
         return view('auth.register');
     }
 
@@ -30,22 +35,31 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Só administradores podem criar contas
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            abort(403, 'Apenas administradores podem criar novos utilizadores.');
+        }
+
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role'     => ['required', 'in:turista,gestor,admin'], // admin escolhe a role
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'role'     => $request->role,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Não faz login automático do novo utilizador (opcional)
+        // Auth::login($user);  // <-- remover para não trocar de sessão
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('users.index')
+            ->with('success', 'Utilizador criado com sucesso!');
     }
 }

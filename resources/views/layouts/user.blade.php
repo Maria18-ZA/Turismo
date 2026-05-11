@@ -21,24 +21,24 @@
             <nav class="flex items-center gap-6">
 
                
-                <a href="/" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">
+                <a href="/" class="text-white/85 text-sm font-medium  hover:text-acento  transition-all duration-200">
 
                     Início
                 </a>
         
                 
-                <a href="/hoteis" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">
+                <a href="{{ route('user.hoteis.index') }}" class="text-white/85 text-sm font-medium  hover:text-acento  transition-all duration-200">
 
                     Hotéis
                 </a>
            
            
-                <a href="{{ route('user.pontosturisticos.index') }}" class="text-white/85 text-sm font-medium border-b-2 border-transparent hover:text-acento hover:border-acento transition-all duration-200">
+                <a href="{{ route('user.pontosturisticos.index') }}" class="text-white/85 text-sm font-medium  hover:text-acento  transition-all duration-200">
 
                     Pontos Turísticos
                 </a>
            
-                <a href="{{ route('user.culturas.index') }}" class="block hover:text-primaria">
+                <a href="{{ route('user.culturas.index') }}" class="block hover:text-acento">
                     Culturas
                 </a>
          

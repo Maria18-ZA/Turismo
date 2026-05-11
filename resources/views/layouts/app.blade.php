@@ -147,32 +147,40 @@
     @endif
 
 </nav>
-
-        {{-- User footer --}}
+        {{-- User footer com logout --}}
         <div class="px-2 py-3 border-t border-stone-800">
-            <div class="flex items-center gap-2 px-2 py-1.5">
-                <div class="w-7 h-7 rounded-full bg-amber-900 text-amber-100 text-xs font-semibold
-                            flex items-center justify-center flex-shrink-0">
-                    {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 2)) }}
+            <div class="flex items-center justify-between gap-2 px-2 py-1.5">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-amber-900 text-amber-100 text-xs font-semibold flex items-center justify-center flex-shrink-0">
+                        {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 2)) }}
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-amber-400 text-xs font-medium truncate">
+                            {{ auth()->user()?->name ?? 'Utilizador' }}
+                        </p>
+                        <p class="text-amber-900 text-[10px]">
+                            @auth
+                                @switch(auth()->user()->role)
+                                    @case('admin') Administrador @break
+                                    @case('gestor') Gestor @break
+                                    @default Turista
+                                @endswitch
+                            @else
+                                Visitante
+                            @endauth
+                        </p>
+                    </div>
                 </div>
-                <div class="min-w-0">
-                    <p class="text-amber-400 text-xs font-medium truncate">
-                        {{ auth()->user()?->name ?? 'Utilizador' }}
-                    </p>
-                    <p class="text-amber-900 text-[10px]">
-                        {{ auth()->user()?->is_admin ? 'Administrador' : 'Utilizador' }}
-                    </p>
-                </div>
-                <form method="POST" action="{{ route('logout') }}" class="ml-auto">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="text-amber-800 hover:text-amber-400 transition-colors"
-                            title="Sair">
-                        {{-- <x-heroicon-o-arrow-right-on-rectangle class="w-4 h-4" /> --}}
+                    <button type="submit" class="text-amber-800 hover:text-amber-400 transition-colors" title="Sair">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
                     </button>
                 </form>
             </div>
         </div>
-
     </aside>
 
     {{-- ========== MAIN AREA ========== --}}
@@ -187,6 +195,10 @@
             <div class="flex items-center gap-2">
                 @yield('header_actions')
             </div>
+            <a href="#" onclick="document.getElementById('logout-form').submit();">Sair</a>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
         </header>
 
         {{-- Page content --}}
