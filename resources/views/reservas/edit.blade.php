@@ -30,6 +30,21 @@
         @endforeach
     </select><br><br>
 
+    <label for="nome_user" class="block text-sm font-semibold text-texto-escuro mb-1">Nome:</label>
+        <input type="text" name="nome_user" id="nome_user" required
+               class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+
+               <label for="contato" class="block text-sm font-semibold text-texto-escuro mb-1">Contato</label>
+        <input type="text" name="nome_user" id="nome_user" required
+               class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+
+
+        {{-- Campo de e-mail (obrigatório) --}}
+        <label for="email" class="block text-sm font-semibold text-texto-escuro mb-1">E-mail:</label>
+        <input type="email" name="email" id="email" required
+               class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+
+
     <label class="block text-sm   font-semibold text-texto-escuro mb-1">Check-in:</label>
     <input type="date" name="checkin" value="{{ $reserva->checkin }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
 
