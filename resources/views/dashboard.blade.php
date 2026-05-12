@@ -74,7 +74,7 @@
             </tbody>
         </table>
         <a href="{{ route('reservas.index') }}" class="mt-3 inline-block text-xs text-amber-600 hover:underline">
-            Ver todas as reservas →
+            Ver todas as reservas 
         </a>
     </div>
 
@@ -97,7 +97,7 @@
             @endforelse
         </div>
         <a href="{{ route('avaliacoes.index') }}" class="mt-3 inline-block text-xs text-amber-600 hover:underline">
-            Ver todas →
+            Ver todas 
         </a>
     </div>
 

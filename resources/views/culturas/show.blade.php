@@ -3,7 +3,7 @@
 @section('content')
     <h1>{{ $cultura->nome }}</h1>
 
-    <a href="{{ route('culturas.index') }}"> Voltar à lista</a>
+    <a href="{{ route('culturas.index') }}"> Voltar</a>
 
     <table border="1">
 

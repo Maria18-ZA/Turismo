@@ -5,6 +5,9 @@
 <div class="max-w-2xl mx-auto mt-10">
 
 <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Editar Quarto</h1>
+
+
+    {{-- para exibir mensagem de erro --}}
 @if ($errors->any())
     <ul style="color:red">
         @foreach ($errors->all() as $error)
@@ -12,26 +15,27 @@
         @endforeach
     </ul>
 @endif
+
 <form action="{{ route('quartos.update', $quarto->id) }}" method="POST">
     @csrf
     @method('PUT')
-    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Hotel:</label>
+    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Hotel</label>
     <select name="hotel_id" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
         @foreach($hoteis as $hotel)
             <option value="{{ $hotel->id }}" @if($quarto->hotel_id == $hotel->id) selected @endif>{{ $hotel->nome }}</option>
         @endforeach
     </select><br><br>
 
-    <label class="block text-sm   font-semibold text-texto-escuro mb-1"> Número:</label>
+    <label class="block text-sm   font-semibold text-texto-escuro mb-1"> Número</label>
     <input type="text" name="numero" value="{{ $quarto->numero }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
 
-    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Tipo:</label>
+    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Tipo</label>
     <input type="text" name="tipo" value="{{ $quarto->tipo }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
 
-    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Preço:</label>
+    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Preço</label>
     <input type="text" name="preco" value="{{ $quarto->preco }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
 
-    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Descrição:</label>
+    <label class="block text-sm   font-semibold text-texto-escuro mb-1">Descrição</label>
     <textarea name="descricao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ $quarto->descricao }}</textarea><br><br>
 
     

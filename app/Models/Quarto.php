@@ -33,12 +33,7 @@ class Quarto extends Model {
         return $this->hasMany(Imagem_Quarto::class);
     }
 
-    #public function reservas()
-#{
-    #return $this->belongsToMany(Reserva::class, 'reserva_quartos')
-                #->withPivot('quantidade', 'preco');
-#}
-
+   
     
 
 }

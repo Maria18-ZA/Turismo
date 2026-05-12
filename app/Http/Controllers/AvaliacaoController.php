@@ -10,26 +10,24 @@ use Illuminate\Support\Facades\Auth;
 
 class AvaliacaoController extends Controller
 {
-    /**
-     * Mostrar todas as avaliações (público)
-     */
+    
+    // Mostrar todas as avaliações (público)
+     
     public function index()
     {
         $avaliacoes = Avaliacao::with(['user', 'hotel', 'pontoTuristico'])->get();
         return view('avaliacoes.index', compact('avaliacoes'));
     }
 
-    /**
-     * Mostrar uma avaliação específica (público)
-     */
+     //Mostrar uma avaliação específica (público)
+    
     public function show(Avaliacao $avaliacao)
     {
         return view('avaliacoes.show', compact('avaliacao'));
     }
 
-    /**
-     * Formulário para criar nova avaliação (só autenticado)
-     */
+    //Formulário para criar nova avaliação (só autenticado)
+    
     public function create()
     {
         $hoteis = Hotel::all();
@@ -37,17 +35,17 @@ class AvaliacaoController extends Controller
         return view('avaliacoes.create', compact('hoteis', 'pontos'));
     }
 
-    /**
-     * Guardar nova avaliação (só autenticado)
-     */
+    // Guardar nova avaliação (só autenticado)
+   
     public function store(Request $request)
     {
         // Validação
         $request->validate([
             'hotel_id'          => 'nullable|exists:hoteis,id',
             'pontoturistico_id' => 'nullable|exists:pontos_turisticos,id',
-            'nota'           => 'required|integer|min:1|max:5',
+            'email'     => 'required|email',
             'comentario'        => 'nullable|string|max:1000',
+            'nota'           => 'required|integer|min:1|max:5',
         ]);
 
         // Garantir que foi escolhido hotel OU ponto turístico
@@ -79,8 +77,10 @@ class AvaliacaoController extends Controller
             'user_id'            => Auth::id(),
             'hotel_id'           => $request->hotel_id,
             'pontoturistico_id'  => $request->pontoturistico_id,
-            'nota'            => $request->nota,
+            'email' => $request->email,
             'comentario'         => $request->comentario,
+            'nota'            => $request->nota,
+           
         ]);
 
         // Opcional: recalcular média do hotel/ponto aqui
@@ -90,9 +90,8 @@ class AvaliacaoController extends Controller
             ->with('success', 'Avaliação criada com sucesso!');
     }
 
-    /**
-     * Formulário para editar (só autor ou admin/gestor)
-     */
+     //Formulário para editar (só autor ou admin/gestor)
+    
     public function edit(Avaliacao $avaliacao)
     {
         $this->authorizeAvaliacao($avaliacao);
@@ -102,9 +101,8 @@ class AvaliacaoController extends Controller
         return view('avaliacoes.edit', compact('avaliacao', 'hoteis', 'pontos'));
     }
 
-    /**
-     * Actualizar avaliação (só autor ou admin/gestor)
-     */
+     //Actualizar avaliação (só autor ou admin/gestor)
+   
     public function update(Request $request, Avaliacao $avaliacao)
     {
         $this->authorizeAvaliacao($avaliacao);
@@ -112,8 +110,9 @@ class AvaliacaoController extends Controller
         $request->validate([
             'hotel_id'          => 'nullable|exists:hoteis,id',
             'pontoturistico_id' => 'nullable|exists:pontos_turisticos,id',
-            'nota'           => 'required|integer|min:1|max:5',
+            'email'    => 'required|email',
             'comentario'        => 'nullable|string|max:1000',
+            'nota'           => 'required|integer|min:1|max:5',
         ]);
 
         if (is_null($request->hotel_id) && is_null($request->pontoturistico_id)) {
@@ -123,19 +122,19 @@ class AvaliacaoController extends Controller
         }
 
         $avaliacao->update([
-            'hotel_id'           => $request->hotel_id,
+            'hotel_id'    => $request->hotel_id,
             'pontoturistico_id'  => $request->pontoturistico_id,
-            'nota'            => $request->nota,
-            'comentario'         => $request->comentario,
+            'email'   => $request->email,
+            'comentario'   => $request->comentario,
+            'nota'    => $request->nota,
         ]);
 
         return redirect()->route('avaliacoes.index')
             ->with('success', 'Avaliação actualizada com sucesso!');
     }
 
-    /**
-     * Apagar avaliação (só autor ou admin/gestor)
-     */
+     //Apagar avaliação (só autor ou admin/gestor)
+     
     public function destroy(Avaliacao $avaliacao)
     {
         $this->authorizeAvaliacao($avaliacao);
@@ -144,9 +143,8 @@ class AvaliacaoController extends Controller
             ->with('success', 'Avaliação removida com sucesso!');
     }
 
-    /**
-     * Método privado para verificar permissão (autor ou admin/gestor)
-     */
+   //Método privado para verificar permissão (autor ou admin/gestor)
+    
     private function authorizeAvaliacao(Avaliacao $avaliacao)
     {
         $user = Auth::user();

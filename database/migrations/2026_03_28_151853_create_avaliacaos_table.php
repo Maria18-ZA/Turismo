@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreign('hotel_id')->references('id')->on('hoteis');
             $table->unsignedBigInteger('pontoturistico_id')->nullable();
             $table->foreign('pontoturistico_id')->references('id')->on('pontos_turisticos');
-            $table->integer('nota')->nullable();
+            $table->integer('email')->nullable();
             $table->string('comentario');
+            $table->integer('nota')->nullable();
             $table->timestamps();
         });
     }

@@ -4,24 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Luanda Tourism') }} — @yield('title', 'Dashboard')</title>
+    <title>{{ config('app.name', 'Visita Já') }} — @yield('title', 'Dashboard')</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="font-sans antialiased bg-red-40 text-stone-800">
 
 <div class="flex h-screen overflow-hidden">
 
-    {{-- ========== SIDEBAR ========== --}}
+    {{-- SIDEBAR/ barra lateral--}}
     <aside class="w-56 bg-primaria-dark-950 flex flex-col flex-shrink-0 border-r border-stone-800   ">
 
-        {{-- Brand --}}
+        {{-- Brand/ marca --}}
         <div class="px-4 py-5 border-b border-stone-800">
-            <p class="text-amber-400 font-semibold text-sm tracking-wide">
-                {{ config('app.name', 'Luanda Tourism') }}
+            <p class="text-amber-400 font-semibold text-medium-1000 tracking-wide">
+                {{ config('app.Visita Já', 'Visita Já') }}
             </p>
             <p class="bg- text-xs mt-0.5">Plataforma de Turismo</p>
         </div>
@@ -131,6 +132,17 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
         </svg>
         Quartos
+    </a>
+
+      <a href="{{ route('users.index') }}"
+       class="flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors duration-150
+              {{ request()->routeIs('users.*') 
+                  ? 'bg-primaria text-white' 
+                  : 'text-primaria-light hover:bg-primaria-dark hover:text-white' }}">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+        </svg>
+        Users
     </a>
 
     @if(auth()->user()?->is_admin)

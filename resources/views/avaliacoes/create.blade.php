@@ -4,6 +4,7 @@
 <div class="max-w-2xl mx-auto mt-10">
     <h1 class="text-2xl font-bold mb-6 text-center">Nova Avaliação</h1>
 
+    {{-- para exibir mensagem de erro --}}
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             <ul class="list-disc list-inside">
@@ -14,13 +15,14 @@
         </div>
     @endif
 
+
     <form method="POST" action="{{ route('avaliacoes.store') }}" class="space-y-4">
         @csrf
 
         <div>
             <label for="hotel_id" class="block font-medium">Hotel</label>
             <select name="hotel_id" id="hotel_id" class="w-full border rounded p-2">
-                <option value="">-- Selecione um hotel --</option>
+                <option value=""> Selecione um hotel</option>
                 @foreach($hoteis as $hotel)
                     <option value="{{ $hotel->id }}" {{ old('hotel_id') == $hotel->id ? 'selected' : '' }}>
                         {{ $hotel->nome }}
@@ -32,7 +34,7 @@
         <div>
             <label for="pontoturistico_id" class="block font-medium">Ponto Turístico</label>
             <select name="pontoturistico_id" id="pontoturistico_id" class="w-full border rounded p-2">
-                <option value="">-- Selecione um ponto turístico --</option>
+                <option value="">Selecione um ponto turístico</option>
                 @foreach($pontos as $ponto)
                     <option value="{{ $ponto->id }}" {{ old('pontoturistico_id') == $ponto->id ? 'selected' : '' }}>
                         {{ $ponto->nome }}
@@ -45,7 +47,7 @@
         <div>
             <label for="nota" class="block font-medium">Classificação</label>
             <select name="nota" id="nota" required class="w-full border rounded p-2">
-                <option value="">-- Selecione --</option>
+                <option value=""> Selecione </option>
                 @for($i=1; $i<=5; $i++)
                     <option value="{{ $i }}" {{ old('nota') == $i ? 'selected' : '' }}>
                         {{ str_repeat('⭐', $i) }}
@@ -67,7 +69,7 @@
     </form>
 
     <div class="mt-6 text-center">
-        <a href="{{ route('avaliacoes.index') }}" class="text-blue-600 hover:underline">← Voltar</a>
+        <a href="{{ route('avaliacoes.index') }}" class="text-blue-600 hover:underline"> Voltar</a>
     </div>
 </div>
 @endsection

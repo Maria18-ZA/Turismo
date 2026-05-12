@@ -92,7 +92,8 @@ public function store(Request $request)
         'checkout'     => $request->checkout,
         'status'       => 'pendente',
     ]);
-
+    //validar a variavel
+     $hotel = null; // ← Criar a variável aqui
     // 6. Anexar quartos e calcular total
     foreach ($quartosSelecionados as $quartoId => $dados) {
         $quarto = Quarto::findOrFail($quartoId);
@@ -107,12 +108,20 @@ public function store(Request $request)
 
     $reserva->update(['preco_total' => $total]);
     $reserva->quarto = $quarto;
-    //$reserva->quarto->nome_hotel = $quarto->hotel->nome;
-    //$reserva->quarto->localizacao = $quarto->hotel->localizacao;
 
+     if ($hotel === null && $quarto->hotel) {
+            $hotel = $quarto->hotel; // ← Agora $hotel recebe um valor
+        }
+    
+     // Gerar link do Google Maps se tiver coordenadas
+     // 7. Preparar link do Google Maps
+         $googleMapsLink = null;
+    if ($hotel && $hotel->latitude && $hotel->longitude) {
+        $googleMapsLink = "https://www.google.com/maps?q={$hotel->latitude},{$hotel->longitude}";
+         }
     // 7. Envio de emails
     \Log::info("dados da reserva: " . $reserva);
-    Mail::to($user->email)->send(new ReservaCriadaMail($reserva));
+    Mail::to($user->email)->send(new ReservaCriadaMail($reserva, $googleMapsLink, $hotel));
 
     return redirect()->route('reservas.index')->with('success', 'Reserva criada com sucesso!');
 }

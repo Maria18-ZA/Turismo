@@ -5,6 +5,7 @@
     <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Criar Ponto Turístico</h1>
 
 
+    {{-- para exibir mensagem de erro --}}
     @if($errors->any())
         <ul>
             @foreach($errors->all() as $error)
@@ -27,7 +28,7 @@
        
             <label for="categoria" class="block text-sm font-semibold text-texto-escuro mb-1">Categoria</label>
             <select name="categoria" id="categoria" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
-                <option value=""> Seleciona </option>
+                <option value=""> Selecione </option>
                 <option value="Praia" {{ old('categoria') == 'Praia' ? 'selected' : '' }}>Praia</option>
                 <option value="Museu" {{ old('categoria') == 'Museu' ? 'selected' : '' }}>Museu</option>
                 <option value="Monumento" {{ old('categoria') == 'Monumento' ? 'selected' : '' }}>Monumento</option>

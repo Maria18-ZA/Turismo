@@ -41,7 +41,7 @@ class HotelController extends Controller
 
             foreach ($request->file('imagens') as $imagem) {
 
-             // 👇 IGNORA campos vazios
+             //não valida os campos vazios
         if (!$imagem || !$imagem->isValid()) {
             continue;
         }
@@ -77,9 +77,8 @@ class HotelController extends Controller
         return view('hoteis.edit', compact('hotel'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+      //Update the specified resource in storage.
+     
 
     public function update(Request $request, Hotel $hotel)
     {
@@ -91,7 +90,7 @@ class HotelController extends Controller
             'longitude' => 'required',
             'contato' => 'required',
 
-            // MULTIPLAS 👇
+            // seleciona multiplas imagens
             'imagens' => 'nullable|array',
             'imagens.*' => 'nullable|max:10000',
         ]);
@@ -106,7 +105,7 @@ class HotelController extends Controller
             'contato',
         ]));
 
-        // 👉 SE FORAM ENVIADAS NOVAS IMAGENS
+        // verifica o envio de novas fotos
         if ($request->hasFile('imagens')) {
 
             foreach ($request->file('imagens') as $imagem) {
@@ -127,9 +126,9 @@ class HotelController extends Controller
             ->route('hoteis.index')
             ->with('success', 'Hotel atualizado com sucesso.');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+    
+      //Remove the specified resource from storage.
+     
     public function destroy(Hotel $hotel)
     {
         $hotel->delete();

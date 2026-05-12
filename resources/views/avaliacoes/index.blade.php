@@ -14,12 +14,13 @@
         <div class="alert alert-success bg-green-100 text-green-800 p-3 rounded mb-4">{{ session('success') }}</div>
     @endif
 
+    {{-- tabela --}}
     <div class="bg-white mt-10 rounded-xl border border-borda-card overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-primaria text-white">
                 <tr>
                     <th class="text-center px-5 py-3 font-semibold">ID</th>
-                    <th class="text-center px-5 py-3 font-semibold">Usuário</th> {{-- NOVA COLUNA --}}
+                    <th class="text-center px-5 py-3 font-semibold">Usuário</th> 
                     <th class="text-center px-5 py-3 font-semibold">Hotel</th>
                     <th class="text-center px-5 py-3 font-semibold">Ponto Turístico</th>
                     <th class="text-center px-5 py-3 font-semibold">Nota</th>
@@ -27,6 +28,7 @@
                     <th class="text-center px-5 py-3 font-semibold">Ações</th>
                 </tr>
             </thead>
+            {{-- campos --}}
             <tbody class="divide-y divide-borda-card">
                 @foreach($avaliacoes as $avaliacao)
                 <tr>

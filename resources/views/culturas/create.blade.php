@@ -5,18 +5,20 @@
 <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Nova Cultura</h1>
 </div>  
 
-@if ($errors->any())
-<div class="mb-4 bg-red-100 border border-red-300 text-red-600 p-4 rounded-lg">
+    {{-- para exibir mensagem de erro --}}
+  @if ($errors->any())
+  <div class="mb-4 bg-red-100 border border-red-300 text-red-600 p-4 rounded-lg">
     <ul class="list-disc pl-5 text-sm">
-        @foreach ($errors->all() as $error)
+         @foreach ($errors->all() as $error)
             <li>{{ $error }}</li>
         @endforeach
     </ul>
     </div>
-@endif
+  @endif
 
- <div class="max-w-2xl mx-auto mt-10">
-<form action="{{ route('culturas.store') }}" method="POST" enctype="multipart/form-data">
+
+  <div class="max-w-2xl mx-auto mt-10">
+  <form action="{{ route('culturas.store') }}" method="POST" enctype="multipart/form-data">
     @csrf 
 
     <label class="block text-sm font-semibold text-texto-escuro mb-1">Nome</label>

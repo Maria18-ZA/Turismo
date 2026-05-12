@@ -5,6 +5,7 @@
     <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Editar Hotel</h1>
 
     
+    {{-- para exibir mensagem de erro --}}
     @if($errors->any())
         <ul>
             @foreach($errors->all() as $error)
@@ -47,6 +48,6 @@
     <a href="{{ route('hoteis.index') }}" class="fixed top-4 right-4 bg-primaria text-white text-sm font-bold
                 px-5 py-2.5 mt-20 rounded-lg
               hover:bg-primaria-dark hover:-translate-y-0.5
-              transition-all duration-200 ">Voltar à lista</a>
+              transition-all duration-200 ">Voltar</a>
 
 @endsection

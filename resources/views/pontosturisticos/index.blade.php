@@ -7,13 +7,15 @@
                rounded-lg px-5 py-2.5 mb-7
               hover:bg-primaria-dark hover:-translate-y-0.5
               transition-all duration-200">Criar Ponto Turístico</a>
+
     @if(session('success'))
         <p>{{ session('success') }}</p>
     @endif
+
+
      <div class="bg-white mt-10 rounded-xl border border-borda-card overflow-hidden">
 
-
-<table class="w-full text-sm">
+     <table class="w-full text-sm">
         <thead class="bg-primaria text-white">
             <tr>
                 <th class="text-center px-5 py-3 font-semibold">ID</th>
@@ -54,7 +56,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4">Nenhum ponto turístico encontrado.</td>
+                    <td colspan="4">Nenhum ponto turístico encontrado</td>
                 </tr>
             @endforelse
         </tbody>

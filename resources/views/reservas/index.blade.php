@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <h1>Reservas</h1>
+
 <a href="{{ route('reservas.create') }}" class="bg-primaria text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200">Nova Reserva</a>
 
 @if(session('success'))

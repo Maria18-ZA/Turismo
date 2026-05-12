@@ -4,6 +4,7 @@
 <div class="max-w-2xl mx-auto mt-10">
     <h1 class="text-2xl font-bold mb-6 text-center">Editar Avaliação</h1>
 
+    {{-- para exibir mensagem de erro --}}
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             <ul class="list-disc list-inside">
@@ -21,7 +22,7 @@
         <div>
             <label for="hotel_id">Hotel</label>
             <select name="hotel_id" id="hotel_id" class="w-full border rounded p-2">
-                <option value="">-- Selecione um hotel --</option>
+                <option value="">Selecione um hotel</option>
                 @foreach($hoteis as $hotel)
                     <option value="{{ $hotel->id }}" {{ old('hotel_id', $avaliacao->hotel_id) == $hotel->id ? 'selected' : '' }}>
                         {{ $hotel->nome }}
@@ -33,7 +34,7 @@
         <div>
             <label for="pontoturistico_id">Ponto Turístico</label>
             <select name="pontoturistico_id" id="pontoturistico_id" class="w-full border rounded p-2">
-                <option value="">-- Selecione um ponto turístico --</option>
+                <option value="">Selecione um ponto turístico</option>
                 @foreach($pontos as $ponto)
                     <option value="{{ $ponto->id }}" {{ old('pontoturistico_id', $avaliacao->pontoturistico_id) == $ponto->id ? 'selected' : '' }}>
                         {{ $ponto->nome }}

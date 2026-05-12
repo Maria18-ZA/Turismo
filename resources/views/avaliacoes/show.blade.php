@@ -47,13 +47,13 @@
                 <div class="mt-8 flex gap-3">
                     <a href="{{ route('avaliacoes.edit', $avaliacao) }}" 
                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
-                        ✏️ Editar
+                         Editar
                     </a>
                     <form action="{{ route('avaliacoes.destroy', $avaliacao) }}" method="POST" onsubmit="return confirm('Tem certeza?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-                            🗑️ Excluir
+                             Excluir
                         </button>
                     </form>
                 </div>
@@ -61,7 +61,7 @@
         @endauth
 
         <div class="mt-6 text-center">
-            <a href="{{ route('avaliacoes.index') }}" class="text-blue-600 hover:underline">← Voltar</a>
+            <a href="{{ route('avaliacoes.index') }}" class="text-blue-600 hover:underline">Voltar</a>
         </div>
     </div>
 </div>

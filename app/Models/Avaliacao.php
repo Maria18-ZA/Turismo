@@ -13,8 +13,9 @@ class Avaliacao extends Model
         'user_id',
         'hotel_id',
         'pontoturistico_id',
-        'nota',
+        'email',
         'comentario',
+        'nota',
     ];
 
     public function user(): BelongsTo

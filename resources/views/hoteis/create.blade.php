@@ -3,10 +3,10 @@
 
 <div class="max-w-2xl mx-auto mt-10">
     <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Criar Hotel</h1>
-
 </div>    
-    @if($errors->any())
 
+    {{-- para exibir mensagem de erro --}}
+    @if($errors->any())
      <div class="mb-4 bg-red-100 border border-red-300 text-red-600 p-4 rounded-lg">
         <ul class="list-disc pl-5 text-sm">
             @foreach($errors->all() as $error)
@@ -14,8 +14,8 @@
             @endforeach
         </ul>
     </div>
-    
     @endif
+
     <div >
     <form action="{{ route('hoteis.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -37,10 +37,9 @@
            
          <select name="categoria" id="categoria" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
                 <option value=""> Seleciona </option>
-                <option value="Praia" {{ old('categoria') == 'Praia' ? 'selected' : '' }}>Moderna</option>
+                <option value="Praia" {{ old('categoria') == 'Praia' ? 'selected' : '' }}>Moderno</option>
                 <option value="Museu" {{ old('categoria') == 'Museu' ? 'selected' : '' }}>3 Estrelas</option>
                 <option value="Monumento" {{ old('categoria') == 'Monumento' ? 'selected' : '' }}> 5 Estrelas</option>
-                <option value="Parque" {{ old('categoria') == 'Parque' ? 'selected' : '' }}>Premium</option>
                 <option value="Outro" {{ old('categoria') == 'Outro' ? 'selected' : '' }}>Outro</option>
             </select>
 
@@ -48,7 +47,7 @@
         <textarea name="descricao" id="descricao" class="w-1/2 border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao') }}</textarea>
    
         <label for="imagens">Imagem</label>
-        <input type="file" multiple name="imagens[]" id="imagens" >
+        <input type="file" multiple name="imagens[]" id="imagens">
 
         <label for="contato" class="block text-sm font-semibold text-texto-escuro mb-1">Contato</label>
         <input type="text" name="contato" id="contato" value="{{ old('contato') }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">

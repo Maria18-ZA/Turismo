@@ -11,7 +11,7 @@ class ServicoController extends Controller
     public function index()
     {
         $servicos = Servico::all();
-        return view('servicos.index', compact('servicos')); // ← era 'servico', faltava o 's'
+        return view('servicos.index', compact('servicos')); //  era 'servico', faltava o 's'
     }
 
     public function create()
@@ -36,17 +36,17 @@ class ServicoController extends Controller
             ->with('success', 'Serviço criado com sucesso.');
     }
 
-    public function show(Servico $servico) // ← era $servicos
+    public function show(Servico $servico) //era $servicos
     {
-        return view('servicos.show', compact('servico')); // ← era $servicos
+        return view('servicos.show', compact('servico')); 
     }
 
-    public function edit(Servico $servico) // ← era $servicos
+    public function edit(Servico $servico) 
     {
-        return view('servicos.edit', compact('servico')); // ← era $servicos
+        return view('servicos.edit', compact('servico')); 
     }
 
-    public function update(Request $request, Servico $servico) // ← era $servicos
+    public function update(Request $request, Servico $servico) 
     {
         $request->validate([
             'nome'      => 'required|string|max:255',
@@ -61,7 +61,7 @@ class ServicoController extends Controller
             ->with('success', 'Serviço atualizado com sucesso.');
     }
 
-    public function destroy(Servico $servico) // ← era $servicos
+    public function destroy(Servico $servico) 
     {
         $servico->delete();
 
