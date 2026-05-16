@@ -10,7 +10,7 @@
 
 <body class="bg-gray-100 text-gray-800 min-h-screen font-sans antialiased">
 
-<!-- HEADER -->
+    
 <header class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 h-16 px-4 md:px-8 flex items-center justify-between sticky top-0 z-50 shadow-lg">
     <h1 class="text-white text-xl font-bold tracking-tight">Turismo em Luanda</h1>
 
@@ -24,51 +24,137 @@
     </nav>
 </header>
 
+
 <!-- BANNER (Destaque da semana) -->
-<section class="bg-blue-900 py-16 md:py-20 px-4 text-center relative overflow-hidden">
+<section class="bg-gradient-to-r from-blue-900 to-blue-700 py-16 md:py-20 px-4 text-center relative overflow-hidden">
     <div class="max-w-3xl mx-auto relative z-10">
-        <h2 class="text-white text-3xl md:text-5xl font-black leading-tight mb-3">Destaque da Semana</h2>
+        <h2 class="text-white text-3xl md:text-5xl font-black leading-tight mb-3">Descubra Luanda</h2>
         <p class="text-blue-100 text-base md:text-lg leading-relaxed mb-6 max-w-lg mx-auto">
-            Explore praias paradisíacas, ilhas deslumbrantes, museus históricos e a vibrante cultura angolana.
+            Explore a capital angolana: praias paradisíacas, monumentos históricos, museus fascinantes e a vibrante cultura luandense.
         </p>
         <a href="#praias" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-2 px-6 rounded-full transition duration-300 shadow-md">
             Explorar Roteiros 
         </a>
     </div>
-    <!-- Elemento decorativo (opcional) -->
-    <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml,%3Csvg...')] pointer-events-none"></div>
 </section>
 
 <main class="max-w-7xl mx-auto px-4 py-10 space-y-12">
     <!-- PRAIAS -->
     <section id="praias">
-        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Praias imperdíveis</h2>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Praias imperdíveis de Luanda</h2>
         <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
-            <!-- Card 1 -->
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Praia do Mussulo</div>
+            
+            <!-- Mussulo - Praia mais famosa de Luanda -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/32/6a/68/praia-do-mussulo.jpg" class="h-48 w-full object-cover" alt="Praia do Mussulo, Luanda" onerror="this.src='https://images.unsplash.com/photo-1500375592092-40eb2168fd21'">
                 <div class="p-4">
                     <h3 class="text-lg font-semibold">Praia do Mussulo</h3>
-                    <p class="text-sm text-gray-600 mt-1">Vista moderna para o mar, areias claras e águas calmas.</p>
-                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber mais →</a>
+                    <p class="text-sm text-gray-600 mt-1">Ilha paradisíaca com águas calmas e areia branca. O destino mais procurado pelos luandenses aos fins de semana.</p>
+                    <a href="https://pt.wikipedia.org/wiki/Mussulo" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber mais →</a>
                 </div>
             </div>
-            <!-- Card 2 -->
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Praia do Cabo Ledo</div>
+
+            <!-- Cabo Ledo -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://media-cdn.tripadvisor.com/media/photo-s/12/24/0e/38/praia-do-cabo-ledo.jpg" class="h-48 w-full object-cover" alt="Praia do Cabo Ledo, Luanda" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
                 <div class="p-4">
                     <h3 class="text-lg font-semibold">Praia do Cabo Ledo</h3>
-                    <p class="text-sm text-gray-600 mt-1">Ondas perfeitas para surf, paisagem selvagem e incrível.</p>
+                    <p class="text-sm text-gray-600 mt-1">Um dos melhores spots de surf em Angola, com ondas perfeitas e paisagem deslumbrante a 120km de Luanda.</p>
+                    <a href="https://pt.wikipedia.org/wiki/Cabo_Ledo" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber mais →</a>
+                </div>
+            </div>
+
+            <!-- Ilha de Luanda -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/a3/97/dd/ilha-de-luanda.jpg" class="h-48 w-full object-cover" alt="Ilha de Luanda" onerror="this.src='https://images.unsplash.com/photo-1500375592092-40eb2168fd21'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Ilha de Luanda</h3>
+                    <p class="text-sm text-gray-600 mt-1">Praia urbana com excelente gastronomia, bares e vida noturna. O ponto de encontro dos luandenses.</p>
                     <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber mais →</a>
                 </div>
             </div>
-            <!-- Card 3 -->
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Praia de Luanda</div>
+
+            <!-- Praia da Samba -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://media-cdn.tripadvisor.com/media/photo-s/0d/db/63/c1/praia-da-samba.jpg" class="h-48 w-full object-cover" alt="Praia da Samba, Luanda" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e'">
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold">Praia de Luanda</h3>
-                    <p class="text-sm text-gray-600 mt-1">Praia calma, muito visitada e com excelente estrutura.</p>
+                    <h3 class="text-lg font-semibold">Praia da Samba</h3>
+                    <p class="text-sm text-gray-600 mt-1">Praia familiar com infraestrutura completa e mar calmo, ideal para crianças.</p>
                     <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber mais →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PONTOS TURÍSTICOS -->
+    <section>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Pontos Turísticos de Luanda</h2>
+        <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
+            
+            <!-- Fortaleza de São Miguel -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Fortaleza_de_Sao_Miguel_Luanda_Angola_(cropped).jpg/1200px-Fortaleza_de_Sao_Miguel_Luanda_Angola_(cropped).jpg" class="h-48 w-full object-cover" alt="Fortaleza de São Miguel" onerror="this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Fortaleza de São Miguel</h3>
+                    <p class="text-sm text-gray-600">Construída em 1576, é o mais importante monumento histórico de Luanda e abriga o Museu Central das Forças Armadas.</p>
+                    <a href="https://pt.wikipedia.org/wiki/Fortaleza_de_S%C3%A3o_Miguel_(Luanda)" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Visitar →</a>
+                </div>
+            </div>
+
+            <!-- Palácio de Ferro -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Pal%C3%A1cio_de_Ferro_%281%29.jpg/1200px-Pal%C3%A1cio_de_Ferro_%281%29.jpg" class="h-48 w-full object-cover" alt="Palácio de Ferro" onerror="this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Palácio de Ferro</h3>
+                    <p class="text-sm text-gray-600">Projetado por Gustave Eiffel, uma joia arquitetônica no centro de Luanda.</p>
+                    <a href="https://pt.wikipedia.org/wiki/Pal%C3%A1cio_de_Ferro" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Ver mais →</a>
+                </div>
+            </div>
+
+            <!-- Memorial António Agostinho Neto -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Memorial_Ant%C3%B3nio_Agostinho_Neto_%284%29.jpg/1280px-Memorial_Ant%C3%B3nio_Agostinho_Neto_%284%29.jpg" class="h-48 w-full object-cover" alt="Memorial Agostinho Neto" onerror="this.src='https://images.unsplash.com/photo-1551882547-ff40c63fe5fa'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Memorial Agostinho Neto</h3>
+                    <p class="text-sm text-gray-600">Imponente monumento em homenagem ao primeiro presidente de Angola, com museu e vista panorâmica da cidade.</p>
+                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Conhecer →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MUSEUS DE LUANDA (COM MUSEU DA ESCRAVATURA CORRIGIDO) -->
+    <section>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Museus de Luanda</h2>
+        <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
+            
+            <!-- Museu Nacional de História Natural de Angola -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Museu_de_Hist%C3%B3ria_Natural_de_Angola_%281%29.jpg/1280px-Museu_de_Hist%C3%B3ria_Natural_de_Angola_%281%29.jpg" class="h-48 w-full object-cover" alt="Museu de História Natural de Angola" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Museu de História Natural</h3>
+                    <p class="text-sm text-gray-600">Importante acervo da fauna, flora e geologia angolana. Localizado no Ingombota, Luanda.</p>
+                    <a href="https://pt.wikipedia.org/wiki/Museu_Nacional_de_Hist%C3%B3ria_Natural_de_Angola" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Visitar museu →</a>
+                </div>
+            </div>
+
+            <!-- Museu Nacional da Escravatura - IMAGEM CORRIGIDA (Alamy Stock Photo CBF17R) -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://c8.alamy.com/comp/CBF17R/musee-national-de-lesclavage-a-luanda-angola-CBF17R.jpg" class="h-48 w-full object-cover" alt="Museu Nacional da Escravatura, Morro da Cruz, Luanda" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Museu_da_Escravatura_-_Luanda_%28cropped%29.jpg/1280px-Museu_da_Escravatura_-_Luanda_%28cropped%29.jpg'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Museu da Escravatura</h3>
+                    <p class="text-sm text-gray-600">Localizado no Morro da Cruz, documenta a história trágica da escravatura em Angola e o tráfico negreiro. Inaugurado em 1997.[citation:1][citation:9]</p>
+                    <a href="https://pt.wikipedia.org/wiki/Museu_Nacional_da_Escravatura" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber história →</a>
+                </div>
+            </div>
+
+            <!-- Museu de Antropologia -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Museu_Nacional_de_Antropologia_%28Angola%29.jpg/1280px-Museu_Nacional_de_Antropologia_%28Angola%29.jpg" class="h-48 w-full object-cover" alt="Museu Nacional de Antropologia" onerror="this.src='https://images.unsplash.com/photo-1504609813442-a8924e83f76e'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Museu de Antropologia</h3>
+                    <p class="text-sm text-gray-600">Preserva e exibe a diversidade das culturas e tradições dos povos de Angola.</p>
+                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Explorar →</a>
                 </div>
             </div>
         </div>
@@ -76,54 +162,67 @@
 
     <!-- HOTÉIS -->
     <section>
-        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Hotéis de excelência</h2>
-        <div class="flex gap-6 overflow-x-auto pb-4">
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Hotel Epic Sana</div>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Hotéis de excelência em Luanda</h2>
+        <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
+            
+            <!-- Epic Sana Luanda -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/359238933.jpg" class="h-48 w-full object-cover" alt="Epic Sana Luanda Hotel" onerror="this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb'">
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold">Hotel Epic Sana</h3>
-                    <p class="text-sm text-gray-600">Vista panorâmica para o mar e serviços premium.</p>
-                    <a href="user.hoteis.show" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Ver ofertas →</a>
+                    <h3 class="text-lg font-semibold">EPIC SANA Luanda</h3>
+                    <p class="text-sm text-gray-600">Hotel 5 estrelas com vista deslumbrante para a Baía de Luanda e serviços premium.</p>
+                    <a href="https://www.epic.sanahotels.com" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Reservar →</a>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Hotel Trópico</div>
+
+            <!-- Hotel Trópico -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/252073744.jpg" class="h-48 w-full object-cover" alt="Hotel Trópico Luanda" onerror="this.src='https://images.unsplash.com/photo-1551882547-ff40c63fe5fa'">
                 <div class="p-4">
                     <h3 class="text-lg font-semibold">Hotel Trópico</h3>
-                    <p class="text-sm text-gray-600">Conforto incomparável e localização central em Luanda.</p>
-                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Ver ofertas →</a>
+                    <p class="text-sm text-gray-600">Localizado no centro da cidade, conforto e requinte com vista para o Porto de Luanda.</p>
+                    <a href="https://www.hotel-tropico.ao" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Ver ofertas →</a>
                 </div>
             </div>
-            <!-- Adicione mais hotéis se desejar -->
+
+            <!-- Hotel Presidente Luanda -->
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/143672554.jpg" class="h-48 w-full object-cover" alt="Hotel Presidente Luanda" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945'">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Hotel Presidente</h3>
+                    <p class="text-sm text-gray-600">Hotel emblemático no coração de Luanda, com fácil acesso aos principais pontos turísticos.</p>
+                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Reservar →</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- CULTURA (nova secção para alinhar com o menu) -->
+    <!-- CULTURA E TRADIÇÃO -->
     <section>
-        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Cultura e Tradição</h2>
-        <div class="flex gap-6 overflow-x-auto pb-4">
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Museu da Escravatura</div>
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Cultura e Tradição de Luanda</h2>
+        <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
+            
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1535463731090-e34f4b5098c6" class="h-48 w-full object-cover" alt="Dança Semba em Luanda" onerror="this.src='https://images.unsplash.com/photo-1504609813442-a8924e83f76e'">
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold">Museu da Escravatura</h3>
-                    <p class="text-sm text-gray-600">Memória histórica e reflexão sobre o passado angolano.</p>
-                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Visitar →</a>
+                    <h3 class="text-lg font-semibold">Semba e Kizomba</h3>
+                    <p class="text-sm text-gray-600">A capital do Semba e berço da Kizomba. Ritmos contagiantes que nasceram nas tradições angolanas.</p>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Semba e Kizomba</div>
+
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1486572788966-cfd3df1f5b42" class="h-48 w-full object-cover" alt="Artesanato angolano" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac'">
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold">Danças Angolanas</h3>
-                    <p class="text-sm text-gray-600">Vivência do semba, kizomba e festas tradicionais.</p>
-                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Ver agenda →</a>
+                    <h3 class="text-lg font-semibold">Artesanato e Cultura</h3>
+                    <p class="text-sm text-gray-600">Máscaras, esculturas e peças únicas nos mercados de Luanda, como o Benfica e São Paulo.</p>
                 </div>
             </div>
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 sm:w-64 flex-shrink-0 overflow-hidden">
-                <div class="h-40 bg-gray-300 flex items-center justify-center text-gray-500 text-sm">Imagem: Gastronomia</div>
+
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0" class="h-48 w-full object-cover" alt="Gastronomia luandense" onerror="this.src='https://images.unsplash.com/photo-1555939594-58d7cb561ad1'">
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold">Culinária Típica</h3>
-                    <p class="text-sm text-gray-600">Moamba de galinha, funge e sabores autênticos.</p>
-                    <a href="#" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saborear →</a>
+                    <h3 class="text-lg font-semibold">Gastronomia Luandense</h3>
+                    <p class="text-sm text-gray-600">Moamba de galinha, funge, calulu e frutos do mar frescos da Ilha de Luanda.</p>
                 </div>
             </div>
         </div>
@@ -138,9 +237,8 @@
     </div>
 </footer>
 
-<!-- Scrollbar personalizada (opcional, apenas estética) -->
+<!-- Scrollbar personalizada -->
 <style>
-    /* Para navegadores Webkit - melhora visual da barra de rolagem horizontal */
     .scrollbar-thin::-webkit-scrollbar {
         height: 6px;
     }

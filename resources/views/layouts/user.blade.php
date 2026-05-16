@@ -44,17 +44,36 @@
          
                
 
-                @auth
-                    <a href="/dashboard"
-                       class="bg-primaria text-white px-4 py-2 rounded-lg hover:bg-primaria-dark transition">
-                        Dashboard
-                    </a>
-                @else
-                    <a href="/login"
-                       class="border border-primaria text-white px-4 py-2 rounded-lg hover:bg-primaria hover:text-white transition">
-                        Entrar
-                    </a>
-                @endauth
+              @auth
+    @php
+        $user = auth()->user();
+        $isAdminOrGestor = false;
+        
+        // Verificar se o usuário tem role admin ou gestor
+        if (method_exists($user, 'hasRole')) {
+            $isAdminOrGestor = $user->hasRole('admin') || $user->hasRole('gestor');
+        } elseif (isset($user->role)) {
+            $isAdminOrGestor = in_array($user->role, ['admin', 'gestor']);
+        }
+    @endphp
+    
+    @if($isAdminOrGestor)
+        <a href="{{ route('dashboard') }}"
+           class="bg-primaria text-white px-4 py-2 rounded-lg hover:bg-primaria-dark transition">
+            Dashboard
+        </a>
+    @else
+        <a href="{{ route('user.hoteis.index') }}"
+           class="bg-primaria text-white px-4 py-2 rounded-lg hover:bg-primaria-dark transition">
+            Explorar Hotéis
+        </a>
+    @endif
+@else
+    <a href="{{ route('login') }}"
+       class="border border-primaria text-white px-4 py-2 rounded-lg hover:bg-primaria hover:text-white transition">
+        Entrar
+    </a>
+@endauth
 
             </nav>
         </div>

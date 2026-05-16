@@ -137,6 +137,9 @@ class HotelController extends Controller
             ->route('hoteis.index')
             ->with('success', 'Hotel deletado com sucesso.');
     }
+
+
+    
 }
 
 

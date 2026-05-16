@@ -50,7 +50,7 @@
 
                 {{-- LOCALIZAÇÃO --}}
                 <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                    📍 {{ $hotel->localizacao }}
+                     {{ $hotel->localizacao }}
                 </p>
 
                 {{-- DESCRIÇÃO --}}

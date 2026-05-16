@@ -1,58 +1,119 @@
 @extends('layouts.app')
+
 @section('content')
 
-<div class="max-w-2xl mx-auto mt-10">
-<h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Nova Cultura</h1>
-</div>  
+<div class="max-w-3xl mx-auto">
 
-    {{-- para exibir mensagem de erro --}}
-  @if ($errors->any())
-  <div class="mb-4 bg-red-100 border border-red-300 text-red-600 p-4 rounded-lg">
-    <ul class="list-disc pl-5 text-sm">
-         @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
+    {{-- HEADER --}}
+    <div class="mb-8">
+        <h1 class="text-3xl font-black text-texto-escuro">
+            Nova Cultura
+        </h1>
+        <p class="text-sm text-primaria-light mt-1">
+            Registe uma nova manifestação cultural no sistema
+        </p>
     </div>
-  @endif
 
+    {{-- ERROS --}}
+    @if ($errors->any())
+        <div class="mb-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
+            <ul class="list-disc pl-5 text-sm space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-  <div class="max-w-2xl mx-auto mt-10">
-  <form action="{{ route('culturas.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf 
+    {{-- FORM --}}
+    <form action="{{ route('culturas.store') }}" method="POST" enctype="multipart/form-data"
+          class="bg-white border border-borda-card rounded-xl p-6 space-y-5 shadow-sm">
 
-    <label class="block text-sm font-semibold text-texto-escuro mb-1">Nome</label>
-    <input type="text" name="nome" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+        @csrf
 
-    <label class="block text-sm font-semibold text-texto-escuro mb-1">Tipo</label>
-    <select name="tipo" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
-        <option value="">Selecione</option>
-        <option value="tradicional">Tradicional</option>
-        <option value="moderna">Moderna</option>
-    </select><br><br>
+        {{-- Nome --}}
+        <div>
+            <label class="block text-sm font-semibold text-texto-escuro mb-1">Nome</label>
+            <input type="text" name="nome"
+                   class="w-full border border-borda-card rounded-lg px-4 py-2 focus:ring-2 focus:ring-primaria outline-none"
+                   placeholder="Ex: Carnaval de Luanda">
+        </div>
 
-    <label for="imagem" class="block text-sm font-semibold text-texto-escuro mb-1">Imagem</label>
-    <input type="file" multiple name="imagem" id="imagem" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
+        {{-- Tipo --}}
+        <div>
+            <label class="block text-sm font-semibold text-texto-escuro mb-1">Tipo</label>
+            <select name="tipo"
+                    class="w-full border border-borda-card rounded-lg px-4 py-2 focus:ring-2 focus:ring-primaria outline-none">
+                <option value="">Selecione o tipo</option>
+                <option value="tradicional">Tradicional</option>
+                <option value="moderna">Moderna</option>
+            </select>
+        </div>
 
-    <label class="block text-sm font-semibold text-texto-escuro mb-1">Descrição</label>
-    <textarea name="descricao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"></textarea><br><br>
+        {{-- IMAGEM --}}
+        <div>
+            <label class="block text-sm font-semibold text-texto-escuro mb-1">Imagens</label>
 
-    <label class="block text-sm font-semibold text-texto-escuro mb-1">Localização</label>
-    <input type="text" name="localizacao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+            <input type="file" name="imagem[]" multiple
+                   class="w-full border border-borda-card rounded-lg px-4 py-2 bg-white
+                          file:bg-primaria file:text-white file:px-4 file:py-2 file:rounded-lg
+                          file:border-0 file:cursor-pointer">
+            
+            <p class="text-xs text-primaria-light mt-1">
+                Pode selecionar várias imagens
+            </p>
+        </div>
 
-    <label class="block text-sm font-semibold text-texto-escuro mb-1">Data de Celebração</label>
-    <input type="date" name="data_celebracao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+        {{-- DESCRIÇÃO --}}
+        <div>
+            <label class="block text-sm font-semibold text-texto-escuro mb-1">Descrição</label>
+            <textarea name="descicao" rows="4"
+                      class="w-full border border-borda-card rounded-lg px-4 py-2 focus:ring-2 focus:ring-primaria outline-none"
+                      placeholder="Descreva a cultura..."></textarea>
+        </div>
 
+        {{-- LOCALIZAÇÃO --}}
+        <div>
+            <label class="block text-sm font-semibold text-texto-escuro mb-1">Localização</label>
+            <input type="text" name="localizacao"
+                   class="w-full border border-borda-card rounded-lg px-4 py-2 focus:ring-2 focus:ring-primaria outline-none"
+                   placeholder="Ex: Luanda, Angola">
+        </div>
 
-    <label class="block text-sm font-semibold text-texto-escuro mb-1">Origem Étnica</label>
-    <input type="text" name="origem_etnica" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+        {{-- DATA --}}
+        <div>
+            <label class="block text-sm font-semibold text-texto-escuro mb-1">Data de Celebração</label>
+            <input type="date" name="data_celebracao"
+                   class="w-full border border-borda-card rounded-lg px-4 py-2 focus:ring-2 focus:ring-primaria outline-none">
+        </div>
 
-    <center><button type="submit" class="bg-primaria text-white text-sm font-bold px-5 py-2.5 mt-4 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200">Salvar</button></center>
-</form>
+        {{-- ORIGEM --}}
+        <div>
+            <label class="block text-sm font-semibold text-texto-escuro mb-1">Origem Étnica</label>
+            <input type="text" name="origem_etnica"
+                   class="w-full border border-borda-card rounded-lg px-4 py-2 focus:ring-2 focus:ring-primaria outline-none"
+                   placeholder="Ex: Kimbundu, Ovimbundu...">
+        </div>
+
+        {{-- BOTÃO --}}
+        <div class="flex justify-end pt-2">
+            <button type="submit"
+                    class="bg-primaria text-white font-bold px-6 py-2.5 rounded-lg
+                           hover:bg-primaria-dark hover:-translate-y-0.5 transition">
+                Salvar Cultura
+            </button>
+        </div>
+
+    </form>
+
+    {{-- VOLTAR --}}
+    <div class="mt-6">
+        <a href="{{ route('culturas.index') }}"
+           class="text-sm text-primaria hover:underline">
+            ← Voltar
+        </a>
+    </div>
+
 </div>
-<br>
-<a href="{{ route('hoteis.index') }}" class="fixed top-4 right-4 bg-primaria text-white text-sm font-bold
-                px-5 py-2.5 mt-20 rounded-lg
-              hover:bg-primaria-dark hover:-translate-y-0.5
-              transition-all duration-200">Voltar</a>
+
 @endsection

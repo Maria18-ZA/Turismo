@@ -2,42 +2,91 @@
 
 @section('content')
 
-<h1>Culturas</h1>
+<div class="max-w-6xl mx-auto py-10 px-4">
 
-@forelse($culturas as $cultura)
+    {{-- TÍTULO --}}
+    <h1 class="text-4xl font-black text-texto-escuro mb-10 border-b-4 border-primaria-light w-fit pb-2">
+         Culturas
+    </h1>
 
-    <div>
+    {{-- LISTA --}}
+    @forelse($culturas as $cultura)
 
-        <p><strong>Nome:</strong> {{ $culturas->nome }}</p>
+        <div class="bg-white shadow-md hover:shadow-xl transition rounded-2xl overflow-hidden mb-6 flex flex-col md:flex-row">
 
-        <p><strong>Tipo:</strong> {{ $cultura->tipo }}</p>
+            {{-- IMAGEM --}}
+            <div class="md:w-1/3 h-60 bg-gray-100 flex items-center justify-center">
 
-        <p><strong>Descrição:</strong> {{ $cultura->descricao }}</p>
+                @if($cultura->imagens->isNotEmpty())
+                    <img src="{{ Storage::url($cultura->imagens->first()->imagem) }}"
+                         class="w-full h-full object-cover">
+                @else
+                    <span class="text-gray-400 text-5xl">📷</span>
+                @endif
 
-        <p><strong>Localização:</strong> {{ $cultura->localizacao }}</p>
+            </div>
 
-        <p><strong>Data:</strong> {{ $cultura->data }}</p>
+            {{-- CONTEÚDO --}}
+            <div class="p-6 flex-1 flex flex-col justify-between">
 
-        <div>
-            @if($cultura->imagens->isNotEmpty())
-                <img src="{{ Storage::url($cultura->imagens->first()->imagem) }}" width="150">
-            @else
-                <p>Sem imagem</p>
-            @endif
+                <div>
+
+                    {{-- NOME (corrigido) --}}
+                    <h2 class="text-2xl font-bold text-texto-escuro mb-2">
+                        {{ $cultura->nome }}
+                    </h2>
+
+                    {{-- INFO --}}
+                    <div class="text-sm text-gray-600 space-y-1 mb-4">
+
+                        <p>
+                            <span class="font-semibold text-gray-800">🏷 Tipo:</span>
+                            {{ $cultura->tipo }}
+                        </p>
+
+                        <p>
+                            <span class="font-semibold text-gray-800">📍 Localização:</span>
+                            {{ $cultura->localizacao }}
+                        </p>
+
+                        <p>
+                            <span class="font-semibold text-gray-800">📅 Data:</span>
+                            {{ $cultura->data }}
+                        </p>
+
+                    </div>
+
+                    {{-- DESCRIÇÃO --}}
+                    @if($cultura->descricao)
+                        <p class="text-gray-600 text-sm line-clamp-2">
+                            {{ $cultura->descricao }}
+                        </p>
+                    @endif
+
+                </div>
+
+                {{-- BOTÃO --}}
+                <div class="mt-4">
+
+                    <a href="{{ route('user.culturas.show', $cultura->id) }}"
+                       class="inline-block bg-primaria text-white px-5 py-2.5 rounded-xl
+                              font-bold text-sm hover:bg-primaria-dark transition">
+                        Ver detalhes
+                    </a>
+
+                </div>
+
+            </div>
         </div>
 
-        <a href="{{ route('user.culturas.show', $cultura->id) }}">
-            Ver detalhes
-        </a>
+    @empty
 
-        <hr>
+        <div class="text-center text-gray-500 py-10">
+            Nenhuma cultura disponível.
+        </div>
 
-    </div>
+    @endforelse
 
-@empty
-
-    <p>Nenhuma cultura disponível.</p>
-
-@endforelse
+</div>
 
 @endsection

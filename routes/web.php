@@ -23,8 +23,13 @@ use Illuminate\Support\Facades\Route;
 
 
 // ROTAS PÚBLICAS PARA AVALIAÇÕES (listagem – sem parâmetro wildcard)
-  Route::get('/avaliacoes', [AvaliacaoController::class, 'index'])->name('avaliacoes.index');
+  Route::get('/avaliacoes', [AvaliacaoController::class, 'index'])->name('user.hoteis.avaliacoes.index');
 
+  // Rota pública para USER ver o hotel (com avaliações)
+Route::get('/hoteis/user/{id}', [HotelController::class, 'showUser'])->name('hoteis.user.show');
+
+// Rota para guardar avaliação (pública)
+Route::post('/hoteis/{hotel}/avaliacao', [HotelController::class, 'storeAvaliacao'])->name('hoteis.avaliacao.store');
 
 // ROTAS PÚBLICAS PARA UTILIZADORES (prefixo 'usuario' – acesso livre)
     Route::prefix('usuario')->name('user.')->group(function () {
@@ -36,8 +41,21 @@ use Illuminate\Support\Facades\Route;
     Route::get('/pontosturisticos', [UsuarioController::class, 'indexPontos'])->name('pontosturisticos.index');
     Route::get('/pontosturisticos/{pontoTuristico}', [UsuarioController::class, 'showPontos'])->name('pontosturisticos.show');
     Route::get('/culturas', [UsuarioController::class, 'indexCultura'])->name('culturas.index');
-    Route::get('/culturas/{Culturas}', [UsuarioController::class, 'showCulturas'])->name('culturas.show');
-});
+    Route::get('/culturas/{culturas}', [UsuarioController::class, 'showCulturas'])->name('culturas.show');
+
+Route::get('/hoteis/{hotel}/avaliar', [UsuarioController::class, 'createHotelUser'])
+    ->name('hoteis.avaliar');
+
+Route::post('/hoteis/{hotel}/avaliar', [UsuarioController::class, 'storeHotelUser'])
+    ->name('hoteis.avaliar.store');
+
+    Route::get('/pontos/{ponto}/avaliar', [UsuarioController::class, 'createPontoUser'])
+    ->name('pontos.avaliar');
+
+Route::post('/pontos/{ponto}/avaliar', [UsuarioController::class, 'storePontoUser'])
+    ->name('pontos.avaliar.store');
+
+    });
 
 // ROTAS AUTENTICADAS (utilizadores logados)
 
@@ -64,7 +82,9 @@ use Illuminate\Support\Facades\Route;
 // ROTAS PARA ADMIN e GESTOR (gestão de recursos)
     
        Route::middleware(['role:admin,gestor'])->group(function () {
-        Route::resource('hoteis', HotelController::class);
+        Route::resource('hoteis', HotelController::class)->parameters([
+    'hoteis' => 'hotel'  // Muda {hotei} para {hotel}
+]);
         Route::resource('quartos', QuartoController::class);
         Route::resource('reservas', ReservaController::class);
         Route::resource('servicos', ServicoController::class);

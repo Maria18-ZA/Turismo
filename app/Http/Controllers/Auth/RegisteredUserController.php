@@ -34,7 +34,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-         Só administradores podem criar contas
+        // Só administradores podem criar contas
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             abort(403, 'Apenas administradores podem criar novos utilizadores.');
         }
@@ -58,7 +58,7 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         // Não faz login automático do novo utilizador (opcional)
-        // Auth::login($user);  // <-- remover para não trocar de sessão
+         Auth::login($user);  // <-- remover para não trocar de sessão
 
         return redirect()->route('users.index')
             ->with('success', 'Utilizador criado com sucesso!');

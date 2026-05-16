@@ -1,69 +1,119 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex items-center justify-between mb-8">
-    <h1 class="text-texto-escuro text-3xl font-black  pb-2 border-b-4 border-primaria-light w-fit">Lista de Hotéis</h1>
 
-    <a href="{{ route('hoteis.create') }}" class="bg-primaria text-white text-sm font-bold
-              px-5 py-2.5 rounded-lg
-              hover:bg-primaria-dark hover:-translate-y-0.5
-              transition-all duration-200">Criar Hotel</a>
+<div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-black text-gray-900 border-b-4 border-gray-200 pb-2 w-fit">
+        Lista de Hotéis
+    </h1>
+
+    <a href="{{ route('hoteis.create') }}"
+       class="bg-gray-900 text-white text-sm font-bold px-5 py-2.5 rounded-lg hover:bg-gray-800 transition">
+        Criar Hotel
+    </a>
 </div>
 
-    @if(session('success'))
-     <div class="bg-green-50 border border-green-200 text-green-800
-                text-sm font-medium px-4 py-3 rounded-lg mb-6">
-        <p>{{ session('success') }}</p>
+@if(session('success'))
+    <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6 text-sm">
+        {{ session('success') }}
     </div>
-    @endif
+@endif
 
-<div class="bg-white rounded-xl border border-borda-card overflow-hidden">
+<div class="bg-white shadow-sm border border-gray-100 rounded-xl overflow-hidden">
 
     <table class="w-full text-sm">
-        <thead class="bg-primaria text-white">
+
+        <thead class="bg-gray-50 text-gray-600 text-xs uppercase">
             <tr>
-                <th text-left px-5 py-3 font-semibold>ID</th>
-                <th text-left px-5 py-3 font-semibold>Nome</th>
-                <th text-left px-5 py-3 font-semibold>Localização</th>
-                <th text-left px-5 py-3 ont-semibold>Categoria</th>
-                 <th text-left px-5 py-3 font-semibold>Descrição</th>
-                <th text-left px-5 py-3 font-semibold>Contato</th>
-                <th text-left px-5 py-3 font-semibold>Imagem</th>
-                <th text-left px-5 py-3 font-semibold>Ações</th>
+                <th class="px-5 py-3 text-left">ID</th>
+                <th class="px-5 py-3 text-left">Nome</th>
+                <th class="px-5 py-3 text-left">Localização</th>
+                <th class="px-5 py-3 text-left">Categoria</th>
+                <th class="px-5 py-3 text-left">Contacto</th>
+                <th class="px-5 py-3 text-left">Imagem</th>
+                <th class="px-5 py-3 text-left">Ações</th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-borda-card">
+
+        <tbody class="divide-y divide-gray-100">
+
             @forelse($hoteis as $hotel)
-                <tr class="hover:bg-fundo-secao transition-colors duration-150">
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->id }}</td>
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->nome }}</td>
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->localizacao }}</td>
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->categoria }}</td>
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->descricao }}</td>
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $hotel->contato }}</td>
-                    <td class="text-center px-5 py-3">
-                    @if($hotel->imagens->isNotEmpty())
-                            <img src="{{ Storage::url($hotel->imagens->first()->imagem) }}" alt="Imagem do Hotel" class="w-16 h-16 object-cover rounded-lg">
+
+                <tr class="hover:bg-gray-50 transition">
+
+                    <td class="px-5 py-3 text-gray-700">{{ $hotel->id }}</td>
+
+                    <td class="px-5 py-3 font-medium text-gray-900">
+                        {{ $hotel->nome }}
+                    </td>
+
+                    <td class="px-5 py-3 text-gray-600">
+                        {{ $hotel->localizacao }}
+                    </td>
+
+                    <td class="px-5 py-3 text-gray-600">
+                        {{ $hotel->categoria ?? '—' }}
+                    </td>
+
+                    <td class="px-5 py-3 text-gray-600">
+                        {{ $hotel->contato ?? '—' }}
+                    </td>
+
+                    <td class="px-5 py-3">
+                        @if($hotel->imagens->isNotEmpty())
+                            <img src="{{ Storage::url($hotel->imagens->first()->imagem) }}"
+                                 class="w-12 h-12 rounded-lg object-cover border border-gray-200">
                         @else
-                            <p class="text-texto-escuro">Nenhuma imagem disponível</p>
+                            <span class="text-gray-400 text-xs">Sem imagem</span>
                         @endif
-                    <td class="px-5 py-3 text-center font-medium text-texto-escuro">
+                    </td>
 
+                    <td class="px-5 py-3">
 
-                        <a href="{{ route('hoteis.show', $hotel) }}"  class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Ver mais</a>
-                        <a href="{{ route('hoteis.edit', $hotel) }} " class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Editar</a>
-                        <form action="{{ route('hoteis.destroy', $hotel) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Tens a certeza?')" class="text-primaria  text-xs  font-bold hover:text-primaria-dark transition-colors">Eliminar</button>
-                        </form>
+                        <div class="flex gap-3 text-xs font-semibold">
+
+                            <a href="{{ route('hoteis.show', $hotel) }}"
+                               class="text-gray-700 hover:text-black">
+                                Ver
+                            </a>
+
+                            <a href="{{ route('hoteis.edit', $hotel) }}"
+                               class="text-gray-700 hover:text-black">
+                                Editar
+                            </a>
+
+                            <form action="{{ route('hoteis.destroy', $hotel) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit"
+                                        onclick="return confirm('Tens a certeza?')"
+                                        class="text-red-500 hover:text-red-700">
+                                    Eliminar
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            @empty
+
+                <tr>
+                    <td colspan="7" class="px-5 py-10 text-center text-gray-400">
+                        Nenhum hotel encontrado.
                     </td>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="px-5 py-10 text-center text-texto-medio">Nenhum hotel encontrado.</td>
-                </tr>
+
             @endforelse
+
         </tbody>
+
     </table>
+
+</div>
+
 @endsection

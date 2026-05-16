@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('avaliacoes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('hotel_id')->nullable();
             $table->foreign('hotel_id')->references('id')->on('hoteis');
             $table->unsignedBigInteger('pontoturistico_id')->nullable();
             $table->foreign('pontoturistico_id')->references('id')->on('pontos_turisticos');
-            $table->integer('email')->nullable();
+            $table->string('email')->nullable();
             $table->string('comentario');
             $table->integer('nota')->nullable();
             $table->timestamps();

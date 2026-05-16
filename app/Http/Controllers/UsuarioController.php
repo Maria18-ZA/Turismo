@@ -68,5 +68,116 @@ class UsuarioController extends Controller
         return view('user.culturas.index', compact('culturas'));
     }
 
+    /**
+ * Display the specified cultura.
+ */
+public function showCulturas(Cultura $culturas)
+{
+    return view('user.culturas.show', compact('culturas'));
+}
+
+
+    public function createHotelUser(Hotel $hotel)
+    {
+        return view('user.avaliacoes.hotel', compact('hotel'));
+    }
+
+    public function storeHotelUser(Request $request, Hotel $hotel)
+    {
+        $request->validate([
+            'email'      => 'required|email',
+            'comentario' => 'nullable|string|max:1000',
+            'nota'       => 'required|integer|min:1|max:5',
+        ]);
+
+        // Procurar utilizador pelo email
+        $user = User::where('email', $request->email)->first();
+
+        // Procurar avaliação existente
+        $avaliacao = Avaliacao::where('email', $request->email)
+            ->where('hotel_id', $hotel->id)
+            ->first();
+
+        // Se já existe -> actualizar
+        if ($avaliacao) {
+
+            $avaliacao->update([
+                'comentario' => $request->comentario,
+                'nota'       => $request->nota,
+            ]);
+
+            return redirect()
+                ->route('user.hoteis.show', $hotel->id)
+                ->with('success', 'Avaliação actualizada com sucesso!');
+        }
+
+        // Se não existe -> criar
+        Avaliacao::create([
+            'user_id'    => $user?->id,
+            'hotel_id'   => $hotel->id,
+            'email'      => $request->email,
+            'comentario' => $request->comentario,
+            'nota'       => $request->nota,
+        ]);
+
+        return redirect()
+            ->route('user.hoteis.show', $hotel->id)
+            ->with('success', 'Avaliação enviada com sucesso!');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | PONTO TURÍSTICO
+    |--------------------------------------------------------------------------
+    */
+
+    public function createPontoUser(PontoTuristico $ponto)
+    {
+        return view('user.avaliacoes.ponto', compact('ponto'));
+    }
+
+    public function storePontoUser(Request $request, PontoTuristico $ponto)
+    {
+        $request->validate([
+            'email'      => 'required|email',
+            'comentario' => 'nullable|string|max:1000',
+            'nota'       => 'required|integer|min:1|max:5',
+        ]);
+
+        // Procurar utilizador pelo email
+        $user = User::where('email', $request->email)->first();
+
+        // Procurar avaliação existente
+        $avaliacao = Avaliacao::where('email', $request->email)
+            ->where('pontoturistico_id', $ponto->id)
+            ->first();
+
+        // Se já existe -> actualizar
+        if ($avaliacao) {
+
+            $avaliacao->update([
+                'comentario' => $request->comentario,
+                'nota'       => $request->nota,
+            ]);
+
+            return redirect()
+                ->route('user.pontosturisticos.show', $ponto->id)
+                ->with('success', 'Avaliação actualizada com sucesso!');
+        }
+
+        // Se não existe -> criar
+        Avaliacao::create([
+            'user_id'           => $user?->id,
+            'pontoturistico_id' => $ponto->id,
+            'email'             => $request->email,
+            'comentario'        => $request->comentario,
+            'nota'              => $request->nota,
+        ]);
+
+        return redirect()
+            ->route('user.pontosturisticos.show', $ponto->id)
+            ->with('success', 'Avaliação enviada com sucesso!');
+    }
+
    
 }

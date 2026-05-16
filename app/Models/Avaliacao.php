@@ -10,10 +10,9 @@ class Avaliacao extends Model
     protected $table = 'avaliacoes';
 
     protected $fillable = [
-        'user_id',
+        'email',
         'hotel_id',
         'pontoturistico_id',
-        'email',
         'comentario',
         'nota',
     ];
@@ -31,5 +30,14 @@ class Avaliacao extends Model
     public function pontoTuristico(): BelongsTo
     {
         return $this->belongsTo(PontoTuristico::class, 'pontoturistico_id');
+    }
+
+    // Nome a exibir (prioridade: user > email)
+    public function getNomeExibicaoAttribute()
+    {
+        if ($this->user) {
+            return $this->user->name;
+        }
+        return explode('@', $this->email)[0] ?? 'Anónimo';
     }
 }
