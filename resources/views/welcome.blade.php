@@ -46,11 +46,11 @@
             
             <!-- Mussulo - Praia mais famosa de Luanda -->
             <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">
-                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/32/6a/68/praia-do-mussulo.jpg" class="h-48 w-full object-cover" alt="Praia do Mussulo, Luanda" onerror="this.src='https://images.unsplash.com/photo-1500375592092-40eb2168fd21'">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/32/6a/68/praia-do-mussulo.jpg" class="h-48 w-1/2 object-cover" alt="Praia do Mussulo, Luanda" onerror="this.src='https://images.unsplash.com/photo-1500375592092-40eb2168fd21'">
                 <div class="p-4">
                     <h3 class="text-lg font-semibold">Praia do Mussulo</h3>
                     <p class="text-sm text-gray-600 mt-1">Ilha paradisíaca com águas calmas e areia branca. O destino mais procurado pelos luandenses aos fins de semana.</p>
-                    <a href="https://pt.wikipedia.org/wiki/Mussulo" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber mais →</a>
+                    <a href="https://pt.wikipedia.org/wiki/Mussulo" target="_blank" class="inline-block mt-3 text-blue-600 hover:text-yellow-600 text-sm font-medium">Saber mais </a>
                 </div>
             </div>
 
