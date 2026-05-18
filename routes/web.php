@@ -25,6 +25,9 @@ use Illuminate\Support\Facades\Route;
 // ROTAS PÚBLICAS PARA AVALIAÇÕES (listagem – sem parâmetro wildcard)
   Route::get('/avaliacoes', [AvaliacaoController::class, 'index'])->name('user.hoteis.avaliacoes.index');
 
+Route::get('/avaliacoes', [AvaliacaoController::class, 'index'])->name('avaliacoes.index');
+
+
   // Rota pública para USER ver o hotel (com avaliações)
 Route::get('/hoteis/user/{id}', [HotelController::class, 'showUser'])->name('hoteis.user.show');
 
