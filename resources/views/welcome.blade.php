@@ -42,7 +42,7 @@
     <!-- PRAIAS -->
     <section id="praias">
         <h2 class="text-2xl md:text-3xl font-bold mb-6 border-l-4 border-yellow-500 pl-3">Praias imperdíveis de Luanda</h2>
-        <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-thin">
+        <div class="flex gap-6 pb-4 ">
             
             <!-- Mussulo - Praia mais famosa de Luanda -->
             <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition w-80 flex-shrink-0 overflow-hidden">

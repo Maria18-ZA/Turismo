@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
-@section('breadcrumb', 'Visão geral da plataforma')
+@section('breadcrumb', 'Visão geral do Visita Já')
 
 @section('content')
 
@@ -13,7 +13,7 @@
             Dashboard
         </h1>
         <p class="text-sm text-gray-600 mt-1">
-            Visão geral da plataforma de turismo
+            Visão geral do Visita Já
         </p>
     </div>
 
