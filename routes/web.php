@@ -10,6 +10,7 @@ use App\Http\Controllers\QuartoController;
 use App\Http\Controllers\CulturaController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +18,19 @@ use Illuminate\Support\Facades\Route;
  //Web Routes
 
 // Rota inicial pública
-   Route::get('/', function () {
-      return view('welcome');
+  // Route::get('/', function () {
+      //return view('welcome');
+//});
+
+use App\Models\Place;
+
+
+
+Route::get('/', function () {
+
+    $places = Place::all();
+
+    return view('welcome', compact('places'));
 });
 
 
@@ -93,6 +105,7 @@ Route::post('/pontos/{ponto}/avaliar', [UsuarioController::class, 'storePontoUse
         Route::resource('servicos', ServicoController::class);
         Route::resource('pontosturisticos', PontoTuristicoController::class);
         Route::resource('culturas', CulturaController::class);
+        Route::resource('places', PlaceController::class);
 
 // Ações específicas de reserva
         Route::post('reservas/{reserva}/confirm', [ReservaController::class, 'confirm'])->name('reservas.confirm');

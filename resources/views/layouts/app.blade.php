@@ -52,6 +52,11 @@
                 Gestão
             </div>
 
+             <a href="{{ route('places.index') }}"
+               class="block px-3 py-2 rounded-lg text-sm {{ active('places.*') }}">
+                Places
+            </a>
+
             <a href="{{ route('hoteis.index') }}"
                class="block px-3 py-2 rounded-lg text-sm {{ active('hoteis.*') }}">
                 Hotéis

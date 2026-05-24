@@ -1,4 +1,4 @@
-@extends('layouts.user')
+ja tenho tudo , so quero organizar para nao ficar conforme esta @extends('layouts.user')
 
 @section('content')
 
@@ -13,7 +13,7 @@
         </h1>
 
         {{-- =========================
-            🖼️ GALERIA PRINCIPAL
+             GALERIA PRINCIPAL
         ========================= --}}
         @if($hotel->imagens->isNotEmpty())
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 h-96">
@@ -58,26 +58,26 @@
             @if($hotel->imagens->count() > 5)
                 <button onclick="abrirModal()"
                         class="mt-3 px-6 py-2 bg-white border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition font-medium">
-                    📷 Ver todas as {{ $hotel->imagens->count() }} fotos
+                     Ver todas as {{ $hotel->imagens->count() }} fotos
                 </button>
             @endif
         @endif
+        <br>
 
-        {{-- 📝 DESCRIÇÃO --}}
-        <div>
-            <p class="mt-6 text-texto-escuro leading-relaxed text-base">
+        {{--  DESCRIÇÃO --}}
+        <div class="bg-white py-4 rounded-xl shadow-sm border border-gray-100">
+            <p class="text-texto-escuro px-4">
                 {{ $hotel->descricao }}
             </p>
         </div>
-
-        {{-- 📍 LOCALIZAÇÃO + 📞 CONTACTO --}}
-        <div class="mt-4 flex items-start gap-10 text-sm">
+        {{--  LOCALIZAÇÃO +  CONTACTO --}}
+        <div class="mt-4  gap-10 text-sm ">
             @if($hotel->localizacao || ($hotel->latitude && $hotel->longitude))
                 <div>
                     <span class="font-bold block mb-1">Localização:</span>
                     {{ $hotel->localizacao ?? 'Ver no mapa' }}
                     @if($hotel->latitude && $hotel->longitude)
-                        <iframe width="200" height="120" class="rounded-lg mt-2 block" loading="lazy"
+                        <iframe width="400" height="240" class="rounded-lg mt-2 block" loading="lazy"
                             src="https://www.google.com/maps?q={{ $hotel->latitude }},{{ $hotel->longitude }}&z=15&output=embed">
                         </iframe>
                     @endif
@@ -94,7 +94,7 @@
     </div>
 
     {{-- =========================
-        ⭐ AVALIAÇÕES (INTEGRADO NO SHOW)
+         AVALIAÇÕES (INTEGRADO NO SHOW)
     ========================= --}}
     <div class="mt-10">
         <div class="flex items-center justify-between mb-6 border-b pb-2">
@@ -161,7 +161,7 @@
     </div>
 
     {{-- =========================
-        🧰 SERVIÇOS
+         SERVIÇOS
     ========================= --}}
     <div class="mt-10">
         <h2 class="text-2xl font-bold mb-6 border-b pb-2">Serviços</h2>
@@ -180,7 +180,7 @@
     </div>
 
     {{-- =========================
-        🛏️ QUARTOS
+         QUARTOS
     ========================= --}}
     <div class="mt-10">
         <h2 class="text-2xl font-bold mb-6 border-b pb-2">Quartos Disponíveis</h2>
