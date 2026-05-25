@@ -17,14 +17,7 @@ use Illuminate\Support\Facades\Route;
 
  //Web Routes
 
-// Rota inicial pública
-  // Route::get('/', function () {
-      //return view('welcome');
-//});
-
 use App\Models\Place;
-
-
 
 Route::get('/', function () {
 

@@ -56,7 +56,7 @@
         <div class="bg-gray-50 px-6 py-4 border-t border-borda-card">
             <a href="{{ route('reservas.index') }}" 
                class="bg-primaria text-white text-sm font-bold px-5 py-2 rounded-lg hover:bg-primaria-dark transition-all duration-200">
-                ← Voltar
+                Voltar
             </a>
         </div>
     </div>

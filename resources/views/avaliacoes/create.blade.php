@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto">
+<div class="max-w-3xl mx-auto text-texto-escuro">
 
     {{-- TÍTULO --}}
     <div class="mb-8">
-        <h1 class="text-3xl font-black text-texto-escuro border-b-4 border-primaria-light w-fit pb-2">
+        <h1 class="text-3xl font-black text-texto-escuro border-b-4 border-primaria w-fit pb-2">
             Nova Avaliação
         </h1>
         <p class="text-sm text-texto-medio mt-2">
-            Partilhe a sua experiência sobre hotéis ou pontos turísticos.
+           
         </p>
     </div>
 
@@ -130,7 +130,7 @@
     <div class="mt-6 text-center">
         <a href="{{ route('avaliacoes.index') }}"
            class="text-primaria hover:text-primaria-dark text-sm font-semibold">
-            ← Voltar às avaliações
+             Voltar às avaliações
         </a>
     </div>
 

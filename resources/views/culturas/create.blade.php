@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="max-w-3xl mx-auto">
+ <div class="max-w-3xl mx-auto text-texto-escuro">
 
     {{-- HEADER --}}
     <div class="mb-8">

@@ -14,7 +14,7 @@
         </h1>
 
         {{-- =========================
-            🖼️ GALERIA PRINCIPAL
+             GALERIA PRINCIPAL
         ========================= --}}
         @if($pontoTuristico->imagens->isNotEmpty())
 
@@ -47,7 +47,7 @@
                                 <div class="absolute inset-0 bg-black/60 flex items-center justify-center">
 
                                     <span class="text-white font-bold text-lg">
-                                        +{{ $pontoTuristico->imagens->count() - 5 }} fotos
+                                        {{ $pontoTuristico->imagens->count() - 5 }} fotos
                                     </span>
 
                                 </div>
@@ -91,7 +91,7 @@
 
 
         {{-- =========================
-            📝 DESCRIÇÃO
+             DESCRIÇÃO
         ========================= --}}
         <div>
 
@@ -103,7 +103,7 @@
 
 
         {{-- =========================
-            📍 LOCALIZAÇÃO
+             LOCALIZAÇÃO
         ========================= --}}
         <div class="mt-4 flex items-start gap-10 text-sm">
 
@@ -227,7 +227,7 @@
 
 
     {{-- =========================
-        🔙 VOLTAR
+        VOLTAR
     ========================= --}}
     <div>
 
@@ -235,7 +235,7 @@
            class="inline-block px-5 py-2 bg-gray-200 hover:bg-gray-300
                   rounded-xl transition font-medium">
 
-            ← Voltar
+             Voltar
 
         </a>
 
@@ -245,7 +245,7 @@
 
 
 {{-- =========================
-    🖼️ MODAL GALERIA
+     MODAL GALERIA
 ========================= --}}
 <div id="modalGaleria"
      class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center">

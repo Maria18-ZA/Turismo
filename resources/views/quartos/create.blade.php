@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="max-w-2xl mx-auto mt-10">
+<div class="max-w-2xl mx-auto text-texto-escuro mt-10">
     <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Novo Quarto</h1>
 
 

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="max-w-3xl mx-auto">
+<div class="max-w-3xl mx-auto text-texto-escuro">
 
     {{-- HEADER --}}
     <div class="mb-6">
@@ -111,7 +111,7 @@
 
             <a href="{{ route('hoteis.index') }}"
                class="text-sm text-gray-600 hover:text-primaria">
-                ← Voltar
+                Voltar
             </a>
 
             <button type="submit"

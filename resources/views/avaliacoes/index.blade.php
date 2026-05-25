@@ -19,7 +19,7 @@
             <a href="{{ route('avaliacoes.create') }}"
                class="bg-primaria text-white text-sm font-bold px-5 py-2.5 rounded-xl
                       hover:bg-primaria-dark transition hover:-translate-y-0.5">
-                + Nova Avaliação
+                Nova Avaliação
             </a>
         @endauth
     </div>
@@ -59,7 +59,7 @@
                         <tr class="hover:bg-fundo-secao transition">
 
                             <td class="px-5 py-3 font-medium text-texto-escuro">
-                                #{{ $avaliacao->id }}
+                                {{ $avaliacao->id }}
                             </td>
 
                             {{-- AVALIADOR --}}

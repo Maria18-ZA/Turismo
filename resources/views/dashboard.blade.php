@@ -63,6 +63,7 @@
                         <th class="text-left py-2">Cliente</th>
                         <th class="text-left py-2">Hotel</th>
                         <th class="text-left py-2">Check-in</th>
+                         <th class="text-left py-2">Check-out</th>
                         <th class="text-left py-2">Estado</th>
                     </tr>
                 </thead>
@@ -83,15 +84,20 @@
                         <td class="py-2 text-gray-500">
                             {{ \Carbon\Carbon::parse($reserva->checkin)->format('d/m/Y') }}
                         </td>
+                        
+                         <td class="py-2 text-gray-500">
+                            {{ \Carbon\Carbon::parse($reserva->checkout)->format('d/m/Y') }}
+                        </td>
 
                         <td class="py-2">
-                            <span class="px-2 py-1 text-xs rounded-full font-semibold
-                                {{ $reserva->estado === 'confirmada'
-                                    ? 'bg-green-100 text-green-700'
-                                    : 'bg-yellow-100 text-yellow-700' }}">
-                                {{ ucfirst($reserva->estado) }}
-                            </span>
-                        </td>
+    <span class="inline-flex items-center px-2 py-1 text-xs rounded-full font-semibold
+        {{ $reserva->status === 'confirmada'
+            ? 'bg-green-100 text-green-700'
+            : 'bg-yellow-100 text-yellow-700' }}">
+
+        {{ ucfirst($reserva->status) }}
+    </span>
+</td>
                     </tr>
 
                     @empty

@@ -39,7 +39,7 @@
                 function active($route) {
                     return request()->routeIs($route)
                         ? 'bg-primaria text-white'
-                        : 'text-primaria-light hover:bg-primaria hover:text-white';
+                        : 'text-fundo-secao hover:bg-primaria hover:text-white';
                 }
             @endphp
 
