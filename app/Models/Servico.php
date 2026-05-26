@@ -12,8 +12,8 @@ class Servico extends Model
     protected $fillable = [
         'hotel_id',
         'nome',
-        'descricao',
-        'tipo',
+        'categoria',
+        
     ];
 
 

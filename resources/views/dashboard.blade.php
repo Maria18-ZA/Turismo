@@ -8,17 +8,9 @@
 <div class="space-y-6">
 
     {{-- HEADER --}}
-    <div>
-        <h1 class="text-3xl font-black text-texto-escuro border-b-4 border-primaria w-fit pb-2">
-            Dashboard
-        </h1>
-        <p class="text-sm text-gray-600 mt-1">
-            Visão geral do Visita Já
-        </p>
-    </div>
 
     {{-- KPI CARDS (MAIS CONTRASTE) --}}
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 py-4">
 
         @php
             $cards = [

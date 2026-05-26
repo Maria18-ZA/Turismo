@@ -10,32 +10,64 @@ class ServicoController extends Controller
 {
     public function index()
     {
-        $servicos = Servico::all();
-        return view('servicos.index', compact('servicos')); //  era 'servico', faltava o 's'
+        $hoteis = Hotel::all();
+        return view('servicos.index', compact('hoteis'));
     }
 
-    public function create()
-    {
-      $hoteis = Hotel::all();
-        return view('servicos.create', compact('hoteis')); 
+   public function create()
+{
+    $hoteis = Hotel::all();
+
+    $servicosExistentes = Servico::select('nome')->distinct()->get();
+
+    return view(
+        'servicos.create',compact('hoteis', 'servicosExistentes')
+    );
+}
+
+   public function store(Request $request)
+{
+    $request->validate([
+        'hotel_id' => 'required|exists:hoteis,id',
+    ]);
+
+    // Serviços selecionados
+    if($request->servicos){
+
+        foreach($request->servicos as $servicoNome){
+
+            Servico::create([
+                'hotel_id'  => $request->hotel_id,
+                'nome'      => $servicoNome,
+                'categoria' => 'Hotel',
+            ]);
+        }
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nome'      => 'required|string|max:255',
-            'descricao' => 'required|string',
-            'tipo'      => 'required|string|max:255',
-            'hotel_id'  => 'required|exists:hoteis,id',
-        ]);
+    // Novos serviços digitados
+if($request->novo_servico){
 
-        Servico::create($request->all());
+    // separa pelos nomes usando vírgula
+    $novosServicos = explode(',', $request->novo_servico);
 
-        return redirect()
-            ->route('servicos.index')
-            ->with('success', 'Serviço criado com sucesso.');
+    foreach($novosServicos as $novoServico){
+
+        $nome = trim($novoServico);
+
+        if($nome != ''){
+
+            Servico::create([
+                'hotel_id'  => $request->hotel_id,
+                'nome'      => $nome,
+                'categoria' => 'Hotel',
+            ]);
+        }
     }
-
+}
+    return redirect()
+        ->route('servicos.index')
+        ->with('success', 'Serviços criados com sucesso.');
+}
     public function show(Servico $servico) //era $servicos
     {
         return view('servicos.show', compact('servico')); 
@@ -50,8 +82,7 @@ class ServicoController extends Controller
     {
         $request->validate([
             'nome'      => 'required|string|max:255',
-            'descricao' => 'required|string',
-            'tipo'      => 'required|string|max:255',
+            'categoria' => 'required|string|max:255',
         ]);
 
         $servico->update($request->all());

@@ -16,8 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('hotel_id');
             $table->foreign('hotel_id')->references('id')->on('hoteis');
             $table->string('nome');
-            $table->string('descricao');
-            $table->string('tipo');
+            $table->string('categoria');
             $table->timestamps();
         });
     }

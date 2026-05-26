@@ -1,51 +1,89 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="max-w-2xl mx-auto mt-10">
 
-    <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Editar Serviço</h1>
+    <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">
+        Editar Serviços do Hotel
+    </h1>
 
-    
     @if($errors->any())
-        <ul>
+        <ul class="mb-4 text-red-500 text-sm">
             @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>- {{ $error }}</li>
             @endforeach
         </ul>
     @endif
 
-    <form action="{{ route('servicos.update', $servico) }}" method="POST">
+    <form action="{{ route('servicos.update', $hotel) }}" method="POST"
+          class="bg-white p-6 rounded-lg shadow-md border border-borda-card space-y-6">
+
         @csrf
         @method('PUT')
 
-        
-            <label for="nome" class="block text-sm   font-semibold text-texto-escuro mb-1">Nome</label>
-            <input type="text" name="nome" id="nome" value="{{ old('nome', $servico->nome) }}" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
-       
+        {{-- HOTEL --}}
+        <div>
+            <label class="block text-sm font-semibold mb-1">Hotel</label>
 
-      
-            <label for="descricao" class="block text-sm   font-semibold text-texto-escuro mb-1">Descrição</label>
-            <textarea name="descricao" id="descricao" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">{{ old('descricao', $servico->descricao) }}</textarea>
+            <select name="hotel_id"
+                    class="w-full border border-borda-card rounded-lg px-4 py-2">
 
+                @foreach($hoteis as $h)
+                    <option value="{{ $h->id }}"
+                        {{ old('hotel_id', $hotel->id) == $h->id ? 'selected' : '' }}>
+                        {{ $h->nome }}
+                    </option>
+                @endforeach
 
-      
-            <label for="tipo" class="block text-sm   font-semibold text-texto-escuro mb-1">Tipo</label>
-            <select name="tipo" id="tipo" class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">
-                <option value="">Seleciona</option>
-                <option value="Guia Turístico" {{ old('tipo', $servico->tipo) == 'Guia Turístico' ? 'selected' : '' }}>Guia Turístico</option>
-                <option value="Transporte" {{ old('tipo', $servico->tipo) == 'Transporte' ? 'selected' : '' }}>Transporte</option>
-                <option value="Excursão" {{ old('tipo', $servico->tipo) == 'Excursão' ? 'selected' : '' }}>Excursão</option>
-                <option value="Outro" {{ old('tipo', $servico->tipo) == 'Outro' ? 'selected' : '' }}>Outro</option>
             </select>
         </div>
 
-       <center> <button type="submit" class="bg-primaria text-white text-sm font-bold px-5 py-2.5 mt-4 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200">Atualizar</button></center>
+        {{-- CHECKBOX SERVIÇOS --}}
+        <div>
+            <label class="block text-sm font-semibold mb-2">Serviços</label>
+
+            <div class="grid grid-cols-2 gap-2">
+
+                @foreach($servicosExistentes as $servico)
+
+                    <label class="flex items-center gap-2 border rounded-lg px-3 py-2">
+
+                        <input type="checkbox"
+                               name="servicos[]"
+                               value="{{ $servico->nome }}"
+                               {{ in_array($servico->nome, $servicosSelecionados ?? []) ? 'checked' : '' }}>
+
+                        <span>{{ $servico->nome }}</span>
+                    </label>
+
+                @endforeach
+
+            </div>
+        </div>
+
+        {{-- NOVOS SERVIÇOS --}}
+        <div>
+            <label class="block text-sm font-semibold mb-1">
+                Adicionar novos serviços
+            </label>
+
+            <input type="text"
+                   name="novo_servico"
+                   value="{{ old('novo_servico') }}"
+                   placeholder="Ex: Spa, Piscina..."
+                   class="w-full border rounded-lg px-4 py-2">
+
+            <p class="text-xs text-gray-500 mt-1">
+                Separe por vírgulas
+            </p>
+        </div>
+
+        <button class="bg-primaria text-white px-5 py-2 rounded-lg">
+            Atualizar
+        </button>
+
     </form>
-   
-<a href="{{ route('servicos.index') }}" class="fixed top-4 right-4 bg-primaria text-white text-sm font-bold
-                px-5 py-2.5 mt-20 rounded-lg
-              hover:bg-primaria-dark hover:-translate-y-0.5
-              transition-all duration-200 ">Voltar à lista</a>
+</div>
 
 @endsection
-```
