@@ -2,94 +2,117 @@
 
 @section('content')
 
+<div class="max-w-2xl mx-auto mt-10 text-texto-escuro">
 
-<form action="{{ route('servicos.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md border border-borda-card space-y-6">
-    @csrf
-
-    {{-- TITULO --}}
-    <h1 class="text-2xl font-bold text-texto-escuro text-center mb-4">
+    {{-- TÍTULO --}}
+    <h1 class="text-2xl text-center font-bold mb-6">
         Novo Serviço
     </h1>
 
-    {{-- HOTEL --}}
-    <div>
-        <label for="hotel_id" class="block text-sm font-semibold text-texto-escuro mb-1">
-            Hotel
-        </label>
+    {{-- ERROS --}}
+    @if($errors->any())
+        <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+            <ul class="list-disc pl-5">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-        <select
-            name="hotel_id"
-            id="hotel_id"
-            class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"
-        >
-            <option value="">Seleciona um hotel</option>
+    {{-- FORMULÁRIO --}}
+    <form action="{{ route('servicos.store') }}"
+          method="POST"
+          class="bg-white p-6 rounded-lg shadow border space-y-4">
 
-            @foreach($hoteis as $hotel)
-                <option value="{{ $hotel->id }}" {{ old('hotel_id') == $hotel->id ? 'selected' : '' }}>
-                    {{ $hotel->nome }}
-                </option>
-            @endforeach
+        @csrf
 
-        </select>
-    </div>
+        {{-- HOTEL --}}
+        <div>
+            <label class="block mb-1 font-semibold">
+                Hotel
+            </label>
 
-    {{-- SERVIÇOS EXISTENTES --}}
-    <div>
-        <label class="block text-sm font-semibold text-texto-escuro mb-2">
-            Serviços Disponíveis
-        </label>
+            <select name="hotel_id"
+                    class="w-full border rounded-lg px-4 py-2">
 
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <option value="">Seleciona um hotel</option>
 
-            @foreach($servicosExistentes as $servico)
+                @foreach($hoteis as $hotel)
 
-                <label class="flex items-center gap-2 border border-borda-card rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-50 transition">
+                    <option value="{{ $hotel->id }}"
+                        {{ old('hotel_id') == $hotel->id ? 'selected' : '' }}>
 
-                    <input
-                        type="checkbox"
-                        name="servicos[]"
-                        value="{{ $servico->nome }}"
-                        class="w-4 h-4 text-primaria"
-                    >
+                        {{ $hotel->nome }}
 
-                    <span class="text-sm text-texto-escuro">
-                        {{ $servico->nome }}
-                    </span>
+                    </option>
 
-                </label>
+                @endforeach
 
-            @endforeach
+            </select>
+        </div>
+
+        {{-- SERVIÇOS --}}
+        <div>
+
+            <label class="block mb-2 font-semibold">
+                Serviços Disponíveis
+            </label>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+
+                @foreach($servicosExistentes as $servico)
+
+                    <label class="flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-50">
+
+                        <input type="checkbox"
+                               name="servicos[]"
+                               value="{{ $servico->nome }}">
+
+                        <span class="text-sm">
+                            {{ $servico->nome }}
+                        </span>
+
+                    </label>
+
+                @endforeach
+
+            </div>
 
         </div>
-    </div>
 
-    {{-- NOVOS SERVIÇOS --}}
-    <div>
-        <label for="novo_servico" class="block text-sm font-semibold text-texto-escuro mb-1">
-            Adicionar novos serviços
-        </label>
+        {{-- NOVO SERVIÇO --}}
+        <div>
 
-        <input
-            type="text"
-            name="novo_servico"
-            id="novo_servico"
-            value="{{ old('novo_servico') }}"
-            placeholder="Ex: Jacuzzi, Sauna, Lavandaria"
-            class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"
-        >
+            <label class="block mb-1 font-semibold">
+                Adicionar novos serviços
+            </label>
 
+            <input type="text"
+                   name="novo_servico"
+                   value="{{ old('novo_servico') }}"
+                   placeholder="Ex: Jacuzzi, Sauna, Lavandaria"
+                   class="w-full border rounded-lg px-4 py-2">
 
-    </div>
+        </div>
 
-    {{-- BOTÃO --}}
-    <div class="text-center pt-2">
-        <button
-            type="submit"
-            class="bg-primaria text-white text-sm font-bold px-6 py-2.5 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200"
-        >
-            Criar
-        </button>
-    </div>
+        {{-- BOTÕES --}}
+        <div class="flex justify-between pt-4">
 
-</form>
+            <a href="{{ route('servicos.index') }}"
+               class="bg-gray-500 text-white px-5 py-2 rounded-lg">
+                Voltar
+            </a>
+
+            <button type="submit"
+                    class="bg-primaria text-white px-5 py-2 rounded-lg">
+                Criar
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
 @endsection

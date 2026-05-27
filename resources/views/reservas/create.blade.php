@@ -1,54 +1,156 @@
 @extends('layouts.app')
+
 @section('content')
 
 <div class="max-w-2xl mx-auto mt-10 text-texto-escuro">
-    <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Nova Reserva</h1>
 
+    {{-- TÍTULO --}}
+    <h1 class="text-2xl text-center font-bold mb-6">
+        Nova Reserva
+    </h1>
 
-    {{-- para exibir mensagem de erro --}}
-    @if ($errors->any())
-        <ul style="color:red">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+    {{-- ERROS --}}
+    @if($errors->any())
+        <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+            <ul class="list-disc pl-5">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
-    <form action="{{ route('reservas.store') }}" method="POST">
+    {{-- FORMULÁRIO --}}
+    <form action="{{ route('reservas.store') }}"
+          method="POST"
+          class="bg-white p-6 rounded-lg shadow border space-y-4">
+
         @csrf
 
-        <label for="nome_user" class="block text-sm font-semibold text-texto-escuro mb-1">Nome</label>
-        <input type="text" name="nome_user" id="nome_user" required class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+        {{-- NOME --}}
+        <div>
+            <label class="block mb-1 font-semibold">
+                Nome
+            </label>
 
-        <label for="contato" class="block text-sm font-semibold text-texto-escuro mb-1">Contato</label>
-        <input type="text" name="contato" id="contato" required class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+            <input type="text"
+                   name="nome_user"
+                   required
+                   value="{{ old('nome_user') }}"
+                   class="w-full border rounded-lg px-4 py-2">
+        </div>
 
-        {{-- Campo de e-mail (obrigatório) --}}
-        <label for="email" class="block text-sm font-semibold text-texto-escuro mb-1">E-mail</label>
-        <input type="email" name="email" id="email" required class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+        {{-- CONTATO --}}
+        <div>
+            <label class="block mb-1 font-semibold">
+                Contato
+            </label>
 
-        <label for="checkin" class="block text-sm font-semibold text-texto-escuro mb-1">Check-in</label>
-        <input type="date" name="checkin" id="checkin" required class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+            <input type="text"
+                   name="contato"
+                   required
+                   value="{{ old('contato') }}"
+                   class="w-full border rounded-lg px-4 py-2">
+        </div>
 
-        <label for="checkout" class="block text-sm font-semibold text-texto-escuro mb-1">Check-out</label>
-        <input type="date" name="checkout" id="checkout" required class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria"><br><br>
+        {{-- EMAIL --}}
+        <div>
+            <label class="block mb-1 font-semibold">
+                E-mail
+            </label>
 
-        <h2 class="text-lg font-semibold mt-6 mb-3">Escolha os quartos</h2>
+            <input type="email"
+                   name="email"
+                   required
+                   value="{{ old('email') }}"
+                   class="w-full border rounded-lg px-4 py-2">
+        </div>
 
-        @foreach($quartos as $quarto)
+        {{-- CHECK-IN --}}
+        <div>
+            <label class="block mb-1 font-semibold">
+                Check-in
+            </label>
 
-            <div class="flex items-center gap-4 mb-2 border p-2 rounded">
-                <input type="checkbox" name="quartos[{{ $quarto->id }}][ativo]" value="1" class="w-4 h-4">
+            <input type="date"
+                   name="checkin"
+                   required
+                   value="{{ old('checkin') }}"
+                   class="w-full border rounded-lg px-4 py-2">
+        </div>
 
-                <span class="flex-1">{{ $quarto->numero }} - {{ $quarto->tipo }} ({{ number_format($quarto->preco, 2) }}Kz/noite)</span>
-                <input type="number" name="quartos[{{ $quarto->id }}][quantidade]" min="1"value="1"
-                       class="w-20 border rounded px-2 py-1">
+        {{-- CHECK-OUT --}}
+        <div>
+            <label class="block mb-1 font-semibold">
+                Check-out
+            </label>
+
+            <input type="date"
+                   name="checkout"
+                   required
+                   value="{{ old('checkout') }}"
+                   class="w-full border rounded-lg px-4 py-2">
+        </div>
+
+        {{-- QUARTOS --}}
+        <div>
+
+            <h2 class="text-lg font-bold mb-3">
+                Escolha os Quartos
+            </h2>
+
+            <div class="space-y-3">
+
+                @foreach($quartos as $quarto)
+
+                    <div class="border rounded-lg p-3 flex items-center gap-4">
+
+                        <input type="checkbox"
+                               name="quartos[{{ $quarto->id }}][ativo]"
+                               value="1">
+
+                        <div class="flex-1">
+                            <p class="font-semibold">
+                                Quarto {{ $quarto->numero }}
+                            </p>
+
+                            <p class="text-sm text-gray-500">
+                                {{ $quarto->tipo }} —
+                                {{ number_format($quarto->preco, 2) }} Kz/noite
+                            </p>
+                        </div>
+
+                        <input type="number"
+                               name="quartos[{{ $quarto->id }}][quantidade]"
+                               min="1"
+                               value="1"
+                               class="w-20 border rounded-lg px-2 py-1">
+
+                    </div>
+
+                @endforeach
+
             </div>
-        @endforeach
 
-        <center><button type="submit" class="bg-primaria text-white text-sm font-bold px-5 py-2.5 mt-4 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200">Salvar</button></center>
+        </div>
+
+        {{-- BOTÕES --}}
+        <div class="flex justify-between pt-4">
+
+            <a href="{{ route('reservas.index') }}"
+               class="bg-gray-500 text-white px-5 py-2 rounded-lg">
+                Voltar
+            </a>
+
+            <button type="submit"
+                    class="bg-primaria text-white px-5 py-2 rounded-lg">
+                Salvar
+            </button>
+
+        </div>
+
     </form>
 
-    <a href="{{ route('reservas.index') }}" class="fixed top-4 right-4 bg-primaria text-white text-sm font-bold px-5 py-2.5 mt-20 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200">Voltar</a>
 </div>
+
 @endsection
