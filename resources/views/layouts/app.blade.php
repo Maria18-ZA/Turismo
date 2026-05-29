@@ -7,8 +7,6 @@
 
     <title>{{ config('app.name', 'Visita Já') }} — @yield('title', 'Dashboard')</title>
 
-    {{--<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --}}
-
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700" rel="stylesheet" />
 
@@ -25,10 +23,21 @@
         {{-- BRAND/ Coluna lateral esquerda --}}
         <div class="px-2 py-5 border-b border-borda-card">
             <div class="text-white font-bold text-lg tracking-wide">
-                {{ config('Visita Já', 'Visita Já') }}
+                {{ config('app.name', 'Visita Já') }}
             </div>
             <div class="text-fundo-secao text-xs mt-1">
-               Area do Administrador 
+                @if(auth()->check())
+                    @switch(auth()->user()->role)
+                        @case('admin')
+                            Área do Administrador
+                            @break
+                        @case('gestor')
+                            Área do Gestor
+                            @break
+                        @default
+                            Área do Utilizador
+                    @endswitch
+                @endif
             </div>
         </div>
 
@@ -41,56 +50,73 @@
                         ? 'bg-primaria text-white'
                         : 'text-fundo-secao hover:bg-primaria hover:text-white';
                 }
+                $role = auth()->check() ? auth()->user()->role : 'guest';
             @endphp
 
+            {{-- Dashboard – todos os autenticados --}}
             <a href="{{ route('dashboard') }}"
                class="block px-3 py-2 rounded-lg text-sm {{ active('dashboard') }}">
                 Dashboard
             </a>
 
-            <div class="text-[10px] uppercase tracking-widest text-primaria-light px-3 mt-4 mb-2">
-                Gestão
-            </div>
+            @if($role === 'admin')
+                <div class="text-[10px] uppercase tracking-widest text-primaria-light px-3 mt-4 mb-2">
+                    Gestão Global
+                </div>
 
-             <a href="{{ route('places.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('places.*') }}">
-                Places
-            </a>
+                <a href="{{ route('places.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('places.*') }}">
+                    Places
+                </a>
 
-            <a href="{{ route('hoteis.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('hoteis.*') }}">
-                Hotéis
-            </a>
+                <a href="{{ route('pontosturisticos.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('pontosturisticos.*') }}">
+                    Pontos Turísticos
+                </a>
 
-            <a href="{{ route('quartos.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('quartos.*') }}">
-                Quartos
-            </a>
+                <a href="{{ route('culturas.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('culturas.*') }}">
+                    Culturas
+                </a>
 
-            <a href="{{ route('reservas.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('reservas.*') }}">
-                Reservas
-            </a>
+              
+            @endif
 
-            <a href="{{ route('servicos.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('servicos.*') }}">
-                Serviços
-            </a>
+            {{-- Secção comum para Admin e Gestor (hotel, quartos, reservas, serviços, avaliações) --}}
+            @if(in_array($role, ['admin', 'gestor']))
+                <div class="text-[10px] uppercase tracking-widest text-primaria-light px-3 mt-4 mb-2">
+                    Gestão Hoteleira
+                </div>
 
-            <a href="{{ route('pontosturisticos.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('pontosturisticos.*') }}">
-                Pontos Turísticos
-            </a>
+                <a href="{{ route('hoteis.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('hoteis.*') }}">
+                    Hotéis
+                </a>
 
-            <a href="{{ route('culturas.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('culturas.*') }}">
-                Culturas
-            </a>
+                <a href="{{ route('quartos.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('quartos.*') }}">
+                    Quartos
+                </a>
 
-            <a href="{{ route('avaliacoes.index') }}"
-               class="block px-3 py-2 rounded-lg text-sm {{ active('avaliacoes.*') }}">
-                Avaliações
-            </a>
+                <a href="{{ route('reservas.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('reservas.*') }}">
+                    Reservas
+                </a>
+
+                <a href="{{ route('servicos.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('servicos.*') }}">
+                    Serviços
+                </a>
+
+                <a href="{{ route('avaliacoes.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('avaliacoes.*') }}">
+                    Avaliações
+                </a>
+
+                 <a href="{{ route('profile') }}" class="block px-3 py-2 rounded-lg text-sm text-fundo-secao hover:bg-primaria hover:text-white">
+    Meu Perfil
+</a>
+            @endif
 
         </nav>
 
@@ -107,8 +133,8 @@
                         <div class="text-white text-sm font-semibold">
                             {{ auth()->user()->name ?? 'User' }}
                         </div>
-                        <div class="text-primaria-light text-xs">
-                            {{ auth()->user()->role ?? 'Turista' }}
+                        <div class="text-xs text-primaria-light capitalize">
+                            {{ auth()->user()->role ?? '' }}
                         </div>
                     </div>
                 </div>
@@ -120,6 +146,15 @@
                     </button>
                 </form>
 
+                {{-- Este botão "Entrar" só aparece se não estiver logado – remover ou ajustar --}}
+                @guest
+                <form method="GET" action="{{ route('login') }}">
+                    <button class="text-xs text-green-400 hover:text-green-300">
+                        Entrar
+                    </button>
+                </form>
+                @endguest
+
             </div>
         </div>
 
@@ -127,13 +162,10 @@
 
     {{-- ================= MAIN ================= --}}
     <div class="flex-1 flex flex-col">
-        {{-- CONTENT AREA --}}
         <main class="flex-1 overflow-y-auto p-6 bg-fundo-secao">
-
             <div class="max-w-7xl mx-auto">
                 @yield('content')
             </div>
-
         </main>
     </div>
 

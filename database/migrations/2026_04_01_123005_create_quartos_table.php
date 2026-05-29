@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('quartos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('hotel_id');
-            $table->foreign('hotel_id')->references('id')->on('hoteis');
+           $table->foreignId('hotel_id')->constrained('hoteis')->onDelete('cascade');
             $table->string('numero', 10);
             $table->string('tipo', 50);
             $table->text('descricao')->nullable();

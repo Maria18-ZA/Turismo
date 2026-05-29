@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
             'contato'  =>['required', 'max:255'],
             'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role'     => ['required', 'in:turista,gestor,admin'], // admin escolhe a role
+            'role'     => ['required', 'in:gestor,admin'], // admin escolhe a role
         ]);
 
         $user = User::create([

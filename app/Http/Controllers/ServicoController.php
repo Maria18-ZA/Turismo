@@ -2,102 +2,132 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Servico;
 use App\Models\Hotel;
+use App\Models\Servico;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ServicoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $hoteis = Hotel::all();
-        return view('servicos.index', compact('hoteis'));
-    }
+        $user = auth()->user();
 
-   public function create()
-{
-    $hoteis = Hotel::all();
-
-    $servicosExistentes = Servico::select('nome')->distinct()->get();
-
-    return view(
-        'servicos.create',compact('hoteis', 'servicosExistentes')
-    );
-}
-
-   public function store(Request $request)
-{
-    $request->validate([
-        'hotel_id' => 'required|exists:hoteis,id',
-    ]);
-
-    // Serviços selecionados
-    if($request->servicos){
-
-        foreach($request->servicos as $servicoNome){
-
-            Servico::create([
-                'hotel_id'  => $request->hotel_id,
-                'nome'      => $servicoNome,
-                'categoria' => 'Hotel',
-            ]);
+        if ($user->role === 'admin') {
+            $servicos = Servico::with('hotel')->latest()->get();
+            $hoteis   = Hotel::all();
+        } else {
+            $hoteis = Hotel::where('user_id', $user->id)->get();
+            $servicos = Servico::whereHas('hotel', fn($q) => $q->where('user_id', $user->id))
+                ->with('hotel')->latest()->get();
         }
+
+        return view('servicos.index', compact('servicos', 'hoteis'));
     }
 
-    // Novos serviços digitados
-if($request->novo_servico){
-
-    // separa pelos nomes usando vírgula
-    $novosServicos = explode(',', $request->novo_servico);
-
-    foreach($novosServicos as $novoServico){
-
-        $nome = trim($novoServico);
-
-        if($nome != ''){
-
-            Servico::create([
-                'hotel_id'  => $request->hotel_id,
-                'nome'      => $nome,
-                'categoria' => 'Hotel',
-            ]);
-        }
-    }
-}
-    return redirect()
-        ->route('servicos.index')
-        ->with('success', 'Serviços criados com sucesso.');
-}
-    public function show(Servico $servico) //era $servicos
+    public function create()
     {
-        return view('servicos.show', compact('servico')); 
+        $user = auth()->user();
+        $hoteis = $user->role === 'admin'
+            ? Hotel::all()
+            : Hotel::where('user_id', $user->id)->get();
+
+        $servicosExistentes = Servico::select('nome')->distinct()->pluck('nome');
+        return view('servicos.create', compact('hoteis', 'servicosExistentes'));
     }
 
-    public function edit(Servico $servico) 
-    {
-        return view('servicos.edit', compact('servico')); 
-    }
-
-    public function update(Request $request, Servico $servico) 
+    public function store(Request $request)
     {
         $request->validate([
-            'nome'      => 'required|string|max:255',
-            'categoria' => 'required|string|max:255',
+            'hotel_id'     => 'required|exists:hoteis,id',
+            'servicos'     => 'nullable|array',
+            'novo_servico' => 'nullable|string',
         ]);
 
-        $servico->update($request->all());
+        $user = auth()->user();
+        if ($user->role !== 'admin') {
+            $hotel = Hotel::where('id', $request->hotel_id)
+                ->where('user_id', $user->id)
+                ->first();
+            if (!$hotel) abort(403, 'Não autorizado.');
+        }
 
-        return redirect()
-            ->route('servicos.index')
-            ->with('success', 'Serviço atualizado com sucesso.');
+        $hotelId = $request->hotel_id;
+
+        if ($request->servicos) {
+            foreach ($request->servicos as $nome) {
+                if ($nome) {
+                    Servico::firstOrCreate([
+                        'hotel_id' => $hotelId,
+                        'nome'     => $nome,
+                    ], ['categoria' => 'Hotel']);
+                }
+            }
+        }
+
+        if ($request->novo_servico) {
+            $novos = explode(',', $request->novo_servico);
+            foreach ($novos as $nome) {
+                $nome = trim($nome);
+                if ($nome) {
+                    Servico::firstOrCreate([
+                        'hotel_id' => $hotelId,
+                        'nome'     => $nome,
+                    ], ['categoria' => 'Hotel']);
+                }
+            }
+        }
+
+        return redirect()->route('servicos.index')->with('success', 'Serviços atualizados.');
     }
 
-    public function destroy(Servico $servico) 
+    public function show(Servico $servico)
     {
-        $servico->delete();
+        $this->authorizeServico($servico);
+        return view('servicos.show', compact('servico'));
+    }
 
-        return redirect()
-            ->route('servicos.index')
-            ->with('success', 'Serviço eliminado com sucesso.');
+    public function edit(Servico $servico)
+    {
+        $this->authorizeServico($servico);
+        return view('servicos.edit', compact('servico'));
+    }
+
+    public function update(Request $request, Servico $servico)
+    {
+        $this->authorizeServico($servico);
+
+        $request->validate([
+            'nome' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('servicos')->where('hotel_id', $servico->hotel_id)->ignore($servico->id),
+            ],
+        ]);
+
+        $servico->update(['nome' => $request->nome]);
+        return redirect()->route('servicos.index')->with('success', 'Serviço atualizado.');
+    }
+
+    public function destroy(Servico $servico)
+    {
+        $this->authorizeServico($servico);
+        $servico->delete();
+        return redirect()->route('servicos.index')->with('success', 'Serviço eliminado.');
+    }
+
+    private function authorizeServico(Servico $servico)
+    {
+        $user = auth()->user();
+        if ($user->role === 'admin') return;
+        if (!$servico->hotel || $servico->hotel->user_id !== $user->id) {
+            abort(403, 'Não autorizado.');
+        }
     }
 }

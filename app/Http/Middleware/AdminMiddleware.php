@@ -9,10 +9,9 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->tipo_user !== 'admin') {
-            abort(403); // Proíbe acesso
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            abort(403, 'Acesso negado. Apenas administradores.');
         }
-
         return $next($request);
     }
 }

@@ -8,8 +8,11 @@
               hover:bg-primaria-dark hover:-translate-y-0.5
               transition-all duration-200">Criar Ponto Turístico</a>
 
+    {{-- ALERTA --}}
     @if(session('success'))
-        <p>{{ session('success') }}</p>
+        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl text-sm">
+            {{ session('success') }}
+        </div>
     @endif
 
 

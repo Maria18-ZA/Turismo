@@ -7,6 +7,13 @@
               hover:bg-primaria-dark hover:-translate-y-0.5
               transition-all duration-200">Novo Quarto</a>
 
+              {{-- ALERTA --}}
+    @if(session('success'))
+        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl text-sm">
+            {{ session('success') }}
+        </div>
+    @endif
+
 <div class="bg-white mt-10 rounded-xl border border-borda-card overflow-hidden">
 
 <table class="w-full text-sm">

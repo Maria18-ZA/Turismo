@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Quarto;
 
 class Hotel extends Model
@@ -11,6 +12,7 @@ class Hotel extends Model
 
     protected $table = 'hoteis';
      protected $fillable = [
+        'user_id',
         'nome',
         'localizacao',
         'descricao',
@@ -18,6 +20,11 @@ class Hotel extends Model
         'latitude',
         'longitude',
     ];
+
+    public function user()
+    {
+    return $this->belongsTo(User::class);
+    }
 
     public function servicos(): HasMany
     {
@@ -32,6 +39,11 @@ class Hotel extends Model
     public function quartos(): HasMany
     {
         return $this->hasMany(Quarto::class);
+    }
+
+    public function reservas()
+    {
+    return $this->hasMany(Reserva::class);
     }
 
     public function pontosTuristicos(): BelongsToMany

@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('servicos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('hotel_id');
-            $table->foreign('hotel_id')->references('id')->on('hoteis');
+            $table->foreignId('hotel_id')->constrained('hoteis')->onDelete('cascade');
             $table->string('nome');
             $table->string('categoria');
             $table->timestamps();

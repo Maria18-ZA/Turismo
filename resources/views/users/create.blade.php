@@ -51,6 +51,17 @@
                    class="w-full border rounded-lg px-4 py-2">
         </div>
 
+         <div>
+            <label class="block mb-1 font-semibold">
+                Contato
+            </label>
+
+            <input type="contato"
+                   name="contato"
+                   value="{{ old('contato') }}"
+                   class="w-full border rounded-lg px-4 py-2">
+        </div>
+
         {{-- FUNÇÃO --}}
         <div>
             <label class="block mb-1 font-semibold">
@@ -63,11 +74,6 @@
                 <option value="admin"
                     {{ old('role') == 'admin' ? 'selected' : '' }}>
                     Admin
-                </option>
-
-                <option value="turista"
-                    {{ old('role') == 'turista' ? 'selected' : '' }}>
-                    Turista
                 </option>
 
                 <option value="gestor"
@@ -88,6 +94,17 @@
                    name="password"
                    class="w-full border rounded-lg px-4 py-2">
         </div>
+
+        {{-- SENHA --}}
+        <div>
+            <label class="block mb-1 font-semibold">
+                Confirmar Senha
+            </label>
+
+            <input type="password" name="password_confirmation"
+                   class="w-full border rounded-lg px-4 py-2">
+        </div>
+
 
         {{-- BOTÕES --}}
         <div class="flex justify-between pt-4">

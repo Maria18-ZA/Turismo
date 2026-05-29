@@ -2,6 +2,13 @@
 
 @section('content')
 
+{{-- ALERTA --}}
+    @if(session('success'))
+        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl text-sm">
+            {{ session('success') }}
+        </div>
+    @endif
+    
 <h1 class="text-3xl font-black mb-6 text-texto-escuro border-b-4 border-primaria-light w-fit">
     Serviços por Hotel
 </h1>

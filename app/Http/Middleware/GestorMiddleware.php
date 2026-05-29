@@ -9,10 +9,9 @@ class GestorMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->tipo_user !== 'gestor') {
-            abort(403); // Proíbe acesso
+        if (!auth()->check() || auth()->user()->role !== 'gestor') {
+            abort(403, 'Acesso negado. Apenas gestores.');
         }
-
         return $next($request);
     }
 }

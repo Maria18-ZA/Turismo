@@ -3,15 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Quarto;
+use App\Models\Hotel;
 
-class Reserva extends Model {
-
+class Reserva extends Model
+{
     protected $fillable = [
         'user_id',
         'nome_user',
         'contato',
         'email',
-        //'quarto_id',
         'tipo_reserva',
         'checkin',
         'checkout',
@@ -19,43 +21,69 @@ class Reserva extends Model {
         'status'
     ];
 
-    protected $appends = ['google_maps_link']; // Adiciona ao JSON automaticamente
+    protected $appends = ['google_maps_link'];
 
-public function getGoogleMapsLinkAttribute()
-{
-    // Pega o primeiro quarto da reserva e seu hotel
-    $quarto = $this->quartos()->with('hotel')->first();
-    
-    if ($quarto && $quarto->hotel && $quarto->hotel->latitude && $quarto->hotel->longitude) {
-        $lat = $quarto->hotel->latitude;
-        $lng = $quarto->hotel->longitude;
-        
-        // Opção 1: Link simples (abre no mapa centralizado)
-        //return "https://www.google.com/maps?q={$lat},{$lng}";
-        
-        // Opção 2: Link com zoom e marcador (mais completo)
-        // return "https://www.google.com/maps/@{$lat},{$lng},15z";
-        
-        // Opção 3: Link para navegação (já traça rota)
-         return "https://www.google.com/maps/dir/?api=1&destination={$lat},{$lng}";
-    }
-    
-    return null;
-}
+    /*
+    |--------------------------------------------------------------------------
+    | RELAÇÕES
+    |--------------------------------------------------------------------------
+    */
 
-
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    //public function quarto() {
-      //  return $this->belongsTo(Quarto::class);
-    //}
-
     public function quartos()
-{
-    return $this->belongsToMany(Quarto::class, 'reserva_quartos')
-                ->withPivot('quantidade', 'preco');
-}
+    {
+        return $this->belongsToMany(Quarto::class, 'reserva_quartos')
+            ->withPivot('quantidade', 'preco');
+    }
 
+    /*
+    |--------------------------------------------------------------------------
+    | HOTEL (VERSÃO CORRIGIDA - PERFORMANCE)
+    |--------------------------------------------------------------------------
+    */
+
+    public function hotel()
+    {
+        // evita queries repetidas no accessor
+        return $this->hasOneThrough(
+            Hotel::class,
+            Quarto::class,
+            'hotel_id', // FK em quartos
+            'id',
+            null,
+            'hotel_id'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESSOR OTIMIZADO
+    |--------------------------------------------------------------------------
+    */
+
+    public function getHotelAttribute()
+    {
+        return $this->quartos->first()?->hotel;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | GOOGLE MAPS LINK
+    |--------------------------------------------------------------------------
+    */
+
+    public function getGoogleMapsLinkAttribute()
+    {
+        $hotel = $this->hotel;
+
+        if ($hotel && $hotel->latitude && $hotel->longitude) {
+            return "https://www.google.com/maps/dir/?api=1&destination={$hotel->latitude},{$hotel->longitude}";
+        }
+
+        return null;
+    }
 }

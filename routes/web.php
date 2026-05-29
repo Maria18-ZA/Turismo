@@ -36,6 +36,10 @@ Route::get('/avaliacoes', [AvaliacaoController::class, 'index'])->name('avaliaco
   // Rota pública para USER ver o hotel (com avaliações)
 Route::get('/hoteis/user/{id}', [HotelController::class, 'showUser'])->name('hoteis.user.show');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil', [UserController::class, 'profile'])->name('profile');
+    Route::put('/perfil/user', [UserController::class, 'updateProfile'])->name('profile.update');
+});
 // Rota para guardar avaliação (pública)
 Route::post('/hoteis/{hotel}/avaliacao', [HotelController::class, 'storeAvaliacao'])->name('hoteis.avaliacao.store');
 
@@ -96,7 +100,8 @@ Route::post('/pontos/{ponto}/avaliar', [UsuarioController::class, 'storePontoUse
         Route::resource('quartos', QuartoController::class);
         Route::resource('reservas', ReservaController::class);
         Route::resource('servicos', ServicoController::class);
-        Route::resource('pontosturisticos', PontoTuristicoController::class);
+        Route::resource('pontosturisticos', PontoTuristicoController::class)->parameters([
+    'pontosturisticos' => 'pontoTuristico']);
         Route::resource('culturas', CulturaController::class);
         Route::resource('places', PlaceController::class);
 

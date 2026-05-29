@@ -6,27 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('avaliacoes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('hotel_id')->nullable();
-            $table->foreign('hotel_id')->references('id')->on('hoteis');
-            $table->unsignedBigInteger('pontoturistico_id')->nullable();
-            $table->foreign('pontoturistico_id')->references('id')->on('pontos_turisticos');
-            $table->string('email')->nullable();
-            $table->string('comentario');
-            $table->integer('nota')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('hotel_id')->nullable()->constrained('hoteis')->onDelete('cascade');
+            $table->foreignId('pontoturistico_id')->nullable()->constrained('pontos_turisticos')->onDelete('cascade');
+            $table->string('email');
+            $table->text('comentario')->nullable();
+            $table->integer('nota');
             $table->timestamps();
+
+            // Opcional: índice para evitar duplicados (um email só pode avaliar um hotel/ponto uma vez)
+            $table->unique(['email', 'hotel_id']);
+            $table->unique(['email', 'pontoturistico_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('avaliacoes');

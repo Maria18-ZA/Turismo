@@ -4,7 +4,6 @@
 
 <div class="max-w-2xl mx-auto mt-10 text-texto-escuro">
 
-    {{-- TÍTULO --}}
     <h1 class="text-2xl text-center font-bold mb-6">
         Novo Serviço
     </h1>
@@ -20,7 +19,6 @@
         </div>
     @endif
 
-    {{-- FORMULÁRIO --}}
     <form action="{{ route('servicos.store') }}"
           method="POST"
           class="bg-white p-6 rounded-lg shadow border space-y-4">
@@ -29,9 +27,7 @@
 
         {{-- HOTEL --}}
         <div>
-            <label class="block mb-1 font-semibold">
-                Hotel
-            </label>
+            <label class="block mb-1 font-semibold">Hotel</label>
 
             <select name="hotel_id"
                     class="w-full border rounded-lg px-4 py-2">
@@ -54,23 +50,28 @@
 
         {{-- SERVIÇOS --}}
         <div>
-
             <label class="block mb-2 font-semibold">
                 Serviços Disponíveis
             </label>
 
             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
 
-                @foreach($servicosExistentes as $servico)
+                @foreach($servicosExistentes ?? [] as $servico)
+
+                    @php
+                        $checked = is_array(old('servicos')) 
+                                   && in_array($servico, old('servicos'));
+                    @endphp
 
                     <label class="flex items-center gap-2 border rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-50">
 
                         <input type="checkbox"
                                name="servicos[]"
-                               value="{{ $servico->nome }}">
+                               value="{{ $servico }}"
+                               {{ $checked ? 'checked' : '' }}>
 
                         <span class="text-sm">
-                            {{ $servico->nome }}
+                            {{ $servico }}
                         </span>
 
                     </label>
@@ -78,12 +79,10 @@
                 @endforeach
 
             </div>
-
         </div>
 
-        {{-- NOVO SERVIÇO --}}
+        {{-- NOVOS SERVIÇOS --}}
         <div>
-
             <label class="block mb-1 font-semibold">
                 Adicionar novos serviços
             </label>
@@ -93,7 +92,6 @@
                    value="{{ old('novo_servico') }}"
                    placeholder="Ex: Jacuzzi, Sauna, Lavandaria"
                    class="w-full border rounded-lg px-4 py-2">
-
         </div>
 
         {{-- BOTÕES --}}
