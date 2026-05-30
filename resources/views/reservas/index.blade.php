@@ -15,6 +15,7 @@
             <th class="text-left px-5 py-3 font-semibold">ID</th>
             <th class="text-left px-5 py-3 font-semibold">Usuário</th>
             <th class="text-left px-5 py-3 font-semibold">Email</th>
+             <th class="text-left px-5 py-3 font-semibold">Hotel</th>
             <th class="text-left px-5 py-3 font-semibold">Quartos</th>
             <th class="text-left px-5 py-3 font-semibold">Check-in</th>
             <th class="text-left px-5 py-3 font-semibold">Check-out</th>
@@ -28,6 +29,7 @@
             <td class="px-5 py-3 font-medium text-texto-escuro">{{ $reserva->id }}</td>
             <td class="px-5 py-3 text-texto-medio">{{ $reserva->nome_user }}</td>
             <td class="px-5 py-3 text-texto-medio">{{ $reserva->email }}</td>
+            <td class="px-5 py-3 text-texto-medio">{{ $reserva->hotel->nome ?? '—' }}</td>
             <td class="px-5 py-3 text-texto-medio">
                 @if($reserva->quartos->isNotEmpty())
                     @foreach($reserva->quartos as $q)

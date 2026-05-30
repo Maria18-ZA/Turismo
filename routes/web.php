@@ -11,6 +11,8 @@ use App\Http\Controllers\CulturaController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PlaceController;
+use App\Models\ImagemHotel;
+use App\Models\ImagemQuarto;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +57,7 @@ Route::post('/hoteis/{hotel}/avaliacao', [HotelController::class, 'storeAvaliaca
     Route::get('/culturas', [UsuarioController::class, 'indexCultura'])->name('culturas.index');
     Route::get('/culturas/{culturas}', [UsuarioController::class, 'showCulturas'])->name('culturas.show');
 
+
 Route::get('/hoteis/{hotel}/avaliar', [UsuarioController::class, 'createHotelUser'])
     ->name('hoteis.avaliar');
 
@@ -94,9 +97,21 @@ Route::post('/pontos/{ponto}/avaliar', [UsuarioController::class, 'storePontoUse
 // ROTAS PARA ADMIN e GESTOR (gestão de recursos)
     
        Route::middleware(['role:admin,gestor'])->group(function () {
-        Route::resource('hoteis', HotelController::class)->parameters([
-    'hoteis' => 'hotel'  // Muda {hotei} para {hotel}
-]);
+        Route::resource('hoteis', HotelController::class)->parameters(['hoteis' => 'hotel' ]);
+        
+        
+// Para hotéis
+Route::delete('/hoteis/{hotel}/imagens/{imagem}', [HotelController::class, 'destroyImagem'])
+     ->name('hoteis.imagens.destroy');
+Route::post('/hoteis/{hotel}/imagens/{imagem}/principal', [HotelController::class, 'setPrincipal'])
+     ->name('hoteis.imagens.principal');
+
+// Para quartos (se quiser igual)
+Route::delete('/quartos/{quarto}/imagens/{imagem}', [QuartoController::class, 'destroyImagem'])
+     ->name('quartos.imagens.destroy');
+Route::post('/quartos/{quarto}/imagens/{imagem}/principal', [QuartoController::class, 'setPrincipal'])
+     ->name('quartos.imagens.principal');
+     
         Route::resource('quartos', QuartoController::class);
         Route::resource('reservas', ReservaController::class);
         Route::resource('servicos', ServicoController::class);

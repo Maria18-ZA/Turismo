@@ -45,6 +45,38 @@
        <center><button type="submit" class="bg-primaria text-white text-sm font-bold px-5 py-2.5 mt-4 rounded-lg hover:bg-primaria-dark hover:-translate-y-0.5 transition-all duration-200">Atualizar</button></center>
     </form>
 
+    {{-- IMAGENS EXISTENTES --}}
+<h3 class="font-bold mt-6 mb-2">Imagens do hotel</h3>
+<div class="grid grid-cols-3 gap-4 mb-6">
+    @foreach($hotel->imagens as $img)
+        <div class="border rounded-lg p-2 text-center">
+            <img src="{{ Storage::url($img->imagem) }}" class="h-24 w-full object-cover rounded">
+            <div class="flex justify-between mt-2 text-sm">
+                <form action="{{ route('hoteis.imagens.destroy', [$hotel, $img]) }}" method="POST" onsubmit="return confirm('Remover esta imagem?')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="text-red-600">Remover</button>
+                </form>
+                <form action="{{ route('hoteis.imagens.principal', [$hotel, $img]) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="text-primaria">
+                        {{ $img->is_principal ? '⭐ Principal' : 'Tornar principal' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+{{-- ADICIONAR NOVAS IMAGENS --}}
+<div class="mb-4">
+    <label class="block font-bold mb-2">Adicionar novas imagens</label>
+    <input type="file" name="imagens[]" multiple accept="image/*">
+</div>
+<form action="{{ route('hoteis.imagens.destroy', [$hotel, $img]) }}" method="POST" >
+    @csrf
+    @method('DELETE')
+   
+</form>
     <a href="{{ route('hoteis.index') }}" class="fixed top-4 right-4 bg-primaria text-white text-sm font-bold
                 px-5 py-2.5 mt-20 rounded-lg
               hover:bg-primaria-dark hover:-translate-y-0.5

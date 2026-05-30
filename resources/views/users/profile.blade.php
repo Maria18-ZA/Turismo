@@ -66,7 +66,7 @@
         {{-- Últimas Reservas --}}
         <div class="bg-white rounded-xl border border-borda-card p-5">
             <h2 class="font-bold text-texto-escuro border-b pb-2 mb-3">Últimas Reservas</h2>
-            @if($ultimasReservas->count())
+            @if(count($ultimasReservas) > 0)
                 <ul class="space-y-3">
                     @foreach($ultimasReservas as $reserva)
                         <li class="text-sm flex justify-between items-center">
@@ -88,7 +88,7 @@
         {{-- Últimas Avaliações --}}
         <div class="bg-white rounded-xl border border-borda-card p-5">
             <h2 class="font-bold text-texto-escuro border-b pb-2 mb-3">Últimas Avaliações</h2>
-            @if($ultimasAvaliacoes->count())
+            @if(count($ultimasAvaliacoes) > 0)
                 <ul class="space-y-3">
                     @foreach($ultimasAvaliacoes as $avaliacao)
                         <li class="text-sm flex justify-between items-center">

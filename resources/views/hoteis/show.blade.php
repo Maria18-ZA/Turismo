@@ -19,6 +19,12 @@
     {{-- CARD PRINCIPAL --}}
     <div class="bg-white border border-gray-100 shadow-sm rounded-xl p-6 space-y-5">
 
+        @php
+    $principal = $hotel->imagemPrincipal ?? $hotel->imagens->first();
+@endphp
+@if($principal)
+    <img src="{{ Storage::url($principal->imagem) }}" class="w-full h-64 object-cover rounded">
+@endif
         {{-- IMAGEM --}}
         <div>
             @if($hotel->imagens->isNotEmpty())
@@ -63,6 +69,8 @@
                 {{ $hotel->descricao ?? 'Sem descrição' }}
             </p>
         </div>
+
+        
 
         {{-- DATA --}}
         <div class="text-xs text-gray-400">

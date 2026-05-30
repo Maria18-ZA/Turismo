@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\ImagemHotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -182,4 +183,35 @@ class HotelController extends Controller
             abort(403, 'Não autorizado.');
         }
     }
+public function destroyImagem(Hotel $hotel, ImagemHotel $imagem)
+{
+    // Verifica se a imagem pertence ao hotel
+    if ($imagem->hotel_id !== $hotel->id) {
+        abort(404);
+    }
+    $this->authorizeHotel($hotel); // reutiliza a sua autorização
+
+    // Apagar o ficheiro físico
+    Storage::disk('public')->delete($imagem->imagem);
+    $imagem->delete();
+
+    return redirect()->route('hoteis.edit', $hotel)
+        ->with('success', 'Imagem removida.');
 }
+
+public function setPrincipal(Hotel $hotel, ImagemHotel $imagem)
+{
+    if ($imagem->hotel_id !== $hotel->id) {
+        abort(404);
+    }
+    $this->authorizeHotel($hotel);
+
+    // Remove principal de todas as imagens do hotel
+    $hotel->imagens()->update(['is_principal' => false]);
+    // Marca esta como principal
+    $imagem->update(['is_principal' => true]);
+
+    return redirect()->route('hoteis.edit', $hotel)
+        ->with('success', 'Imagem principal definida.');
+}
+ }

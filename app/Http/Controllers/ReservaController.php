@@ -17,7 +17,7 @@ class ReservaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); // Todas as rotas exigem autenticação
+        $this->middleware('auth');
     }
 
     public function index()
@@ -25,11 +25,11 @@ class ReservaController extends Controller
         $user = auth()->user();
 
         if ($user->role === 'admin') {
-            $reservas = Reserva::with(['cliente', 'hotel', 'quartos'])->latest()->get();
+            $reservas = Reserva::with(['user', 'hotel', 'quartos'])->latest()->get();
         } else {
             $reservas = Reserva::whereHas('quartos.hotel', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
-            })->with(['cliente', 'hotel', 'quartos'])->latest()->get();
+            })->with(['user', 'hotel', 'quartos'])->latest()->get();
         }
 
         return view('reservas.index', compact('reservas'));
@@ -39,17 +39,11 @@ class ReservaController extends Controller
     {
         $user = auth()->user();
 
-        // Para gestor e admin, listar quartos dos hotéis que têm acesso
         $quartos = ($user->role === 'admin')
             ? Quarto::with('hotel')->get()
             : Quarto::whereHas('hotel', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
             })->with('hotel')->get();
-
-        // Se for turista, apenas pode criar reserva para si mesmo, então não precisa lista de users
-        // Mas mantemos a view simples: o formulário pede nome, contato, email (que serão do turista logado)
-        // Se quiser permitir turista criar para outro, seria diferente. Vou assumir que turista cria para si.
-        // Então na view, para turista, os campos nome/contato/email já vêm preenchidos com os dados do user.
 
         return view('reservas.create', compact('quartos'));
     }
@@ -63,25 +57,25 @@ class ReservaController extends Controller
             'checkin'   => 'required|date',
             'checkout'  => 'required|date|after:checkin',
             'quartos'   => 'required|array|min:1',
-            'quartos.*.id' => 'required|exists:quartos,id',
-            'quartos.*.quantidade' => 'integer|min:1',
         ]);
 
         $user = auth()->user();
 
-        // Processar quartos selecionados (estrutura esperada: array de objetos com id e quantidade)
+        // Filtra quartos com quantidade > 0
         $quartosSelecionados = collect($request->quartos)
-            ->filter(fn($item) => isset($item['id']) && ($item['quantidade'] ?? 1) > 0);
+            ->filter(fn($dados, $quartoId) => ($dados['quantidade'] ?? 0) > 0);
 
         if ($quartosSelecionados->isEmpty()) {
-            return back()->withErrors(['quartos' => 'Selecione pelo menos um quarto com quantidade válida.'])->withInput();
+            return back()->withErrors(['quartos' => 'Selecione pelo menos um quarto com quantidade maior que zero.'])->withInput();
         }
 
-        // Verificar se todos os quartos pertencem ao mesmo hotel
+        // Verifica se todos os quartos são do mesmo hotel
         $hotelIds = [];
-        foreach ($quartosSelecionados as $item) {
-            $quarto = Quarto::find($item['id']);
-            if (!$quarto) continue;
+        foreach ($quartosSelecionados as $quartoId => $dados) {
+            $quarto = Quarto::find($quartoId);
+            if (!$quarto) {
+                return back()->withErrors(['quartos' => "Quarto ID $quartoId não encontrado."])->withInput();
+            }
             $hotelIds[] = $quarto->hotel_id;
         }
         $hotelIds = array_unique($hotelIds);
@@ -90,20 +84,20 @@ class ReservaController extends Controller
         }
         $hotelId = $hotelIds[0];
 
-        // Segurança para gestor: verificar se o hotel pertence ao gestor
+        // Segurança multi-tenant para gestor
         if ($user->role === 'gestor') {
             $hotel = Hotel::where('id', $hotelId)->where('user_id', $user->id)->first();
             if (!$hotel) {
-                abort(403, 'Não autorizado.');
+                return back()->withErrors(['quartos' => 'Hotel não autorizado.'])->withInput();
             }
         }
 
-        // Para turista: verificar se o email corresponde ao user logado (ou se é admin pode criar para qualquer email)
+        // Turista só pode reservar para o seu próprio email
         if ($user->role === 'turista' && $user->email !== $request->email) {
             return back()->withErrors(['email' => 'Turistas só podem criar reservas para o seu próprio email.'])->withInput();
         }
 
-        // Criar ou obter cliente (se admin/gestor, pode criar conta para qualquer email)
+        // Criar ou obter cliente
         $cliente = User::firstOrCreate(
             ['email' => $request->email],
             [
@@ -113,7 +107,6 @@ class ReservaController extends Controller
                 'role'     => 'turista',
             ]
         );
-        // Atualizar nome/contato se necessário
         if ($cliente->name !== $request->nome_user || $cliente->contato !== $request->contato) {
             $cliente->update([
                 'name' => $request->nome_user,
@@ -125,9 +118,7 @@ class ReservaController extends Controller
         $checkout = Carbon::parse($request->checkout);
         $dias = max(1, $checkin->diffInDays($checkout));
 
-        $total = 0;
-
-        // Criar reserva com hotel_id correto
+        // Criar reserva
         $reserva = Reserva::create([
             'user_id'      => $cliente->id,
             'hotel_id'     => $hotelId,
@@ -141,12 +132,12 @@ class ReservaController extends Controller
             'status'       => 'pendente',
         ]);
 
-        foreach ($quartosSelecionados as $item) {
-            $quarto = Quarto::find($item['id']);
-            $quantidade = $item['quantidade'] ?? 1;
+        $total = 0;
+        foreach ($quartosSelecionados as $quartoId => $dados) {
+            $quarto = Quarto::find($quartoId);
+            $quantidade = $dados['quantidade'] ?? 1;
             $subtotal = $dias * $quarto->preco * $quantidade;
             $total += $subtotal;
-
             $reserva->quartos()->attach($quarto->id, [
                 'quantidade' => $quantidade,
                 'preco'      => $quarto->preco,
@@ -160,7 +151,11 @@ class ReservaController extends Controller
             ? "https://www.google.com/maps?q={$hotel->latitude},{$hotel->longitude}"
             : null;
 
-        Mail::to($cliente->email)->send(new ReservaCriadaMail($reserva, $googleMapsLink, $hotel));
+        try {
+            Mail::to($cliente->email)->send(new ReservaCriadaMail($reserva, $googleMapsLink, $hotel));
+        } catch (\Exception $e) {
+            \Log::error('Erro ao enviar email: ' . $e->getMessage());
+        }
 
         return redirect()->route('reservas.index')->with('success', 'Reserva criada com sucesso!');
     }
@@ -168,18 +163,14 @@ class ReservaController extends Controller
     public function show(Reserva $reserva)
     {
         $this->authorizeReserva($reserva);
-        $reserva->load('quartos.hotel', 'cliente');
+        $reserva->load('quartos.hotel', 'user');
         return view('reservas.show', compact('reserva'));
     }
 
     public function edit(Reserva $reserva)
     {
         $this->authorizeReserva($reserva);
-        // A edição de reserva pode ser complexa. Vamos permitir apenas alterar datas e status (não quartos)
-        // Para simplificar, redirecionamos para uma view específica ou apenas retornamos erro.
-        // Mas como no seu sistema original o edit permitia alterar user_id, vou manter apenas alteração de datas e status.
         $user = auth()->user();
-        // Somente admin e gestor do hotel podem editar (turista não pode editar reserva depois de criada)
         if ($user->role === 'turista') {
             abort(403, 'Turistas não podem editar reservas.');
         }
@@ -191,7 +182,6 @@ class ReservaController extends Controller
         $this->authorizeReserva($reserva);
         $user = auth()->user();
 
-        // Turista não pode editar
         if ($user->role === 'turista') {
             abort(403);
         }
@@ -203,7 +193,6 @@ class ReservaController extends Controller
         ]);
 
         $dias = max(1, Carbon::parse($request->checkin)->diffInDays(Carbon::parse($request->checkout)));
-        // Recalcular preço total baseado nos quartos existentes (sem alterar os quartos)
         $total = 0;
         foreach ($reserva->quartos as $quarto) {
             $subtotal = $dias * $quarto->pivot->preco * $quarto->pivot->quantidade;
@@ -235,16 +224,34 @@ class ReservaController extends Controller
             return;
         }
 
-        // Gestor: se a reserva tiver quartos de hotéis que ele gere
         $isGestor = $reserva->quartos()->whereHas('hotel', function ($q) use ($user) {
             $q->where('user_id', $user->id);
         })->exists();
 
-        // Turista: se for o dono da reserva
         $isOwner = $reserva->user_id === $user->id;
 
         if (!$isGestor && !$isOwner) {
             abort(403, 'Não autorizado.');
         }
     }
+
+    public function confirm(Reserva $reserva)
+{
+    // Verifica permissões (admin ou gestor do hotel)
+    $this->authorizeReserva($reserva);
+
+    // Atualiza o status para 'confirmada'
+    $reserva->update(['status' => 'confirmada']);
+
+    return redirect()->route('reservas.index')
+        ->with('success', 'Reserva confirmada com sucesso.');
+}
+
+public function cancel(Reserva $reserva)
+{
+    $this->authorizeReserva($reserva);
+    $reserva->update(['status' => 'cancelada']);
+    return redirect()->route('reservas.index')
+        ->with('success', 'Reserva cancelada.');
+}
 }

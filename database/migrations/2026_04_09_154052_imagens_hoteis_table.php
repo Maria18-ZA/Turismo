@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('imagens_hoteis', function (Blueprint $table) {
             $table->id();
+    $table->boolean('is_principal')->default(false);
     $table->string('imagem')->nullable();
     $table->foreignId('hotel_id')
           ->constrained('hoteis')

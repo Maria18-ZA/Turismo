@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('imagens_quartos', function (Blueprint $table) {
         $table->id();
+         $table->boolean('is_principal')->default(false);
         $table->string('imagem')->nullable();
 
        $table->foreignId('quarto_id')
