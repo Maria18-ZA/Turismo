@@ -106,18 +106,38 @@ Route::delete('/hoteis/{hotel}/imagens/{imagem}', [HotelController::class, 'dest
 Route::post('/hoteis/{hotel}/imagens/{imagem}/principal', [HotelController::class, 'setPrincipal'])
      ->name('hoteis.imagens.principal');
 
-// Para quartos (se quiser igual)
-Route::delete('/quartos/{quarto}/imagens/{imagem}', [QuartoController::class, 'destroyImagem'])
-     ->name('quartos.imagens.destroy');
-Route::post('/quartos/{quarto}/imagens/{imagem}/principal', [QuartoController::class, 'setPrincipal'])
-     ->name('quartos.imagens.principal');
-     
+
         Route::resource('quartos', QuartoController::class);
+
+        // Para quartos (se quiser igual)
+
+
+// Quartos
+Route::resource('quartos', QuartoController::class);
+Route::get('/quartos/public/{id}', [QuartoController::class, 'showUser'])->name('quartos.showUser');
+Route::delete('/quartos/{quarto}/imagens/{imagemId}', [QuartoController::class, 'destroyImagem'])->name('quartos.imagens.destroy');
+Route::post('/quartos/{quarto}/imagens/{imagemId}/principal', [QuartoController::class, 'setPrincipal'])->name('quartos.imagens.principal');
+
         Route::resource('reservas', ReservaController::class);
         Route::resource('servicos', ServicoController::class);
         Route::resource('pontosturisticos', PontoTuristicoController::class)->parameters([
     'pontosturisticos' => 'pontoTuristico']);
+
+    // Para quartos (se quiser igual)
+Route::delete('/pontos/{ponto}/imagens/{imagem}', [PontoTuristicoController::class, 'destroyImagem'])
+     ->name('pontos.imagens.destroy');
+Route::post('/pontos/{ponto}/imagens/{imagem}/principal', [PontoTuristicoController::class, 'setPrincipal'])
+     ->name('pontos.imagens.principal');
+     
         Route::resource('culturas', CulturaController::class);
+
+        // Para quartos (se quiser igual)
+Route::delete('/culturas/{cultura}/imagens/{imagem}', [CulturaController::class, 'destroyImagem'])
+     ->name('culturas.imagens.destroy');
+Route::post('/culturas/{cultura}/imagens/{imagem}/principal', [CulturaController::class, 'setPrincipal'])
+     ->name('culturas.imagens.principal');
+     
+
         Route::resource('places', PlaceController::class);
 
 // Ações específicas de reserva
