@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="max-w-2xl mx-auto mt-10">
+<div class="max-w-2xl mx-auto mt-10 text-texto-escuro">
     <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Editar Hotel</h1>
 
     
@@ -34,6 +34,36 @@
           <label class="block text-sm font-semibold mb-1 mt-3">Longitude</label>
         <input type="text" name="longitude" value="{{ old('longitude', $hotel->longitude) }}" class="w-full border rounded-lg px-4 py-2">
 
+
+        {{-- CATEGORIA --}}
+        
+            <label class="block mb-1 font-semibold">
+                Categoria
+            </label>
+
+            <select name="categoria"
+                    class="w-full border rounded-lg px-4 py-2">
+
+                <option value="">Selecione</option>
+
+                @foreach([
+                    '3_estrelas' => '3 Estrelas',
+                    '4_estrelas' => '4 Estrelas',
+                    '5_estrelas' => '5 Estrelas',
+                    'luxo' => 'Luxo',
+                    'resort' => 'Resort',
+                    'outro' => 'Outro'
+                ] as $valor => $texto)
+
+                    <option value="{{ $valor }}"
+                        {{ old('categoria') == $valor ? 'selected' : '' }}>
+                        {{ $texto }}
+                    </option>
+
+                @endforeach
+
+            </select>
+        
 
             <label for="imagens" class="block text-sm   font-semibold text-texto-escuro mb-1">Imagens (opcional)</label>
             <input type="file" name="imagens[]" id="imagens" multiple class="w-full border border-borda-card rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primaria">

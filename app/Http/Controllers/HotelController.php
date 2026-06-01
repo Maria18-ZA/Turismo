@@ -115,7 +115,7 @@ class HotelController extends Controller
      */
     public function update(Request $request, Hotel $hotel)
     {
-        $this->authorizeHotel($hotel);
+  
 
         $request->validate([
             'nome'        => 'required|string|max:255',

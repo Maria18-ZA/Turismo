@@ -58,14 +58,20 @@
                     <td class="px-5 py-3 text-gray-600">
                         {{ $hotel->contato ?? '—' }}
                     </td>
+                    
+                    @php
+                        $imagemPrincipal = $hotel->imagens->where('is_principal', 1)->first();
+                    @endphp
 
                     <td class="px-5 py-3">
-                        @if($hotel->imagens->isNotEmpty())
-                            <img src="{{ Storage::url($hotel->imagens->first()->imagem) }}"
-                                 class="w-12 h-12 rounded-lg object-cover border border-gray-200">
-                        @else
-                            <span class="text-gray-400 text-xs">Sem imagem</span>
-                        @endif
+                       <td class="px-5 py-3">
+                            @if($imagemPrincipal)
+                                <img src="{{ Storage::url($imagemPrincipal->imagem) }}"
+                                    class="w-12 h-12 rounded-lg object-cover border border-gray-200">
+                            @else
+                                <span class="text-gray-400 text-xs">Sem imagem</span>
+                            @endif
+                        </td>
                     </td>
 
                     <td class="px-5 py-3">
