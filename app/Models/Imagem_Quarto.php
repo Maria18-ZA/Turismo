@@ -10,10 +10,16 @@ class Imagem_Quarto extends Model
 
     protected $fillable = [
         'quarto_id',
-        'imagem'
+        'imagem',
+        'is_principal'
     ];
 
     public function quarto() {
         return $this->belongsTo(Quarto::class);
     }
+
+     public function imagemPrincipal()
+{
+    return $this->hasOne(Imagem_Hotel::class)->where('is_principal', true);
+}
 }

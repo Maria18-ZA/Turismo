@@ -33,7 +33,9 @@ class Quarto extends Model {
         return $this->hasMany(Imagem_Quarto::class);
     }
 
-   
-    
+     public function imagemPrincipal()
+{
+    return $this->hasOne(Imagem_Quarto::class)->where('is_principal', true);
+}
 
 }

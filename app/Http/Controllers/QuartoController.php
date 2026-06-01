@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hotel;
 use App\Models\Quarto;
+use App\Models\ImagemQuarto; // <-- assumindo que existe este model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,11 +27,11 @@ class QuartoController extends Controller
         $user = auth()->user();
 
         if ($user->role === 'admin') {
-            $quartos = Quarto::with('hotel')->latest()->get();
+            $quartos = Quarto::with(['hotel', 'imagemPrincipal'])->latest()->get();
         } else {
             $quartos = Quarto::whereHas('hotel', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
-            })->with('hotel')->latest()->get();
+            })->with(['hotel', 'imagemPrincipal'])->latest()->get();
         }
 
         return view('quartos.index', compact('quartos'));
@@ -56,11 +57,12 @@ class QuartoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'hotel_id' => 'required|exists:hoteis,id',
-            'numero'   => 'required|string|max:255',
-            'tipo'     => 'required|string|max:255',
-            'preco'    => 'required|numeric|min:0',
-            'imagem'   => 'required|image|mimes:jpeg,png,jpg|max:10000',
+            'hotel_id'  => 'required|exists:hoteis,id',
+            'numero'    => 'required|string|max:255',
+            'tipo'      => 'required|string|max:255',
+            'preco'     => 'required|numeric|min:0',
+            'imagens'   => 'nullable|array',
+            'imagens.*' => 'image|mimes:jpeg,png,jpg|max:10000',
         ]);
 
         // Segurança para gestor
@@ -73,13 +75,15 @@ class QuartoController extends Controller
             }
         }
 
-        // Criar quarto (apenas campos permitidos)
         $quarto = Quarto::create($request->only(['hotel_id', 'numero', 'tipo', 'preco']));
 
-        // Upload imagem
-        if ($request->hasFile('imagem')) {
-            $path = $request->file('imagem')->store('quartos', 'public');
-            $quarto->imagens()->create(['imagem' => $path]);
+        if ($request->hasFile('imagens')) {
+            foreach ($request->file('imagens') as $imagem) {
+                if ($imagem && $imagem->isValid()) {
+                    $path = $imagem->store('quartos', 'public');
+                    $quarto->imagens()->create(['imagem' => $path]);
+                }
+            }
         }
 
         return redirect()->route('quartos.index')
@@ -127,41 +131,36 @@ class QuartoController extends Controller
         $this->authorizeQuarto($quarto);
 
         $request->validate([
-            'hotel_id' => 'required|exists:hoteis,id',
-            'numero'   => 'required|string|max:255',
-            'tipo'     => 'required|string|max:255',
-            'preco'    => 'required|numeric|min:0',
-            'imagem'   => 'nullable|image|mimes:jpeg,png,jpg|max:10000',
+            'hotel_id'  => 'required|exists:hoteis,id',
+            'numero'    => 'required|string|max:255',
+            'tipo'      => 'required|string|max:255',
+            'preco'     => 'required|numeric|min:0',
+            'imagens'   => 'nullable|array',
+            'imagens.*' => 'image|mimes:jpeg,png,jpg|max:10000',
         ]);
 
         $user = auth()->user();
 
-        // Gestor não pode alterar o hotel_id do quarto (apenas admin)
         $updateData = $request->only(['numero', 'tipo', 'preco']);
         if ($user->role === 'admin') {
             $updateData['hotel_id'] = $request->hotel_id;
         } else {
-            // Gestor: verificar se o hotel_id pertence ao gestor (segurança extra)
             $hotel = Hotel::where('id', $request->hotel_id)
                 ->where('user_id', $user->id)
                 ->first();
             if (!$hotel) {
                 abort(403, 'Não autorizado.');
             }
-            // Mantém o hotel_id original, não altera
         }
 
         $quarto->update($updateData);
 
-        // Atualizar imagem
-        if ($request->hasFile('imagem')) {
-            $path = $request->file('imagem')->store('quartos', 'public');
-            $imagem = $quarto->imagens()->first();
-            if ($imagem) {
-                Storage::disk('public')->delete($imagem->imagem);
-                $imagem->update(['imagem' => $path]);
-            } else {
-                $quarto->imagens()->create(['imagem' => $path]);
+        if ($request->hasFile('imagens')) {
+            foreach ($request->file('imagens') as $imagem) {
+                if ($imagem && $imagem->isValid()) {
+                    $path = $imagem->store('quartos', 'public');
+                    $quarto->imagens()->create(['imagem' => $path]);
+                }
             }
         }
 
@@ -178,12 +177,58 @@ class QuartoController extends Controller
 
         foreach ($quarto->imagens as $imagem) {
             Storage::disk('public')->delete($imagem->imagem);
-            $imagem->delete();
         }
         $quarto->delete();
 
         return redirect()->route('quartos.index')
             ->with('success', 'Quarto removido!');
+    }
+
+    /**
+     * Eliminar imagem de um quarto
+     */
+    public function destroyImagem(Quarto $quarto, ImagemQuarto $imagem)
+    {
+        // Verifica se a imagem pertence ao quarto
+        if ($imagem->quarto_id !== $quarto->id) {
+            abort(404);
+        }
+        $this->authorizeQuarto($quarto);
+
+        $eraPrincipal = $imagem->is_principal;
+
+        Storage::disk('public')->delete($imagem->imagem);
+        $imagem->delete();
+
+        if ($eraPrincipal) {
+            $novaPrincipal = $quarto->imagens()
+                ->orderBy('id')
+                ->first();
+
+            if ($novaPrincipal) {
+                $novaPrincipal->update(['is_principal' => true]);
+            }
+        }
+
+        return redirect()->route('quartos.edit', $quarto)
+            ->with('success', 'Imagem removida.');
+    }
+
+    /**
+     * Definir imagem principal do quarto
+     */
+    public function setPrincipal(Quarto $quarto, ImagemQuarto $imagem)
+    {
+        if ($imagem->quarto_id !== $quarto->id) {
+            abort(404);
+        }
+        $this->authorizeQuarto($quarto);
+
+        $quarto->imagens()->update(['is_principal' => false]);
+        $imagem->update(['is_principal' => true]);
+
+        return redirect()->route('quartos.edit', $quarto)
+            ->with('success', 'Imagem principal definida.');
     }
 
     /**
@@ -197,7 +242,6 @@ class QuartoController extends Controller
             return;
         }
 
-        // Gestor: o quarto deve pertencer a um hotel que ele gere
         if (!$quarto->hotel || $quarto->hotel->user_id !== $user->id) {
             abort(403, 'Não autorizado.');
         }

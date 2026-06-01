@@ -34,8 +34,8 @@
         <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $quarto->numero }}</td>
         <td class="px-5 py-3 text-center font-medium text-texto-escuro">{{ $quarto->tipo }}</td>
         <td class="text-center px-5 py-3">
-            @if($quarto->imagens->isNotEmpty())
-                <img src="{{ Storage::url($quarto->imagens->first()->imagem) }}" alt="Imagem do Quarto" class="w-16 h-16 object-cover rounded-lg">
+            @if($quarto->imagemPrincipal)
+                <img src="{{ Storage::url($quarto->imagemPrincipal->imagem) }}" alt="Imagem do Quarto" class="w-16 h-16 object-cover rounded-lg">
             @else
                 <p class="text-texto-escuro">Nenhuma imagem disponível</p>
             @endif

@@ -2,12 +2,18 @@
 
 @section('content')
 
-<div class="max-w-2xl mx-auto mt-10 text-texto-escuro">
+<div class="max-w-3xl mx-auto mt-10 text-texto-escuro">
 
     {{-- TÍTULO --}}
-    <h1 class="text-2xl text-center font-bold mb-6">
-        Novo Quarto
-    </h1>
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold border-b-4 border-primaria w-fit pb-2">
+            Criar Quarto
+        </h1>
+
+        <p class="text-sm text-gray-500 mt-1">
+            Adicione um novo quarto
+        </p>
+    </div>
 
     {{-- ERROS --}}
     @if($errors->any())
@@ -38,7 +44,8 @@
                     class="w-full border rounded-lg px-4 py-2">
 
                 @foreach($hoteis as $hotel)
-                    <option value="{{ $hotel->id }}">
+                    <option value="{{ $hotel->id }}"
+                        {{ old('hotel_id') == $hotel->id ? 'selected' : '' }}>
                         {{ $hotel->nome }}
                     </option>
                 @endforeach
@@ -46,38 +53,45 @@
             </select>
         </div>
 
-        {{-- NÚMERO --}}
-        <div>
-            <label class="block mb-1 font-semibold">
-                Número
-            </label>
+        {{-- GRID --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <input type="text"
-                   name="numero"
-                   value="{{ old('numero') }}"
-                   class="w-full border rounded-lg px-4 py-2">
+            {{-- NÚMERO --}}
+            <div>
+                <label class="block mb-1 font-semibold">
+                    Número
+                </label>
+
+                <input type="text"
+                       name="numero"
+                       value="{{ old('numero') }}"
+                       class="w-full border rounded-lg px-4 py-2">
+            </div>
+
+            {{-- TIPO --}}
+            <div>
+                <label class="block mb-1 font-semibold">
+                    Tipo
+                </label>
+
+                <input type="text"
+                       name="tipo"
+                       value="{{ old('tipo') }}"
+                       class="w-full border rounded-lg px-4 py-2">
+            </div>
+
         </div>
 
-        {{-- TIPO --}}
+        {{-- PREÇO --}}
         <div>
             <label class="block mb-1 font-semibold">
-                Tipo
+                Preço
             </label>
 
-            <input type="text"
-                   name="tipo"
-                   value="{{ old('tipo') }}"
-                   class="w-full border rounded-lg px-4 py-2">
-        </div>
-
-        {{-- IMAGEM --}}
-        <div>
-            <label class="block mb-1 font-semibold">
-                Imagem
-            </label>
-
-            <input type="file"
-                   name="imagem"
+            <input type="number"
+                   step="0.01"
+                   name="preco"
+                   value="{{ old('preco') }}"
                    class="w-full border rounded-lg px-4 py-2">
         </div>
 
@@ -88,18 +102,20 @@
             </label>
 
             <textarea name="descricao"
-                class="w-full border rounded-lg px-4 py-2">{{ old('descricao') }}</textarea>
+                      rows="4"
+                      class="w-full border rounded-lg px-4 py-2">{{ old('descricao') }}</textarea>
         </div>
 
-        {{-- PREÇO --}}
+        {{-- IMAGENS --}}
         <div>
             <label class="block mb-1 font-semibold">
-                Preço
+                Imagens
             </label>
 
-            <input type="text"
-                   name="preco"
-                   value="{{ old('preco') }}"
+            <input type="file"
+                   name="imagens[]"
+                   multiple
+                   accept="image/*"
                    class="w-full border rounded-lg px-4 py-2">
         </div>
 
@@ -113,7 +129,7 @@
 
             <button type="submit"
                     class="bg-primaria text-white px-5 py-2 rounded-lg">
-                Salvar
+                Criar Quarto
             </button>
 
         </div>
