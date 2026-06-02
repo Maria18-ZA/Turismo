@@ -14,12 +14,8 @@ class Imagem_Quarto extends Model
         'is_principal'
     ];
 
-    public function quarto() {
+    public function quarto()
+    {
         return $this->belongsTo(Quarto::class);
     }
-
-     public function imagemPrincipal()
-{
-    return $this->hasOne(Imagem_Hotel::class)->where('is_principal', true);
-}
 }

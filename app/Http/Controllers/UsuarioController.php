@@ -45,11 +45,19 @@ class UsuarioController extends Controller
     return view('user.quartos.show', compact('quarto'));
 }
 
- public function create() {
-        $users = User::all();
-        $quartos = Quarto::all();
-
-        return view('user.reservas.create', compact('users', 'quartos'));
+ public function create(Request $request) {
+        // Recebe o ID do quarto a ser reservado (ex: ?quarto_id=5)
+    $quartoId = $request->query('quarto_id');
+    
+    if (!$quartoId) {
+        // Se não veio, redireciona para a listagem de quartos
+        return redirect()->route('quartos.index')->with('error', 'Selecione um quarto antes de reservar.');
+    }
+    
+    $quarto = Quarto::with('imagens', 'hotel')->findOrFail($quartoId);
+    
+    // Retorna a view que criamos (com os campos de dados pessoais, datas e quantidade)
+    return view('user.reservas.create', compact('quarto'));
     }
 
      public function indexPontos()

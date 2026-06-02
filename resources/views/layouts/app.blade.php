@@ -113,6 +113,12 @@
                     Avaliações
                 </a>
 
+                 <a href="{{ route('users.index') }}"
+                   class="block px-3 py-2 rounded-lg text-sm {{ active('users.*') }}">
+                    Usuários
+                </a>
+
+
                  <a href="{{ route('profile') }}" class="block px-3 py-2 rounded-lg text-sm text-fundo-secao hover:bg-primaria hover:text-white">
     Meu Perfil
 </a>

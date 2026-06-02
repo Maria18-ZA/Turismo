@@ -17,7 +17,7 @@ class ReservaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['create', 'store']);
     }
 
     public function index()
@@ -49,133 +49,98 @@ class ReservaController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'nome_user' => 'required|string|max:255',
-            'contato'   => 'required|string|max:255',
-            'email'     => 'required|email',
-            'checkin'   => 'required|date',
-            'checkout'  => 'required|date|after:checkin',
-            'quartos'   => 'required|array|min:1',
+{
+    $request->validate([
+        'nome_user' => 'required|string|max:255',
+        'contato'   => 'required|string|max:255',
+        'email'     => 'required|email',
+        'checkin'   => 'required|date',
+        'checkout'  => 'required|date|after:checkin',
+        'quartos'   => 'required|array|min:1',
+    ]);
+
+    $user = auth()->user(); // pode ser null
+
+    // Filtra quartos com quantidade > 0
+    $quartosSelecionados = collect($request->quartos)
+        ->filter(fn($dados, $quartoId) => ($dados['quantidade'] ?? 0) > 0);
+
+    if ($quartosSelecionados->isEmpty()) {
+        return back()->withErrors(['quartos' => 'Selecione pelo menos um quarto com quantidade maior que zero.'])->withInput();
+    }
+
+    // Verifica se todos os quartos são do mesmo hotel
+    $hotelIds = [];
+    foreach ($quartosSelecionados as $quartoId => $dados) {
+        $quarto = Quarto::find($quartoId);
+        if (!$quarto) {
+            return back()->withErrors(['quartos' => "Quarto ID $quartoId não encontrado."])->withInput();
+        }
+        $hotelIds[] = $quarto->hotel_id;
+    }
+    $hotelIds = array_unique($hotelIds);
+    if (count($hotelIds) !== 1) {
+        return back()->withErrors(['quartos' => 'Todos os quartos devem ser do mesmo hotel.'])->withInput();
+    }
+    $hotelId = $hotelIds[0];
+
+    // Segurança multi-tenant para gestor (apenas se estiver logado)
+    if ($user && $user->role === 'gestor') {
+        $hotel = Hotel::where('id', $hotelId)->where('user_id', $user->id)->first();
+        if (!$hotel) {
+            return back()->withErrors(['quartos' => 'Hotel não autorizado.'])->withInput();
+        }
+    }
+
+    // NÃO cria utilizador. Apenas verifica se já existe um user com este email (admin/gestor)
+    $cliente = User::where('email', $request->email)->first();
+    $userId = $cliente ? $cliente->id : null;
+
+    $checkin = Carbon::parse($request->checkin);
+    $checkout = Carbon::parse($request->checkout);
+    $dias = max(1, $checkin->diffInDays($checkout));
+
+    // Criar reserva com user_id podendo ser null
+    $reserva = Reserva::create([
+        'user_id'      => $userId,
+        'hotel_id'     => $hotelId,
+        'nome_user'    => $request->nome_user,
+        'contato'      => $request->contato,
+        'email'        => $request->email,
+        'tipo_reserva' => $quartosSelecionados->count() > 1 ? 'multipla' : 'simples',
+        'preco_total'  => 0,
+        'checkin'      => $request->checkin,
+        'checkout'     => $request->checkout,
+        'status'       => 'pendente',
+    ]);
+
+    $total = 0;
+    foreach ($quartosSelecionados as $quartoId => $dados) {
+        $quarto = Quarto::find($quartoId);
+        $quantidade = $dados['quantidade'] ?? 1;
+        $subtotal = $dias * $quarto->preco * $quantidade;
+        $total += $subtotal;
+        $reserva->quartos()->attach($quarto->id, [
+            'quantidade' => $quantidade,
+            'preco'      => $quarto->preco,
         ]);
-
-        $user = auth()->user();
-
-        // Filtra quartos com quantidade > 0
-        $quartosSelecionados = collect($request->quartos)
-            ->filter(fn($dados, $quartoId) => ($dados['quantidade'] ?? 0) > 0);
-
-        if ($quartosSelecionados->isEmpty()) {
-            return back()->withErrors(['quartos' => 'Selecione pelo menos um quarto com quantidade maior que zero.'])->withInput();
-        }
-
-        // Verifica se todos os quartos são do mesmo hotel
-        $hotelIds = [];
-        foreach ($quartosSelecionados as $quartoId => $dados) {
-            $quarto = Quarto::find($quartoId);
-            if (!$quarto) {
-                return back()->withErrors(['quartos' => "Quarto ID $quartoId não encontrado."])->withInput();
-            }
-            $hotelIds[] = $quarto->hotel_id;
-        }
-        $hotelIds = array_unique($hotelIds);
-        if (count($hotelIds) !== 1) {
-            return back()->withErrors(['quartos' => 'Todos os quartos devem ser do mesmo hotel.'])->withInput();
-        }
-        $hotelId = $hotelIds[0];
-
-        // Segurança multi-tenant para gestor
-        if ($user->role === 'gestor') {
-            $hotel = Hotel::where('id', $hotelId)->where('user_id', $user->id)->first();
-            if (!$hotel) {
-                return back()->withErrors(['quartos' => 'Hotel não autorizado.'])->withInput();
-            }
-        }
-
-        // Turista só pode reservar para o seu próprio email
-        if ($user->role === 'turista' && $user->email !== $request->email) {
-            return back()->withErrors(['email' => 'Turistas só podem criar reservas para o seu próprio email.'])->withInput();
-        }
-
-        // Criar ou obter cliente
-        $cliente = User::firstOrCreate(
-            ['email' => $request->email],
-            [
-                'name'     => $request->nome_user,
-                'contato'  => $request->contato,
-                'password' => Hash::make(Str::random(16)),
-                'role'     => 'turista',
-            ]
-        );
-        if ($cliente->name !== $request->nome_user || $cliente->contato !== $request->contato) {
-            $cliente->update([
-                'name' => $request->nome_user,
-                'contato' => $request->contato,
-            ]);
-        }
-
-        $checkin = Carbon::parse($request->checkin);
-        $checkout = Carbon::parse($request->checkout);
-        $dias = max(1, $checkin->diffInDays($checkout));
-
-        // Criar reserva
-        $reserva = Reserva::create([
-            'user_id'      => $cliente->id,
-            'hotel_id'     => $hotelId,
-            'nome_user'    => $request->nome_user,
-            'contato'      => $request->contato,
-            'email'        => $request->email,
-            'tipo_reserva' => $quartosSelecionados->count() > 1 ? 'multipla' : 'simples',
-            'preco_total'  => 0,
-            'checkin'      => $request->checkin,
-            'checkout'     => $request->checkout,
-            'status'       => 'pendente',
-        ]);
-
-        $total = 0;
-        foreach ($quartosSelecionados as $quartoId => $dados) {
-            $quarto = Quarto::find($quartoId);
-            $quantidade = $dados['quantidade'] ?? 1;
-            $subtotal = $dias * $quarto->preco * $quantidade;
-            $total += $subtotal;
-            $reserva->quartos()->attach($quarto->id, [
-                'quantidade' => $quantidade,
-                'preco'      => $quarto->preco,
-            ]);
-        }
-
-        $reserva->update(['preco_total' => $total]);
-
-        $hotel = Hotel::find($hotelId);
-        $googleMapsLink = ($hotel->latitude && $hotel->longitude)
-            ? "https://www.google.com/maps?q={$hotel->latitude},{$hotel->longitude}"
-            : null;
-
-        try {
-            Mail::to($cliente->email)->send(new ReservaCriadaMail($reserva, $googleMapsLink, $hotel));
-        } catch (\Exception $e) {
-            \Log::error('Erro ao enviar email: ' . $e->getMessage());
-        }
-
-        return redirect()->route('reservas.index')->with('success', 'Reserva criada com sucesso!');
     }
 
-    public function show(Reserva $reserva)
-    {
-        $this->authorizeReserva($reserva);
-        $reserva->load('quartos.hotel', 'user');
-        return view('reservas.show', compact('reserva'));
+    $reserva->update(['preco_total' => $total]);
+
+    $hotel = Hotel::find($hotelId);
+    $googleMapsLink = ($hotel->latitude && $hotel->longitude)
+        ? "https://www.google.com/maps?q={$hotel->latitude},{$hotel->longitude}"
+        : null;
+
+    try {
+        Mail::to($request->email)->send(new ReservaCriadaMail($reserva, $googleMapsLink, $hotel));
+    } catch (\Exception $e) {
+        \Log::error('Erro ao enviar email: ' . $e->getMessage());
     }
 
-    public function edit(Reserva $reserva)
-    {
-        $this->authorizeReserva($reserva);
-        $user = auth()->user();
-        if ($user->role === 'turista') {
-            abort(403, 'Turistas não podem editar reservas.');
-        }
-        return view('reservas.edit', compact('reserva'));
-    }
+    return redirect()->route('reservas.index')->with('success', 'Reserva criada com sucesso!');
+}
 
     public function update(Request $request, Reserva $reserva)
     {

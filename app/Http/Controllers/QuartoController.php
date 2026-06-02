@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hotel;
 use App\Models\Quarto;
-use App\Models\ImagemQuarto; // <-- assumindo que existe este model
+use App\Models\Imagem_Quarto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -187,7 +187,7 @@ class QuartoController extends Controller
     /**
      * Eliminar imagem de um quarto
      */
-    public function destroyImagem(Quarto $quarto, ImagemQuarto $imagem)
+    public function destroyImagem(Quarto $quarto, Imagem_Quarto $imagem)
     {
         // Verifica se a imagem pertence ao quarto
         if ($imagem->quarto_id !== $quarto->id) {
@@ -200,6 +200,7 @@ class QuartoController extends Controller
         Storage::disk('public')->delete($imagem->imagem);
         $imagem->delete();
 
+        // Se era a principal, promove outra imagem
         if ($eraPrincipal) {
             $novaPrincipal = $quarto->imagens()
                 ->orderBy('id')
@@ -217,7 +218,7 @@ class QuartoController extends Controller
     /**
      * Definir imagem principal do quarto
      */
-    public function setPrincipal(Quarto $quarto, ImagemQuarto $imagem)
+    public function setPrincipal(Quarto $quarto, Imagem_Quarto $imagem)
     {
         if ($imagem->quarto_id !== $quarto->id) {
             abort(404);

@@ -110,15 +110,12 @@ Route::post('/hoteis/{hotel}/imagens/{imagem}/principal', [HotelController::clas
         Route::resource('quartos', QuartoController::class);
 
         // Para quartos (se quiser igual)
-
-
-Route::delete('/quartos/{quarto}/imagens/{imagemId}',
-    [QuartoController::class, 'destroyImagem'])
+Route::delete('quartos/{quarto}/imagens/{imagem}', [QuartoController::class, 'destroyImagem'])
     ->name('quartos.imagens.destroy');
 
-Route::post('/quartos/{quarto}/imagens/{imagemId}/principal',
-    [QuartoController::class, 'setPrincipal'])
+Route::post('quartos/{quarto}/imagens/{imagem}/principal', [QuartoController::class, 'setPrincipal'])
     ->name('quartos.imagens.principal');
+
     
         Route::resource('reservas', ReservaController::class);
         Route::resource('servicos', ServicoController::class);

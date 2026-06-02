@@ -4,7 +4,6 @@
 <div class="max-w-2xl mx-auto mt-10 text-texto-escuro">
     <h1 class="text-2xl text-center font-bold text-texto-escuro mb-6">Editar Quarto</h1>
 
-    {{-- Exibir mensagens de erro --}}
     @if($errors->any())
         <ul class="text-red-600 mb-4">
             @foreach($errors->all() as $error)
@@ -60,13 +59,16 @@
     <div class="grid grid-cols-3 gap-4 mb-6">
         @foreach($quarto->imagens as $img)
             <div class="border rounded-lg p-2 text-center">
-                <img src="{{ Storage::url($img->imagem) }}" class="h-24 w-full object-cover rounded">
+                <img src="{{ url('storage/' . $img->imagem) }}" class="h-24 w-full object-cover rounded">
                 <div class="flex justify-between mt-2 text-sm">
+                    {{-- REMOVER --}}
                     <form action="{{ route('quartos.imagens.destroy', [$quarto, $img]) }}" method="POST" onsubmit="return confirm('Remover esta imagem?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600">Remover</button>
                     </form>
+                    
+                    {{-- PRINCIPAL - USA POST EM VEZ DE PATCH --}}
                     <form action="{{ route('quartos.imagens.principal', [$quarto, $img]) }}" method="POST">
                         @csrf
                         <button type="submit" class="text-primaria">
